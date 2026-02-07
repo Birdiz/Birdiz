@@ -1,21 +1,14 @@
+import "./globals.css";
+
 export const metadata = {
-  title: "Birdiz",
-  description: "Birdiz dashboard"
+  title: "Birdiz | Donjons & Dragons Toolkit",
+  description: "Modern medieval companion project for Donjons & Dragons players and Dungeon Masters."
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          fontFamily: "Arial, sans-serif",
-          backgroundColor: "#0b1020",
-          color: "#f8fafc"
-        }}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
