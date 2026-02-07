@@ -1,0 +1,7 @@
+.idea
+# WEB
+/web/node_modules/
+/web/.next/
+/web/tsconfig.tsbuildinfo
+# API
+/api/node_modules/
