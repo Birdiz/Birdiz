@@ -7,7 +7,7 @@ export default function SidebarMenu({
   classes,
   sidebarId,
   isOpen,
-  onClose
+  onClose,
 }) {
   return (
     <aside
@@ -25,7 +25,11 @@ export default function SidebarMenu({
         <ul className={classes.sidebarList}>
           {items.map((item) => (
             <li key={item.href}>
-              <a className={classes.sidebarLink} href={item.href} onClick={onClose}>
+              <a
+                className={classes.sidebarLink}
+                href={item.href}
+                onClick={onClose}
+              >
                 {item.label}
               </a>
             </li>

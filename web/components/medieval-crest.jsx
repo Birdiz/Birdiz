@@ -13,8 +13,18 @@ export default function MedievalCrest({ className }) {
         stroke="currentColor"
         strokeWidth="2.2"
       />
-      <path d="M32 14v36M14 24h36" fill="none" stroke="currentColor" strokeWidth="2" />
-      <path d="m22 42 10-10 10 10" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M32 14v36M14 24h36"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <path
+        d="m22 42 10-10 10 10"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
     </svg>
   );
 }

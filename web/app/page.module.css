@@ -11,7 +11,11 @@
   min-height: 100vh;
   padding: 2.25rem 1.25rem;
   border-right: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(24, 20, 16, 0.95), rgba(16, 13, 10, 0.95));
+  background: linear-gradient(
+    180deg,
+    rgba(24, 20, 16, 0.95),
+    rgba(16, 13, 10, 0.95)
+  );
   transition: transform 0.25s ease;
   z-index: 20;
 }
@@ -131,6 +135,26 @@
   top: 0;
   color: var(--accent-soft);
   font-size: 0.78rem;
+}
+
+.damageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem;
+}
+
+.damageCard {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.8rem 0.9rem;
+  background: rgba(15, 13, 11, 0.48);
+}
+
+.damageDie {
+  margin: 0 0 0.6rem;
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
 }
 
 .siteFooter {

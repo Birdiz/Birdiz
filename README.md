@@ -22,6 +22,7 @@ Services:
 
 - `GET /health` - basic health check
 - `GET /api/summary` - MongoDB connection summary
+- `GET /api/master-screen/damages` - damage examples for the Master Screen (seeded into MongoDB)
 
 ## Notes
 
