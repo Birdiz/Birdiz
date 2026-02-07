@@ -1,0 +1,6 @@
+.idea
+
+# API
+/api/node_modules/
+# WEB
+/web/node_modules/
