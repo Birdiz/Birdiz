@@ -4,7 +4,7 @@ WEB_DIR := web
 API_DIR := api
 NPM := npm
 
-.PHONY: help install install-web install-api dev dev-web dev-api start-web start-api build-web build-api build lint lint-web lint-api typecheck typecheck-web typecheck-api check clean
+.PHONY: help install install-web install-api dev dev-web dev-api start-web start-api build-web build-api build lint lint-web lint-api prettier prettier-web prettier-api typecheck typecheck-web typecheck-api check clean
 
 help:
 	@echo "Available targets:"
@@ -20,6 +20,7 @@ help:
 	@echo "  make build-api    - Placeholder (no API build script yet)"
 	@echo "  make build        - Build web app"
 	@echo "  make lint         - Run lint in web and api"
+	@echo "  make prettier     - Run Prettier in web and api"
 	@echo "  make typecheck    - Run type checks in web and api"
 	@echo "  make check        - Run lint and typecheck in both services"
 	@echo "  make clean        - Remove local node_modules and web build output"
@@ -66,6 +67,14 @@ lint-api:
 	$(NPM) --prefix $(API_DIR) run lint
 
 lint: lint-web lint-api
+
+prettier-web:
+	$(NPM) --prefix $(WEB_DIR) exec -- prettier --write $(WEB_DIR)
+
+prettier-api:
+	$(NPM) --prefix $(API_DIR) exec -- prettier --write $(API_DIR)
+
+prettier: prettier-web prettier-api
 
 typecheck-web:
 	$(NPM) --prefix $(WEB_DIR) run typecheck

@@ -6,12 +6,13 @@ export const homeContent = {
   intentions: [
     "Offer quick worldbuilding prompts, location seeds, and encounter ideas.",
     "Keep utility-first workflows that support prep without replacing creativity.",
-    "Provide a clean, modern interface with a medieval atmosphere."
+    "Provide a clean, modern interface with a medieval atmosphere.",
   ],
   menuItems: [
     { label: "Project", href: "#project" },
     { label: "Intentions", href: "#intentions" },
-    { label: "Next Steps", href: "#next-steps" }
+    { label: "Master Screen", href: "#master-screen" },
+    { label: "Next Steps", href: "#next-steps" },
   ],
-  githubUrl: "https://github.com/Birdiz/Birdiz"
+  githubUrl: "https://github.com/Birdiz/Birdiz",
 };
