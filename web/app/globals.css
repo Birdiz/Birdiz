@@ -1,14 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --bg-ink: #12100d;
-  --bg-panel: #1b1712;
-  --bg-soft: #241f18;
-  --text-main: #f4efe2;
-  --text-muted: #c8bc9c;
-  --accent: #c79a4a;
-  --accent-soft: #8a6b39;
-  --line: rgba(199, 154, 74, 0.25);
+  --bg-root: #0f0b08;
+  --bg-ink: #17120e;
+  --bg-panel: #1d1712;
+  --bg-elevated: #251e17;
+  --text-main: #f4efe3;
+  --text-soft: #e7dcc3;
+  --text-muted: #c2b49a;
+  --accent: #d3aa66;
+  --accent-strong: #edc98d;
+  --accent-soft: #b98d48;
+  --accent-deep: #9f7433;
+  --line: rgba(211, 170, 102, 0.26);
+  --line-strong: rgba(211, 170, 102, 0.42);
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.3);
   --font-heading: "Palatino Linotype", "Book Antiqua", Palatino, serif;
   --font-body: Cambria, "Hoefler Text", "Liberation Serif", serif;
 }
@@ -25,20 +31,142 @@
     font-family: var(--font-body);
     color: var(--text-main);
     background:
-      radial-gradient(
-        circle at 12% 18%,
-        rgba(199, 154, 74, 0.18),
-        transparent 40%
-      ),
-      radial-gradient(
-        circle at 92% 12%,
-        rgba(138, 107, 57, 0.22),
-        transparent 36%
-      ),
-      linear-gradient(140deg, #120f0c 0%, #17120d 55%, #0f0c0a 100%);
+      radial-gradient(circle at 10% 14%, rgba(231, 185, 108, 0.2), transparent 36%),
+      radial-gradient(circle at 88% 8%, rgba(143, 101, 43, 0.24), transparent 30%),
+      linear-gradient(146deg, #0d0907 0%, #16100c 48%, #0c0907 100%);
+    background-attachment: fixed;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("/ambiance/parchment-grid.svg"), url("/ambiance/ember-orbs.svg");
+    background-size: cover, cover;
+    background-position: center, center;
+    mix-blend-mode: screen;
+    opacity: 0.14;
+    z-index: -2;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 120%, rgba(0, 0, 0, 0.56), transparent 55%);
+    z-index: -1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    letter-spacing: 0.015em;
+  }
+
+  p {
+    color: var(--text-soft);
   }
 
   a {
     color: inherit;
+  }
+}
+
+@layer components {
+  .hero-surface {
+    border: 1px solid rgba(211, 170, 102, 0.16);
+    background:
+      linear-gradient(138deg, rgba(211, 170, 102, 0.09), transparent 34%),
+      linear-gradient(180deg, rgba(32, 25, 19, 0.95), rgba(22, 17, 13, 0.95));
+    box-shadow: var(--shadow-soft);
+  }
+
+  .hero-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    color: var(--accent-strong);
+  }
+
+  .hero-title {
+    font-size: clamp(1.45rem, 2.3vw, 2rem);
+    line-height: 1.2;
+    color: var(--text-main);
+  }
+
+  .hero-description {
+    line-height: 1.7;
+    color: var(--text-soft);
+  }
+
+  .hero-art {
+    border: 1px solid rgba(211, 170, 102, 0.14);
+    background-image:
+      linear-gradient(142deg, rgba(211, 170, 102, 0.12), transparent 40%),
+      linear-gradient(180deg, rgba(18, 14, 10, 0.9), rgba(11, 8, 6, 0.9));
+  }
+
+  .shell-panel {
+    border: 1px solid rgba(211, 170, 102, 0.12);
+    background:
+      linear-gradient(145deg, rgba(211, 170, 102, 0.06), transparent 36%),
+      rgba(27, 21, 16, 0.84);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .panel-title {
+    color: var(--accent-strong);
+    font-size: 1.12rem;
+  }
+
+  .panel-subtitle {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .tool-card {
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(22, 17, 13, 0.92), rgba(15, 11, 8, 0.92));
+    transition: transform 160ms ease, border-color 160ms ease;
+  }
+
+  .tool-card:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+  }
+
+  .table-surface {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(211, 170, 102, 0.2);
+    background: rgba(16, 12, 9, 0.72);
+    padding: 0.9rem;
+  }
+
+  .tag-chip {
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 0.2rem 0.58rem;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-strong);
+    background: rgba(122, 89, 42, 0.18);
+  }
+
+  .info-pill {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.2rem 0.56rem;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    background: rgba(29, 24, 18, 0.78);
   }
 }

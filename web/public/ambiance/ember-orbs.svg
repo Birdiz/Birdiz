@@ -1,0 +1,20 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(240 200) rotate(90) scale(220)">
+      <stop stop-color="#E9C27F" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#E9C27F" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="b" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(880 170) rotate(90) scale(180)">
+      <stop stop-color="#B4843A" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#B4843A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="c" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(970 620) rotate(90) scale(260)">
+      <stop stop-color="#A7722A" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#A7722A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="#100C09"/>
+  <circle cx="240" cy="200" r="220" fill="url(#a)"/>
+  <circle cx="880" cy="170" r="180" fill="url(#b)"/>
+  <circle cx="970" cy="620" r="260" fill="url(#c)"/>
+</svg>

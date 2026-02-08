@@ -1,21 +1,47 @@
 import HomeShell from "../components/home-shell";
+import PageHero from "../components/ui/page-hero";
+import SectionPanel from "../components/ui/section-panel";
+import ToolCard from "../components/ui/tool-card";
 import { homeContent } from "../lib/homeContent";
 
 export default function HomePage() {
   return (
     <HomeShell content={homeContent}>
-      <section className="mb-4 rounded-[14px] border border-[var(--line)] bg-[linear-gradient(135deg,rgba(199,154,74,0.06),transparent_30%),rgba(27,23,18,0.7)] px-5 py-5 last:mb-0">
-        <h2
-          className="mb-3 flex items-center gap-2 text-[1.3rem] tracking-[0.02em] text-[var(--accent)]"
-          style={{ fontFamily: "var(--font-heading)" }}
-        >
-          <span className="text-[0.95rem] text-[var(--accent-soft)]">✧</span>
-          Project
-        </h2>
-        <p className="m-0 leading-[1.7] text-[var(--text-main)]">
-          {homeContent.description}
-        </p>
-      </section>
+      <PageHero
+        eyebrow={homeContent.hero.eyebrow}
+        title={homeContent.hero.title}
+        description={homeContent.hero.description}
+        badges={homeContent.hero.badges}
+        art={homeContent.hero.art}
+      />
+
+      <SectionPanel title="Intentions" subtitle="Scope and player value">
+        <ul className="m-0 grid gap-2 p-0 md:grid-cols-3">
+          {homeContent.intentions.map((intention) => (
+            <li
+              key={intention}
+              className="list-none rounded-[12px] border border-[var(--line)] bg-[rgba(19,14,11,0.7)] px-3 py-3 text-sm leading-6 text-[var(--text-soft)]"
+            >
+              {intention}
+            </li>
+          ))}
+        </ul>
+      </SectionPanel>
+
+      <SectionPanel title="Tool Modules" subtitle="Current and planned utilities">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {homeContent.toolGroups.map((group) => (
+            <ToolCard
+              key={group.title}
+              title={group.title}
+              description={group.description}
+              href={group.href}
+              status={group.status}
+              meta={group.meta}
+            />
+          ))}
+        </div>
+      </SectionPanel>
     </HomeShell>
   );
 }
