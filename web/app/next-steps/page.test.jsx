@@ -4,10 +4,17 @@ import NextStepsPage from "./page";
 import { homeContent } from "../../lib/homeContent";
 
 describe("NextStepsPage", () => {
-  it("renders next steps heading and copy", () => {
+  it("renders roadmap heading and milestones", () => {
     render(<NextStepsPage />);
 
-    expect(screen.getByRole("heading", { name: /Next Steps/ })).toBeInTheDocument();
-    expect(screen.getByText(homeContent.nextSteps)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: homeContent.nextSteps.title }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Milestones")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: homeContent.nextSteps.milestones[0].name,
+      }),
+    ).toBeInTheDocument();
   });
 });

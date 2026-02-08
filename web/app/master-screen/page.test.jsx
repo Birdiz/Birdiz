@@ -16,7 +16,7 @@ vi.mock("../../lib/masterScreenData", () => ({
 }));
 
 describe("MasterScreenPage", () => {
-  it("renders damages and domain sections", async () => {
+  it("renders domain sections and data", async () => {
     vi.mocked(getMasterScreenDamages).mockResolvedValue([
       {
         die: "1d10",
@@ -50,7 +50,12 @@ describe("MasterScreenPage", () => {
 
     render(await MasterScreenPage());
 
-    expect(screen.getByRole("heading", { name: /Master Screen/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "In-session references for high-velocity decisions",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Damages")).toBeInTheDocument();
     expect(screen.getByText("1d10")).toBeInTheDocument();
     expect(screen.getByText("Transport")).toBeInTheDocument();
     expect(screen.getByText("Barque")).toBeInTheDocument();

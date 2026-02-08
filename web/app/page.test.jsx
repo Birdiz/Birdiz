@@ -4,10 +4,14 @@ import HomePage from "./page";
 import { homeContent } from "../lib/homeContent";
 
 describe("HomePage", () => {
-  it("renders project section and home description", () => {
+  it("renders hero and tool modules", () => {
     render(<HomePage />);
 
-    expect(screen.getByRole("heading", { name: /Project/ })).toBeInTheDocument();
-    expect(screen.getByText(homeContent.description)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: homeContent.hero.title }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Intentions")).toBeInTheDocument();
+    expect(screen.getByText("Tool Modules")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Master Screen" })).toBeInTheDocument();
   });
 });

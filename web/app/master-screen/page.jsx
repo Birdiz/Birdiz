@@ -1,4 +1,6 @@
 import HomeShell from "../../components/home-shell";
+import PageHero from "../../components/ui/page-hero";
+import SectionPanel from "../../components/ui/section-panel";
 import { homeContent } from "../../lib/homeContent";
 import {
   getMasterScreenDamages,
@@ -19,6 +21,36 @@ function hasPropertiesData(properties) {
   return properties.buildings.length > 0 || properties.maintenance.length > 0;
 }
 
+function DataTable({ title, headers, rows, getKey }) {
+  return (
+    <div className="table-surface">
+      <h4 className="mb-2 text-[var(--accent)]">{title}</h4>
+      <table className="w-full border-collapse text-left text-[0.95rem] text-[var(--text-main)]">
+        <thead>
+          <tr className="border-b border-[var(--line)] text-[var(--accent-strong)]">
+            {headers.map((header) => (
+              <th key={header} className="py-1 pr-2">
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={getKey(row)} className="border-b border-[rgba(221,190,129,0.08)]">
+              {Object.values(row).map((value, index) => (
+                <td key={`${getKey(row)}-${index}`} className="py-1 pr-2">
+                  {value}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default async function MasterScreenPage() {
   const [damages, transport, properties, lifestyles] = await Promise.all([
     getMasterScreenDamages(),
@@ -29,37 +61,25 @@ export default async function MasterScreenPage() {
 
   return (
     <HomeShell content={homeContent}>
-      <section className="mb-4 rounded-[14px] border border-[var(--line)] bg-[linear-gradient(135deg,rgba(199,154,74,0.06),transparent_30%),rgba(27,23,18,0.7)] px-5 py-5 last:mb-0">
-        <h2
-          className="mb-3 flex items-center gap-2 text-[1.3rem] tracking-[0.02em] text-[var(--accent)]"
-          style={{ fontFamily: "var(--font-heading)" }}
-        >
-          <span className="text-[0.95rem] text-[var(--accent-soft)]">✧</span>
-          Master Screen
-        </h2>
+      <PageHero
+        eyebrow="Master Screen"
+        title="In-session references for high-velocity decisions"
+        description="This screen groups practical economics and world interaction references so DMs and players can keep momentum while resolving outcomes."
+        badges={["Combat support", "Travel and economy", "Roleplay pacing"]}
+        art="Open this during play as a shared reference layer: damages, transport options, properties, and lifestyle costs."
+      />
 
-        <h3
-          className="mb-2 text-[1.05rem] text-[var(--accent)]"
-          style={{ fontFamily: "var(--font-heading)" }}
-        >
-          Damages
-        </h3>
-
+      <SectionPanel title="Damages" subtitle="Impact calibration">
         {damages.length === 0 ? (
-          <p className="m-0 mb-6 leading-[1.7] text-[var(--text-main)]">No damages found yet.</p>
+          <p className="m-0 leading-[1.7] text-[var(--text-main)]">No damages found yet.</p>
         ) : (
-          <div className="mb-6 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
             {damages.map((damage) => (
               <article
                 key={damage.die}
-                className="rounded-xl border border-[var(--line)] bg-[rgba(15,13,11,0.48)] px-4 py-3"
+                className="rounded-xl border border-[var(--line)] bg-[rgba(14,11,8,0.68)] px-4 py-3"
               >
-                <h4
-                  className="mb-2 text-[1.05rem] text-[var(--accent)]"
-                  style={{ fontFamily: "var(--font-heading)" }}
-                >
-                  {damage.die}
-                </h4>
+                <h4 className="mb-2 text-[1.05rem] text-[var(--accent)]">{damage.die}</h4>
                 <ul className="m-0 list-none p-0 leading-[1.7] text-[var(--text-main)]">
                   {damage.examples.map((example) => (
                     <li
@@ -74,163 +94,90 @@ export default async function MasterScreenPage() {
             ))}
           </div>
         )}
+      </SectionPanel>
 
-        <h3
-          className="mb-2 text-[1.05rem] text-[var(--accent)]"
-          style={{ fontFamily: "var(--font-heading)" }}
-        >
-          Transport
-        </h3>
+      <SectionPanel title="Transport" subtitle="Travel logistics">
         {!hasTransportData(transport) ? (
-          <p className="m-0 mb-6 leading-[1.7] text-[var(--text-main)]">
-            No transport data found yet.
-          </p>
+          <p className="m-0 leading-[1.7] text-[var(--text-main)]">No transport data found yet.</p>
         ) : (
-          <div className="mb-6 grid gap-3">
-            <div className="overflow-x-auto rounded-xl border border-[var(--line)] bg-[rgba(15,13,11,0.48)] p-3">
-              <h4 className="mb-2 text-[var(--accent)]">Boats</h4>
-              <table className="w-full border-collapse text-left text-[0.95rem] text-[var(--text-main)]">
-                <thead>
-                  <tr className="border-b border-[var(--line)] text-[var(--accent-soft)]">
-                    <th className="py-1 pr-2">Name</th>
-                    <th className="py-1 pr-2">Price</th>
-                    <th className="py-1">Rent</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transport.boats.map((boat) => (
-                    <tr key={boat.name} className="border-b border-[rgba(221,190,129,0.08)]">
-                      <td className="py-1 pr-2">{boat.name}</td>
-                      <td className="py-1 pr-2">{boat.price}</td>
-                      <td className="py-1">{boat.rent}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="grid gap-3">
+            <DataTable
+              title="Boats"
+              headers={["Name", "Price", "Rent"]}
+              rows={transport.boats.map((boat) => ({
+                Name: boat.name,
+                Price: boat.price,
+                Rent: boat.rent,
+              }))}
+              getKey={(row) => row.Name}
+            />
 
-            <div className="overflow-x-auto rounded-xl border border-[var(--line)] bg-[rgba(15,13,11,0.48)] p-3">
-              <h4 className="mb-2 text-[var(--accent)]">Mounts</h4>
-              <table className="w-full border-collapse text-left text-[0.95rem] text-[var(--text-main)]">
-                <thead>
-                  <tr className="border-b border-[var(--line)] text-[var(--accent-soft)]">
-                    <th className="py-1 pr-2">Name</th>
-                    <th className="py-1 pr-2">Price</th>
-                    <th className="py-1 pr-2">Charge</th>
-                    <th className="py-1">Rent</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transport.mounts.map((mount) => (
-                    <tr key={mount.name} className="border-b border-[rgba(221,190,129,0.08)]">
-                      <td className="py-1 pr-2">{mount.name}</td>
-                      <td className="py-1 pr-2">{mount.price}</td>
-                      <td className="py-1 pr-2">{mount.charge}</td>
-                      <td className="py-1">{mount.rent}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <DataTable
+              title="Mounts"
+              headers={["Name", "Price", "Charge", "Rent"]}
+              rows={transport.mounts.map((mount) => ({
+                Name: mount.name,
+                Price: mount.price,
+                Charge: mount.charge,
+                Rent: mount.rent,
+              }))}
+              getKey={(row) => row.Name}
+            />
 
-            <div className="overflow-x-auto rounded-xl border border-[var(--line)] bg-[rgba(15,13,11,0.48)] p-3">
-              <h4 className="mb-2 text-[var(--accent)]">Mount Equipment</h4>
-              <table className="w-full border-collapse text-left text-[0.95rem] text-[var(--text-main)]">
-                <thead>
-                  <tr className="border-b border-[var(--line)] text-[var(--accent-soft)]">
-                    <th className="py-1 pr-2">Name</th>
-                    <th className="py-1 pr-2">Price</th>
-                    <th className="py-1">Charge</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transport.mountEquipments.map((equipment) => (
-                    <tr
-                      key={equipment.name}
-                      className="border-b border-[rgba(221,190,129,0.08)]"
-                    >
-                      <td className="py-1 pr-2">{equipment.name}</td>
-                      <td className="py-1 pr-2">{equipment.price}</td>
-                      <td className="py-1">{equipment.charge}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <DataTable
+              title="Mount Equipment"
+              headers={["Name", "Price", "Charge"]}
+              rows={transport.mountEquipments.map((equipment) => ({
+                Name: equipment.name,
+                Price: equipment.price,
+                Charge: equipment.charge,
+              }))}
+              getKey={(row) => row.Name}
+            />
           </div>
         )}
+      </SectionPanel>
 
-        <h3
-          className="mb-2 text-[1.05rem] text-[var(--accent)]"
-          style={{ fontFamily: "var(--font-heading)" }}
-        >
-          Properties And Maintenance
-        </h3>
+      <SectionPanel title="Properties And Maintenance" subtitle="Long-term economy">
         {!hasPropertiesData(properties) ? (
-          <p className="m-0 mb-6 leading-[1.7] text-[var(--text-main)]">
+          <p className="m-0 leading-[1.7] text-[var(--text-main)]">
             No building and maintenance data found yet.
           </p>
         ) : (
-          <div className="mb-6 grid gap-3">
-            <div className="overflow-x-auto rounded-xl border border-[var(--line)] bg-[rgba(15,13,11,0.48)] p-3">
-              <h4 className="mb-2 text-[var(--accent)]">Buildings</h4>
-              <table className="w-full border-collapse text-left text-[0.95rem] text-[var(--text-main)]">
-                <thead>
-                  <tr className="border-b border-[var(--line)] text-[var(--accent-soft)]">
-                    <th className="py-1 pr-2">Name</th>
-                    <th className="py-1 pr-2">Price</th>
-                    <th className="py-1 pr-2">Rent</th>
-                    <th className="py-1">Duration (days)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {properties.buildings.map((building) => (
-                    <tr key={building.name} className="border-b border-[rgba(221,190,129,0.08)]">
-                      <td className="py-1 pr-2">{building.name}</td>
-                      <td className="py-1 pr-2">{building.price}</td>
-                      <td className="py-1 pr-2">{building.rent}</td>
-                      <td className="py-1">{building.duration}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="grid gap-3">
+            <DataTable
+              title="Buildings"
+              headers={["Name", "Price", "Rent", "Duration (days)"]}
+              rows={properties.buildings.map((building) => ({
+                Name: building.name,
+                Price: building.price,
+                Rent: building.rent,
+                "Duration (days)": building.duration,
+              }))}
+              getKey={(row) => row.Name}
+            />
 
-            <div className="overflow-x-auto rounded-xl border border-[var(--line)] bg-[rgba(15,13,11,0.48)] p-3">
-              <h4 className="mb-2 text-[var(--accent)]">Maintenance</h4>
-              <table className="w-full border-collapse text-left text-[0.95rem] text-[var(--text-main)]">
-                <thead>
-                  <tr className="border-b border-[var(--line)] text-[var(--accent-soft)]">
-                    <th className="py-1 pr-2">Name</th>
-                    <th className="py-1 pr-2">Daily Cost</th>
-                    <th className="py-1 pr-2">Unqualified Worker</th>
-                    <th className="py-1">Qualified Worker</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {properties.maintenance.map((maintenance) => (
-                    <tr
-                      key={maintenance.name}
-                      className="border-b border-[rgba(221,190,129,0.08)]"
-                    >
-                      <td className="py-1 pr-2">{maintenance.name}</td>
-                      <td className="py-1 pr-2">{maintenance.cost}</td>
-                      <td className="py-1 pr-2">{maintenance.workerUnqualified}</td>
-                      <td className="py-1">{maintenance.workerQualified}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <DataTable
+              title="Maintenance"
+              headers={[
+                "Name",
+                "Daily Cost",
+                "Unqualified Worker",
+                "Qualified Worker",
+              ]}
+              rows={properties.maintenance.map((maintenance) => ({
+                Name: maintenance.name,
+                "Daily Cost": maintenance.cost,
+                "Unqualified Worker": maintenance.workerUnqualified,
+                "Qualified Worker": maintenance.workerQualified,
+              }))}
+              getKey={(row) => row.Name}
+            />
           </div>
         )}
+      </SectionPanel>
 
-        <h3
-          className="mb-2 text-[1.05rem] text-[var(--accent)]"
-          style={{ fontFamily: "var(--font-heading)" }}
-        >
-          Lifestyles
-        </h3>
+      <SectionPanel title="Lifestyles" subtitle="Roleplay and service costs">
         {lifestyles.length === 0 ? (
           <p className="m-0 leading-[1.7] text-[var(--text-main)]">No lifestyles found yet.</p>
         ) : (
@@ -238,11 +185,13 @@ export default async function MasterScreenPage() {
             {lifestyles.map((lifestyle) => (
               <article
                 key={lifestyle.name}
-                className="rounded-xl border border-[var(--line)] bg-[rgba(15,13,11,0.48)] px-4 py-3"
+                className="rounded-xl border border-[var(--line)] bg-[rgba(14,11,8,0.68)] px-4 py-3"
               >
                 <h4 className="mb-1 text-[var(--accent)]">{lifestyle.name}</h4>
                 <p className="m-0 mb-2 text-[var(--accent-soft)]">{lifestyle.price}</p>
-                <p className="m-0 mb-2 leading-[1.6] text-[var(--text-main)]">{lifestyle.description}</p>
+                <p className="m-0 mb-2 leading-[1.6] text-[var(--text-main)]">
+                  {lifestyle.description}
+                </p>
                 {lifestyle.services.length > 0 && (
                   <ul className="m-0 list-none p-0 text-[var(--text-main)]">
                     {lifestyle.services.map((service) => (
@@ -260,7 +209,7 @@ export default async function MasterScreenPage() {
             ))}
           </div>
         )}
-      </section>
+      </SectionPanel>
     </HomeShell>
   );
 }
