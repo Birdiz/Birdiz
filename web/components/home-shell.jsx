@@ -40,7 +40,7 @@ export default function HomeShell({ content, children }) {
       />
 
       <main className="relative px-4 pt-17 pb-24 md:px-8 md:pt-8 md:pb-21">
-        <article className="mx-auto w-full max-w-[1160px]">{children}</article>
+        <article className="w-full">{children}</article>
         <SiteFooter githubUrl={content.githubUrl} />
       </main>
     </div>

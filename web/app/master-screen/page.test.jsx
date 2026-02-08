@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import MasterScreenPage from "./page";
 import {
@@ -16,7 +16,7 @@ vi.mock("../../lib/masterScreenData", () => ({
 }));
 
 describe("MasterScreenPage", () => {
-  it("renders domain sections and data", async () => {
+  it("renders card navigation and swaps active section content", async () => {
     vi.mocked(getMasterScreenDamages).mockResolvedValue([
       {
         die: "1d10",
@@ -55,16 +55,23 @@ describe("MasterScreenPage", () => {
         name: "In-session references for high-velocity decisions",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Damages")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Show Damages" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
     expect(screen.getByText("1d10")).toBeInTheDocument();
-    expect(screen.getByText("Transport")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Show Transport" }));
+
+    expect(screen.getByRole("button", { name: "Show Transport" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
     expect(screen.getByText("Barque")).toBeInTheDocument();
-    expect(screen.getByText("Properties And Maintenance")).toBeInTheDocument();
-    expect(screen.getByText("Lifestyles")).toBeInTheDocument();
-    expect(screen.getByText("Modeste")).toBeInTheDocument();
+    expect(screen.queryByText("1d10")).not.toBeInTheDocument();
   });
 
-  it("renders all empty states", async () => {
+  it("renders empty state when selected section has no data", async () => {
     vi.mocked(getMasterScreenDamages).mockResolvedValue([]);
     vi.mocked(getMasterScreenTransport).mockResolvedValue({
       boats: [],
@@ -80,10 +87,7 @@ describe("MasterScreenPage", () => {
     render(await MasterScreenPage());
 
     expect(screen.getByText("No damages found yet.")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Show Transport" }));
     expect(screen.getByText("No transport data found yet.")).toBeInTheDocument();
-    expect(
-      screen.getByText("No building and maintenance data found yet."),
-    ).toBeInTheDocument();
-    expect(screen.getByText("No lifestyles found yet.")).toBeInTheDocument();
   });
 });
