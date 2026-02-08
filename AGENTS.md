@@ -5,6 +5,7 @@ A skill is a set of local instructions to follow that is stored in a `SKILL.md` 
 - project-workflow: Use Makefile targets first (except npm dependency installs), request permission before npm installs, and always run lint + typecheck after code changes. (file: ./.codex/skills/project-workflow/SKILL.md)
 - prettier-workflow: Run Prettier through Makefile targets, verify formatting completes successfully, and report touched files concisely. (file: ./.codex/skills/prettier-workflow/SKILL.md)
 - test-maintenance-workflow: Add or update automated tests whenever code behavior changes in api or web, and run lint + typecheck + tests before handoff. (file: ./.codex/skills/test-maintenance-workflow/SKILL.md)
+- readme-maintenance: Keep README.md concise and keep detailed docs in docs/ while ensuring documentation stays aligned with commands, endpoints, and environment variables. (file: ./.codex/skills/readme-maintenance/SKILL.md)
 
 ### How to use skills
 - Discovery: The list above is the skills available in this session (name + description + file path). Skill bodies live on disk at the listed paths.
