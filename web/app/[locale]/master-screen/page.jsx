@@ -3,12 +3,24 @@ import MasterScreenDashboard from "../../../components/master-screen/master-scre
 import PageHero from "../../../components/ui/page-hero";
 import { getHomeContent } from "../../../lib/homeContent";
 import { getIntl } from "../../../lib/i18n/intl";
+import { buildSeoMetadata } from "../../../lib/seo";
 import {
   getMasterScreenDamages,
   getMasterScreenLifestyles,
   getMasterScreenProperties,
   getMasterScreenTransport,
 } from "../../../lib/masterScreenData";
+
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+
+  return buildSeoMetadata({
+    locale,
+    pathname: "/master-screen",
+    titleId: "seo.masterScreen.title",
+    descriptionId: "seo.masterScreen.description",
+  });
+}
 
 export default async function LocalizedMasterScreenPage({ params }) {
   const { locale } = await params;

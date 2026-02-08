@@ -1,9 +1,10 @@
 import "./globals.css";
+import { getSiteUrl } from "../lib/seo";
 
 export const metadata = {
-  title: "Birdiz | Donjons & Dragons Toolkit",
-  description:
-    "Modern medieval companion project for Donjons & Dragons players and Dungeon Masters.",
+  metadataBase: new URL(getSiteUrl()),
+  title: "DDBuilder",
+  description: "Practical D20 toolkit for players and Dungeon Masters.",
 };
 
 export default function RootLayout({ children }) {
