@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { createMasterScreenDamagesController } from "../src/controllers/masterScreenController";
+import { createMasterScreenDamagesController } from "../src/master-screen/controllers/masterScreenController";
 import {
   createMasterScreenDamageServiceMock,
   createMockResponse,

@@ -1,21 +1,24 @@
 import cors from "cors";
 import express, { type RequestHandler, type Express } from "express";
 import { createHealthRouter } from "./routes/healthRoutes";
-import { createSummaryRouter } from "./routes/summaryRoutes";
-import { createMasterScreenRouter } from "./routes/masterScreenRoutes";
+import { createMasterScreenRouter } from "./master-screen/routes/masterScreenRoutes";
 
 interface CreateAppOptions {
   corsOrigin: string;
   healthController: RequestHandler;
-  summaryController: RequestHandler;
   masterScreenDamagesController: RequestHandler;
+  masterScreenTransportController: RequestHandler;
+  masterScreenPropertiesController: RequestHandler;
+  masterScreenLifestyleController: RequestHandler;
 }
 
 export function createApp({
   corsOrigin,
   healthController,
-  summaryController,
   masterScreenDamagesController,
+  masterScreenTransportController,
+  masterScreenPropertiesController,
+  masterScreenLifestyleController,
 }: CreateAppOptions): Express {
   const app = express();
 
@@ -26,10 +29,14 @@ export function createApp({
   );
 
   app.use(createHealthRouter({ healthController }));
-  app.use("/api", createSummaryRouter({ summaryController }));
   app.use(
     "/api/master-screen",
-    createMasterScreenRouter({ masterScreenDamagesController }),
+    createMasterScreenRouter({
+      masterScreenDamagesController,
+      masterScreenTransportController,
+      masterScreenPropertiesController,
+      masterScreenLifestyleController,
+    }),
   );
 
   return app;
