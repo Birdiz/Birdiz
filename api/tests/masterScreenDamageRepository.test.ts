@@ -1,6 +1,6 @@
 import type { Collection, Db } from "mongodb";
 import { describe, expect, it, vi } from "vitest";
-import { MasterScreenDamageRepository } from "../src/repositories/masterScreenDamageRepository";
+import { MasterScreenDamageRepository } from "../src/master-screen/repositories/masterScreenDamageRepository";
 import { createDatabaseClientMock } from "./testHelpers";
 
 describe("MasterScreenDamageRepository", () => {

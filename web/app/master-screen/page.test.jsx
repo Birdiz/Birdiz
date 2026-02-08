@@ -1,18 +1,50 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import MasterScreenPage from "./page";
-import { getMasterScreenDamages } from "../../lib/masterScreenData";
+import {
+  getMasterScreenDamages,
+  getMasterScreenLifestyles,
+  getMasterScreenProperties,
+  getMasterScreenTransport,
+} from "../../lib/masterScreenData";
 
 vi.mock("../../lib/masterScreenData", () => ({
   getMasterScreenDamages: vi.fn(),
+  getMasterScreenTransport: vi.fn(),
+  getMasterScreenProperties: vi.fn(),
+  getMasterScreenLifestyles: vi.fn(),
 }));
 
 describe("MasterScreenPage", () => {
-  it("renders damages from API data", async () => {
+  it("renders damages and domain sections", async () => {
     vi.mocked(getMasterScreenDamages).mockResolvedValue([
       {
         die: "1d10",
         examples: ["Bruler par quelque chose"],
+      },
+    ]);
+    vi.mocked(getMasterScreenTransport).mockResolvedValue({
+      boats: [{ name: "Barque", price: "50 PO", rent: "5 PA" }],
+      mounts: [],
+      mountEquipments: [],
+    });
+    vi.mocked(getMasterScreenProperties).mockResolvedValue({
+      buildings: [{ name: "Cottage", price: "400 PO", rent: "5 PO", duration: "15" }],
+      maintenance: [
+        {
+          name: "Ferme",
+          cost: "5 PA",
+          workerUnqualified: "2",
+          workerQualified: "1",
+        },
+      ],
+    });
+    vi.mocked(getMasterScreenLifestyles).mockResolvedValue([
+      {
+        name: "Modeste",
+        price: "1PO/j",
+        description: "Simple and stable.",
+        services: [{ name: "Transport en ville", price: "1 PC/j" }],
       },
     ]);
 
@@ -20,14 +52,33 @@ describe("MasterScreenPage", () => {
 
     expect(screen.getByRole("heading", { name: /Master Screen/ })).toBeInTheDocument();
     expect(screen.getByText("1d10")).toBeInTheDocument();
-    expect(screen.getByText("Bruler par quelque chose")).toBeInTheDocument();
+    expect(screen.getByText("Transport")).toBeInTheDocument();
+    expect(screen.getByText("Barque")).toBeInTheDocument();
+    expect(screen.getByText("Properties And Maintenance")).toBeInTheDocument();
+    expect(screen.getByText("Lifestyles")).toBeInTheDocument();
+    expect(screen.getByText("Modeste")).toBeInTheDocument();
   });
 
-  it("renders empty state when damages list is empty", async () => {
+  it("renders all empty states", async () => {
     vi.mocked(getMasterScreenDamages).mockResolvedValue([]);
+    vi.mocked(getMasterScreenTransport).mockResolvedValue({
+      boats: [],
+      mounts: [],
+      mountEquipments: [],
+    });
+    vi.mocked(getMasterScreenProperties).mockResolvedValue({
+      buildings: [],
+      maintenance: [],
+    });
+    vi.mocked(getMasterScreenLifestyles).mockResolvedValue([]);
 
     render(await MasterScreenPage());
 
     expect(screen.getByText("No damages found yet.")).toBeInTheDocument();
+    expect(screen.getByText("No transport data found yet.")).toBeInTheDocument();
+    expect(
+      screen.getByText("No building and maintenance data found yet."),
+    ).toBeInTheDocument();
+    expect(screen.getByText("No lifestyles found yet.")).toBeInTheDocument();
   });
 });

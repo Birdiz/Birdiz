@@ -1,5 +1,5 @@
 import type { Collection } from "mongodb";
-import type { DatabaseClient } from "../db/mongoClient";
+import type { DatabaseClient } from "../../db/mongoClient";
 import type { MasterScreenDamage } from "../data/masterScreenDamages";
 
 export interface MasterScreenDamageDocument extends MasterScreenDamage {

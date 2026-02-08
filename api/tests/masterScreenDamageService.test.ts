@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { MasterScreenDamageService } from "../src/services/masterScreenDamageService";
-import type { MasterScreenDamageRepository } from "../src/repositories/masterScreenDamageRepository";
+import { MasterScreenDamageService } from "../src/master-screen/services/masterScreenDamageService";
+import type { MasterScreenDamageRepository } from "../src/master-screen/repositories/masterScreenDamageRepository";
 
 describe("MasterScreenDamageService", () => {
   it("ensures seed data before returning all damages", async () => {

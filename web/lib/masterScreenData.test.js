@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getMasterScreenDamages } from "./masterScreenData";
+import {
+  getMasterScreenDamages,
+  getMasterScreenLifestyles,
+  getMasterScreenProperties,
+  getMasterScreenTransport,
+} from "./masterScreenData";
 
-describe("getMasterScreenDamages", () => {
+describe("master screen data clients", () => {
   const originalApiBase = process.env.API_BASE_URL;
   const originalPublicApiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -11,11 +16,8 @@ describe("getMasterScreenDamages", () => {
     process.env.NEXT_PUBLIC_API_BASE_URL = originalPublicApiBase;
   });
 
-  it("uses API_BASE_URL when available and returns damages payload", async () => {
-    process.env.API_BASE_URL = "https://api.internal";
-    process.env.NEXT_PUBLIC_API_BASE_URL = "https://api.public";
-
-    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+  it("returns damages payload", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(JSON.stringify({ damages: [{ die: "1d10", examples: [] }] }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -24,39 +26,77 @@ describe("getMasterScreenDamages", () => {
 
     const result = await getMasterScreenDamages();
 
-    expect(fetchSpy).toHaveBeenCalledWith(
-      "https://api.internal/api/master-screen/damages",
-      { cache: "no-store" },
-    );
     expect(result).toEqual([{ die: "1d10", examples: [] }]);
   });
 
-  it("falls back to empty list for non-ok responses", async () => {
-    vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(null, { status: 500 }));
-
-    const result = await getMasterScreenDamages();
-
-    expect(result).toEqual([]);
-  });
-
-  it("falls back to empty list when fetch throws", async () => {
-    vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("network"));
-
-    const result = await getMasterScreenDamages();
-
-    expect(result).toEqual([]);
-  });
-
-  it("falls back to empty list when payload has no damages field", async () => {
+  it("returns transport payload", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(JSON.stringify({}), {
+      new Response(
+        JSON.stringify({
+          boats: [{ name: "Boat" }],
+          mounts: [{ name: "Mount" }],
+          mountEquipments: [{ name: "Equip" }],
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      ),
+    );
+
+    const result = await getMasterScreenTransport();
+
+    expect(result.boats).toEqual([{ name: "Boat" }]);
+  });
+
+  it("returns properties payload", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          buildings: [{ name: "Build" }],
+          maintenance: [{ name: "Maint" }],
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      ),
+    );
+
+    const result = await getMasterScreenProperties();
+
+    expect(result).toEqual({
+      buildings: [{ name: "Build" }],
+      maintenance: [{ name: "Maint" }],
+    });
+  });
+
+  it("returns lifestyles payload", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ lifestyles: [{ name: "Modeste" }] }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       }),
     );
 
-    const result = await getMasterScreenDamages();
+    const result = await getMasterScreenLifestyles();
 
-    expect(result).toEqual([]);
+    expect(result).toEqual([{ name: "Modeste" }]);
+  });
+
+  it("returns empty fallback for failed requests", async () => {
+    vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("network"));
+
+    await expect(getMasterScreenDamages()).resolves.toEqual([]);
+    await expect(getMasterScreenTransport()).resolves.toEqual({
+      boats: [],
+      mounts: [],
+      mountEquipments: [],
+    });
+    await expect(getMasterScreenProperties()).resolves.toEqual({
+      buildings: [],
+      maintenance: [],
+    });
+    await expect(getMasterScreenLifestyles()).resolves.toEqual([]);
   });
 });

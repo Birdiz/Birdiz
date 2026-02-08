@@ -1,21 +1,24 @@
+import { fetchApiJson } from "./apiClient";
+
+const EMPTY_TRANSPORT = { boats: [], mounts: [], mountEquipments: [] };
+const EMPTY_PROPERTIES = { buildings: [], maintenance: [] };
+
 export async function getMasterScreenDamages() {
-  const apiBaseUrl =
-    process.env.API_BASE_URL ||
-    process.env.NEXT_PUBLIC_API_BASE_URL ||
-    "http://localhost:4000";
+  const payload = await fetchApiJson("/api/master-screen/damages", { damages: [] });
 
-  try {
-    const response = await fetch(`${apiBaseUrl}/api/master-screen/damages`, {
-      cache: "no-store",
-    });
+  return payload.damages || [];
+}
 
-    if (!response.ok) {
-      return [];
-    }
+export async function getMasterScreenTransport() {
+  return fetchApiJson("/api/master-screen/transport", EMPTY_TRANSPORT);
+}
 
-    const payload = await response.json();
-    return payload.damages || [];
-  } catch {
-    return [];
-  }
+export async function getMasterScreenProperties() {
+  return fetchApiJson("/api/master-screen/properties", EMPTY_PROPERTIES);
+}
+
+export async function getMasterScreenLifestyles() {
+  const payload = await fetchApiJson("/api/master-screen/lifestyles", { lifestyles: [] });
+
+  return payload.lifestyles || [];
 }
