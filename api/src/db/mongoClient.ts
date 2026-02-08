@@ -16,7 +16,18 @@ export class DatabaseClient {
       this.client = new MongoClient(this.connectionString);
       this.databasePromise = this.client
         .connect()
-        .then((connectedClient) => connectedClient.db());
+        .then((connectedClient) => connectedClient.db())
+        .catch(async (error: unknown) => {
+          // Allow future calls to retry when an initial connection attempt fails.
+          this.databasePromise = null;
+
+          if (this.client) {
+            await this.client.close().catch(() => undefined);
+            this.client = null;
+          }
+
+          throw error;
+        });
     }
 
     return this.databasePromise;
