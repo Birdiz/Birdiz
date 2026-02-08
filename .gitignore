@@ -5,3 +5,5 @@
 /web/tsconfig.tsbuildinfo
 # API
 /api/node_modules/
+/api/dist/
+/api/tsconfig.tsbuildinfo

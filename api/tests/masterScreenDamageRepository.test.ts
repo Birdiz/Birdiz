@@ -1,0 +1,110 @@
+import type { Collection, Db } from "mongodb";
+import { describe, expect, it, vi } from "vitest";
+import { MasterScreenDamageRepository } from "../src/repositories/masterScreenDamageRepository";
+import { createDatabaseClientMock } from "./testHelpers";
+
+describe("MasterScreenDamageRepository", () => {
+  it("seeds collection with sortOrder when empty", async () => {
+    const estimatedDocumentCount = vi.fn().mockResolvedValue(0);
+    const insertMany = vi.fn().mockResolvedValue(undefined);
+    const find = vi.fn();
+
+    const collection = {
+      estimatedDocumentCount,
+      insertMany,
+      find,
+    } as unknown as Collection;
+
+    const collectionFactory = vi.fn().mockReturnValue(collection);
+    const database = { collection: collectionFactory } as unknown as Db;
+
+    const databaseClient = createDatabaseClientMock(
+      vi.fn().mockResolvedValue(database),
+    );
+
+    const seedData = [
+      { die: "1d10", examples: ["A"] },
+      { die: "2d10", examples: ["B"] },
+    ];
+
+    const repository = new MasterScreenDamageRepository({
+      databaseClient,
+      seedData,
+    });
+
+    await repository.ensureSeedData();
+
+    expect(collectionFactory).toHaveBeenCalledWith("master_screen_damages");
+    expect(estimatedDocumentCount).toHaveBeenCalledOnce();
+    expect(insertMany).toHaveBeenCalledWith([
+      { die: "1d10", examples: ["A"], sortOrder: 1 },
+      { die: "2d10", examples: ["B"], sortOrder: 2 },
+    ]);
+  });
+
+  it("does not insert when collection already has documents", async () => {
+    const estimatedDocumentCount = vi.fn().mockResolvedValue(4);
+    const insertMany = vi.fn();
+    const find = vi.fn();
+
+    const collection = {
+      estimatedDocumentCount,
+      insertMany,
+      find,
+    } as unknown as Collection;
+
+    const database = {
+      collection: vi.fn().mockReturnValue(collection),
+    } as unknown as Db;
+
+    const databaseClient = createDatabaseClientMock(
+      vi.fn().mockResolvedValue(database),
+    );
+
+    const repository = new MasterScreenDamageRepository({
+      databaseClient,
+      seedData: [{ die: "1d10", examples: ["A"] }],
+    });
+
+    await repository.ensureSeedData();
+
+    expect(insertMany).not.toHaveBeenCalled();
+  });
+
+  it("returns sorted damages without _id", async () => {
+    const damages = [{ die: "1d10", examples: ["A"], sortOrder: 1 }];
+    const toArray = vi.fn().mockResolvedValue(damages);
+    const sort = vi.fn().mockReturnValue({ toArray });
+    const find = vi.fn().mockReturnValue({ sort });
+
+    const collection = {
+      find,
+      estimatedDocumentCount: vi.fn(),
+      insertMany: vi.fn(),
+    } as unknown as Collection;
+
+    const database = {
+      collection: vi.fn().mockReturnValue(collection),
+    } as unknown as Db;
+
+    const databaseClient = createDatabaseClientMock(
+      vi.fn().mockResolvedValue(database),
+    );
+
+    const repository = new MasterScreenDamageRepository({
+      databaseClient,
+      seedData: [],
+    });
+
+    const result = await repository.findAll();
+
+    expect(find).toHaveBeenCalledWith(
+      {},
+      {
+        projection: { _id: 0, die: 1, examples: 1, sortOrder: 1 },
+      },
+    );
+    expect(sort).toHaveBeenCalledWith({ sortOrder: 1 });
+    expect(result).toEqual(damages);
+  });
+});
