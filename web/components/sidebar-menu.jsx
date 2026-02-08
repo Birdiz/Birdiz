@@ -4,18 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useIntl } from "react-intl";
 import { SUPPORTED_LOCALES } from "../lib/i18n/locales";
+import { getLocalePath } from "../lib/i18n/routing";
 import MedievalCrest from "./medieval-crest";
-
-function getLocalePath(pathname, targetLocale) {
-  const segments = pathname.split("/").filter(Boolean);
-
-  if (segments.length > 0 && SUPPORTED_LOCALES.includes(segments[0])) {
-    segments[0] = targetLocale;
-    return `/${segments.join("/")}`;
-  }
-
-  return `/${targetLocale}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
-}
 
 export default function SidebarMenu({
   locale,
