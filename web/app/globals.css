@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   --bg-ink: #12100d;
   --bg-panel: #1b1712;
@@ -11,30 +13,32 @@
   --font-body: Cambria, "Hoefler Text", "Liberation Serif", serif;
 }
 
-* {
-  box-sizing: border-box;
-}
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
 
-html,
-body {
-  font-family: var(--font-body);
-  margin: 0;
-  min-height: 100%;
-  color: var(--text-main);
-  background:
-    radial-gradient(
-      circle at 12% 18%,
-      rgba(199, 154, 74, 0.18),
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 92% 12%,
-      rgba(138, 107, 57, 0.22),
-      transparent 36%
-    ),
-    linear-gradient(140deg, #120f0c 0%, #17120d 55%, #0f0c0a 100%);
-}
+  html,
+  body {
+    min-height: 100%;
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--text-main);
+    background:
+      radial-gradient(
+        circle at 12% 18%,
+        rgba(199, 154, 74, 0.18),
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 92% 12%,
+        rgba(138, 107, 57, 0.22),
+        transparent 36%
+      ),
+      linear-gradient(140deg, #120f0c 0%, #17120d 55%, #0f0c0a 100%);
+  }
 
-a {
-  color: inherit;
+  a {
+    color: inherit;
+  }
 }

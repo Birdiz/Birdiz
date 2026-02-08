@@ -4,7 +4,7 @@ WEB_DIR := web
 API_DIR := api
 NPM := npm
 
-.PHONY: help install install-web install-api dev dev-web dev-api start-web start-api build-web build-api build lint lint-web lint-api prettier prettier-web prettier-api typecheck typecheck-web typecheck-api check clean
+.PHONY: help install install-web install-api dev dev-web dev-api start-web start-api build-web build-api build lint lint-web lint-api prettier prettier-web prettier-api typecheck typecheck-web typecheck-api docker-build-api docker-up-api docker-up check clean
 
 help:
 	@echo "Available targets:"
@@ -15,9 +15,12 @@ help:
 	@echo "  make dev-web      - Run Next.js dev server"
 	@echo "  make dev-api      - Run API server in dev mode"
 	@echo "  make start-web    - Run Next.js production server"
-	@echo "  make start-api    - Run API server"
+	@echo "  make start-api    - Run API server from dist"
 	@echo "  make build-web    - Build Next.js app"
-	@echo "  make build-api    - Placeholder (no API build script yet)"
+	@echo "  make build-api    - Build API TypeScript output"
+	@echo "  make docker-build-api - Build API Docker image (production runtime)"
+	@echo "  make docker-up-api    - Build and start API container"
+	@echo "  make docker-up        - Build and start full Docker stack"
 	@echo "  make build        - Build web app"
 	@echo "  make lint         - Run lint in web and api"
 	@echo "  make prettier     - Run Prettier in web and api"
@@ -56,9 +59,18 @@ build-web:
 	$(NPM) --prefix $(WEB_DIR) run build
 
 build-api:
-	@echo "No build step for api yet."
+	$(NPM) --prefix $(API_DIR) run build
 
 build: build-web
+
+docker-build-api:
+	docker compose build api
+
+docker-up-api:
+	docker compose up --build api
+
+docker-up:
+	docker compose up --build
 
 lint-web:
 	$(NPM) --prefix $(WEB_DIR) run lint
