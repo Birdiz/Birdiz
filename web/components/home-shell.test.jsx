@@ -1,13 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import LocaleIntlProvider from "./i18n/intl-provider";
 import HomeShell from "./home-shell";
+import { getMessages } from "../lib/i18n/messages";
 
 const content = {
   projectName: "DDBuilder",
-  subtitle: "Toolkit for Dungeon Masters",
+  subtitle: "Player and DM toolkit",
   menuItems: [
-    { label: "Home", href: "/" },
-    { label: "Next Steps", href: "/next-steps" },
+    { label: "Home", href: "/en" },
+    { label: "Roadmap", href: "/en/next-steps" },
   ],
   githubUrl: "https://github.com/Birdiz/Birdiz",
 };
@@ -15,9 +17,11 @@ const content = {
 describe("HomeShell", () => {
   it("renders navigation and children content", () => {
     render(
-      <HomeShell content={content}>
-        <p>Child content</p>
-      </HomeShell>,
+      <LocaleIntlProvider locale="en" messages={getMessages("en")}>
+        <HomeShell content={content} locale="en">
+          <p>Child content</p>
+        </HomeShell>
+      </LocaleIntlProvider>,
     );
 
     expect(screen.getByRole("heading", { name: /DDBuilder/ })).toBeInTheDocument();
@@ -30,9 +34,11 @@ describe("HomeShell", () => {
 
   it("toggles mobile menu open and closed", () => {
     const { container, getByRole } = render(
-      <HomeShell content={content}>
-        <p>Child content</p>
-      </HomeShell>,
+      <LocaleIntlProvider locale="en" messages={getMessages("en")}>
+        <HomeShell content={content} locale="en">
+          <p>Child content</p>
+        </HomeShell>
+      </LocaleIntlProvider>,
     );
 
     const menuButton = getByRole("button", { name: "Open menu" });

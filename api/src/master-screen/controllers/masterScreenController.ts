@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 import type { MasterScreenDamageService } from "../services/masterScreenDamageService";
+import { resolveLocale } from "../utils/locale";
 
 interface MasterScreenDamagesControllerOptions {
   masterScreenDamageService: MasterScreenDamageService;
@@ -12,9 +13,10 @@ function getErrorMessage(error: unknown): string {
 export function createMasterScreenDamagesController({
   masterScreenDamageService,
 }: MasterScreenDamagesControllerOptions): RequestHandler {
-  return async function masterScreenDamagesController(_req, res): Promise<void> {
+  return async function masterScreenDamagesController(req, res): Promise<void> {
     try {
-      const damages = await masterScreenDamageService.getDamages();
+      const locale = resolveLocale(req.query.locale);
+      const damages = await masterScreenDamageService.getDamages(locale);
 
       res.json({ damages });
     } catch (error: unknown) {

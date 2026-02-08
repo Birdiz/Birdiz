@@ -1,68 +1,109 @@
-export const homeContent = {
-  projectName: "DDBuilder",
-  subtitle: "Player and DM toolkit",
-  hero: {
-    eyebrow: "Session Utility Suite",
-    title: "Tools first. Lore second. Faster play for everyone.",
-    description:
-      "DDBuilder helps players and Dungeon Masters run smoother sessions with practical references, quick lookups, and repeatable preparation workflows.",
-    badges: ["D20 focused", "Table-ready", "Built for fast decisions"],
-    art: "Every module is designed as a lightweight in-session utility: glance, decide, continue the story.",
-  },
-  intentions: [
-    "Reduce rule lookup time during play.",
-    "Keep shared references visible for the whole table.",
-    "Support player agency with practical, readable tools.",
-  ],
-  toolGroups: [
-    {
-      title: "Master Screen",
-      description: "Reference dashboards for damages, transport, properties, and lifestyles.",
-      href: "/master-screen",
-      status: "Live",
-      meta: ["DM", "Economic tables", "Session prep"],
+import { getIntl } from "./i18n/intl";
+
+export function getHomeContent(locale) {
+  const intl = getIntl(locale);
+
+  return {
+    locale,
+    projectName: intl.formatMessage({ id: "app.projectName" }),
+    subtitle: intl.formatMessage({ id: "app.subtitle" }),
+    hero: {
+      eyebrow: intl.formatMessage({ id: "home.hero.eyebrow" }),
+      title: intl.formatMessage({ id: "home.hero.title" }),
+      description: intl.formatMessage({ id: "home.hero.description" }),
+      badges: [
+        intl.formatMessage({ id: "home.hero.badge1" }),
+        intl.formatMessage({ id: "home.hero.badge2" }),
+        intl.formatMessage({ id: "home.hero.badge3" }),
+      ],
+      art: intl.formatMessage({ id: "home.hero.art" }),
     },
-    {
-      title: "Encounter Utilities",
-      description: "Initiative, pacing, and combat support modules for active scenes.",
-      href: "/next-steps",
-      status: "Planned",
-      meta: ["DM", "Combat flow", "Roadmap"],
-    },
-    {
-      title: "Character Aids",
-      description: "Quick references for players: travel, costs, and play loop reminders.",
-      href: "/next-steps",
-      status: "Planned",
-      meta: ["Players", "In-session", "Roadmap"],
-    },
-  ],
-  nextSteps: {
-    title: "Delivery roadmap",
-    description:
-      "The next iterations focus on playable utilities that improve table speed and decision clarity, starting with Master Screen extensions.",
-    milestones: [
+    intentionsTitle: intl.formatMessage({ id: "home.intentions.title" }),
+    intentionsSubtitle: intl.formatMessage({ id: "home.intentions.subtitle" }),
+    intentions: [
+      intl.formatMessage({ id: "home.intentions.1" }),
+      intl.formatMessage({ id: "home.intentions.2" }),
+      intl.formatMessage({ id: "home.intentions.3" }),
+    ],
+    toolsTitle: intl.formatMessage({ id: "home.tools.title" }),
+    toolsSubtitle: intl.formatMessage({ id: "home.tools.subtitle" }),
+    openToolLabel: intl.formatMessage({ id: "home.tools.open" }),
+    toolGroups: [
       {
-        name: "Master Screen expansion",
-        status: "In progress",
-        detail: "Extend references with equipment, weather, and movement quick tables.",
+        title: intl.formatMessage({ id: "home.tool.master.title" }),
+        description: intl.formatMessage({ id: "home.tool.master.description" }),
+        href: `/${locale}/master-screen`,
+        status: intl.formatMessage({ id: "home.tool.master.status" }),
+        meta: [
+          intl.formatMessage({ id: "home.tool.master.meta1" }),
+          intl.formatMessage({ id: "home.tool.master.meta2" }),
+          intl.formatMessage({ id: "home.tool.master.meta3" }),
+        ],
       },
       {
-        name: "Encounter helpers",
-        status: "Planned",
-        detail: "Add turn and pacing helpers for combat and exploration scenes.",
+        title: intl.formatMessage({ id: "home.tool.encounter.title" }),
+        description: intl.formatMessage({ id: "home.tool.encounter.description" }),
+        href: `/${locale}/next-steps`,
+        status: intl.formatMessage({ id: "home.tool.encounter.status" }),
+        meta: [
+          intl.formatMessage({ id: "home.tool.encounter.meta1" }),
+          intl.formatMessage({ id: "home.tool.encounter.meta2" }),
+          intl.formatMessage({ id: "home.tool.encounter.meta3" }),
+        ],
       },
       {
-        name: "Player utility pack",
-        status: "Planned",
-        detail: "Provide streamlined player-facing references with printable views.",
+        title: intl.formatMessage({ id: "home.tool.player.title" }),
+        description: intl.formatMessage({ id: "home.tool.player.description" }),
+        href: `/${locale}/next-steps`,
+        status: intl.formatMessage({ id: "home.tool.player.status" }),
+        meta: [
+          intl.formatMessage({ id: "home.tool.player.meta1" }),
+          intl.formatMessage({ id: "home.tool.player.meta2" }),
+          intl.formatMessage({ id: "home.tool.player.meta3" }),
+        ],
       },
     ],
-  },
-  menuItems: [
-    { label: "Home", href: "/" },
-    { label: "Master Screen", href: "/master-screen" },
-    { label: "Roadmap", href: "/next-steps" },
-  ],
-  githubUrl: "https://github.com/Birdiz/Birdiz",
-};
+    nextSteps: {
+      eyebrow: intl.formatMessage({ id: "roadmap.eyebrow" }),
+      title: intl.formatMessage({ id: "roadmap.title" }),
+      description: intl.formatMessage({ id: "roadmap.description" }),
+      badges: [
+        intl.formatMessage({ id: "roadmap.badge1" }),
+        intl.formatMessage({ id: "roadmap.badge2" }),
+        intl.formatMessage({ id: "roadmap.badge3" }),
+      ],
+      art: intl.formatMessage({ id: "roadmap.art" }),
+      milestonesTitle: intl.formatMessage({ id: "roadmap.milestones.title" }),
+      milestonesSubtitle: intl.formatMessage({ id: "roadmap.milestones.subtitle" }),
+      milestones: [
+        {
+          name: intl.formatMessage({ id: "roadmap.m1.name" }),
+          status: intl.formatMessage({ id: "roadmap.m1.status" }),
+          detail: intl.formatMessage({ id: "roadmap.m1.detail" }),
+        },
+        {
+          name: intl.formatMessage({ id: "roadmap.m2.name" }),
+          status: intl.formatMessage({ id: "roadmap.m2.status" }),
+          detail: intl.formatMessage({ id: "roadmap.m2.detail" }),
+        },
+        {
+          name: intl.formatMessage({ id: "roadmap.m3.name" }),
+          status: intl.formatMessage({ id: "roadmap.m3.status" }),
+          detail: intl.formatMessage({ id: "roadmap.m3.detail" }),
+        },
+      ],
+    },
+    menuItems: [
+      { label: intl.formatMessage({ id: "nav.home" }), href: `/${locale}` },
+      {
+        label: intl.formatMessage({ id: "nav.masterScreen" }),
+        href: `/${locale}/master-screen`,
+      },
+      {
+        label: intl.formatMessage({ id: "nav.roadmap" }),
+        href: `/${locale}/next-steps`,
+      },
+    ],
+    githubUrl: "https://github.com/Birdiz/Birdiz",
+  };
+}

@@ -1,17 +1,40 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import HomePage from "./page";
-import { homeContent } from "../lib/homeContent";
+import LocaleIntlProvider from "../components/i18n/intl-provider";
+import HomePage from "./[locale]/page";
+import { getMessages } from "../lib/i18n/messages";
 
-describe("HomePage", () => {
-  it("renders hero and tool modules", () => {
-    render(<HomePage />);
+describe("LocalizedHomePage", () => {
+  it("renders english hero and tool modules", async () => {
+    render(
+      <LocaleIntlProvider locale="en" messages={getMessages("en")}>
+        {await HomePage({ params: { locale: "en" } })}
+      </LocaleIntlProvider>,
+    );
 
     expect(
-      screen.getByRole("heading", { name: homeContent.hero.title }),
+      screen.getByRole("heading", {
+        name: "Tools first. Lore second. Faster play for everyone.",
+      }),
     ).toBeInTheDocument();
     expect(screen.getByText("Intentions")).toBeInTheDocument();
     expect(screen.getByText("Tool Modules")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Master Screen" })).toBeInTheDocument();
+  });
+
+  it("renders french locale content", async () => {
+    render(
+      <LocaleIntlProvider locale="fr" messages={getMessages("fr")}>
+        {await HomePage({ params: { locale: "fr" } })}
+      </LocaleIntlProvider>,
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Les outils d'abord. Le lore ensuite. Plus fluide pour tous.",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Intentions")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Écran MJ" })).toBeInTheDocument();
   });
 });

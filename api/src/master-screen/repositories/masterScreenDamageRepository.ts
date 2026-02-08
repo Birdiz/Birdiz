@@ -2,7 +2,11 @@ import type { Collection } from "mongodb";
 import type { DatabaseClient } from "../../db/mongoClient";
 import type { MasterScreenDamage } from "../data/masterScreenDamages";
 
-export interface MasterScreenDamageDocument extends MasterScreenDamage {
+export interface MasterScreenDamageDocument {
+  die: string;
+  examples?: string[];
+  examplesFr?: string[];
+  examplesEn?: string[];
   sortOrder: number;
 }
 
@@ -29,15 +33,29 @@ export class MasterScreenDamageRepository {
     const collection = await this.getCollection();
     const totalDocuments = await collection.estimatedDocumentCount();
 
-    if (totalDocuments > 0) {
+    if (totalDocuments === 0) {
+      await collection.insertMany(
+        this.seedData.map((damage, index) => ({
+          ...damage,
+          sortOrder: index + 1,
+        })),
+      );
+
       return;
     }
 
-    await collection.insertMany(
-      this.seedData.map((damage, index) => ({
-        ...damage,
-        sortOrder: index + 1,
-      })),
+    await Promise.all(
+      this.seedData.map((damage) =>
+        collection.updateOne(
+          { die: damage.die },
+          {
+            $set: {
+              examplesFr: damage.examplesFr,
+              examplesEn: damage.examplesEn,
+            },
+          },
+        ),
+      ),
     );
   }
 
@@ -45,7 +63,19 @@ export class MasterScreenDamageRepository {
     const collection = await this.getCollection();
 
     return collection
-      .find({}, { projection: { _id: 0, die: 1, examples: 1, sortOrder: 1 } })
+      .find(
+        {},
+        {
+          projection: {
+            _id: 0,
+            die: 1,
+            examples: 1,
+            examplesFr: 1,
+            examplesEn: 1,
+            sortOrder: 1,
+          },
+        },
+      )
       .sort({ sortOrder: 1 })
       .toArray();
   }

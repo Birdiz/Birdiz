@@ -6,7 +6,7 @@ import {
 } from "./testHelpers";
 
 describe("createMasterScreenDamagesController", () => {
-  it("returns damages from the service", async () => {
+  it("returns damages from the service with default locale", async () => {
     const damages = [{ die: "1d10", examples: ["Example"], sortOrder: 1 }];
     const masterScreenDamageService = createMasterScreenDamageServiceMock(
       vi.fn().mockResolvedValue(damages),
@@ -17,9 +17,26 @@ describe("createMasterScreenDamagesController", () => {
       masterScreenDamageService,
     });
 
-    await controller({} as never, res, vi.fn());
+    await controller({ query: {} } as never, res, vi.fn());
 
-    expect(masterScreenDamageService.getDamages).toHaveBeenCalledOnce();
+    expect(masterScreenDamageService.getDamages).toHaveBeenCalledWith("fr");
+    expect(json).toHaveBeenCalledWith({ damages });
+  });
+
+  it("returns damages from the service with english locale", async () => {
+    const damages = [{ die: "1d10", examples: ["Burned by something"], sortOrder: 1 }];
+    const masterScreenDamageService = createMasterScreenDamageServiceMock(
+      vi.fn().mockResolvedValue(damages),
+    );
+    const { json, res } = createMockResponse();
+
+    const controller = createMasterScreenDamagesController({
+      masterScreenDamageService,
+    });
+
+    await controller({ query: { locale: "en" } } as never, res, vi.fn());
+
+    expect(masterScreenDamageService.getDamages).toHaveBeenCalledWith("en");
     expect(json).toHaveBeenCalledWith({ damages });
   });
 
@@ -33,7 +50,7 @@ describe("createMasterScreenDamagesController", () => {
       masterScreenDamageService,
     });
 
-    await controller({} as never, res, vi.fn());
+    await controller({ query: {} } as never, res, vi.fn());
 
     expect(status).toHaveBeenCalledWith(500);
     expect(json).toHaveBeenCalledWith({

@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import MasterScreenPage from "./page";
+import LocaleIntlProvider from "../../components/i18n/intl-provider";
+import MasterScreenPage from "../[locale]/master-screen/page";
+import { getMessages } from "../../lib/i18n/messages";
 import {
   getMasterScreenDamages,
   getMasterScreenLifestyles,
@@ -15,12 +17,12 @@ vi.mock("../../lib/masterScreenData", () => ({
   getMasterScreenLifestyles: vi.fn(),
 }));
 
-describe("MasterScreenPage", () => {
-  it("renders card navigation and swaps active section content", async () => {
+describe("LocalizedMasterScreenPage", () => {
+  it("renders card navigation, locale-aware damages payload, and swaps active section content", async () => {
     vi.mocked(getMasterScreenDamages).mockResolvedValue([
       {
         die: "1d10",
-        examples: ["Bruler par quelque chose"],
+        examples: ["Burned by something"],
       },
     ]);
     vi.mocked(getMasterScreenTransport).mockResolvedValue({
@@ -48,7 +50,11 @@ describe("MasterScreenPage", () => {
       },
     ]);
 
-    render(await MasterScreenPage());
+    render(
+      <LocaleIntlProvider locale="en" messages={getMessages("en")}>
+        {await MasterScreenPage({ params: { locale: "en" } })}
+      </LocaleIntlProvider>,
+    );
 
     expect(
       screen.getByRole("heading", {
@@ -60,6 +66,7 @@ describe("MasterScreenPage", () => {
       "true",
     );
     expect(screen.getByText("1d10")).toBeInTheDocument();
+    expect(screen.getByText("Burned by something")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Show Transport" }));
 
@@ -69,6 +76,35 @@ describe("MasterScreenPage", () => {
     );
     expect(screen.getByText("Barque")).toBeInTheDocument();
     expect(screen.queryByText("1d10")).not.toBeInTheDocument();
+    expect(getMasterScreenDamages).toHaveBeenCalledWith("en");
+  });
+
+  it("requests french locale damages payload for fr route", async () => {
+    vi.mocked(getMasterScreenDamages).mockResolvedValue([
+      {
+        die: "1d10",
+        examples: ["Brûler par quelque chose"],
+      },
+    ]);
+    vi.mocked(getMasterScreenTransport).mockResolvedValue({
+      boats: [],
+      mounts: [],
+      mountEquipments: [],
+    });
+    vi.mocked(getMasterScreenProperties).mockResolvedValue({
+      buildings: [],
+      maintenance: [],
+    });
+    vi.mocked(getMasterScreenLifestyles).mockResolvedValue([]);
+
+    render(
+      <LocaleIntlProvider locale="fr" messages={getMessages("fr")}>
+        {await MasterScreenPage({ params: { locale: "fr" } })}
+      </LocaleIntlProvider>,
+    );
+
+    expect(screen.getByText("Brûler par quelque chose")).toBeInTheDocument();
+    expect(getMasterScreenDamages).toHaveBeenCalledWith("fr");
   });
 
   it("renders empty state when selected section has no data", async () => {
@@ -84,7 +120,11 @@ describe("MasterScreenPage", () => {
     });
     vi.mocked(getMasterScreenLifestyles).mockResolvedValue([]);
 
-    render(await MasterScreenPage());
+    render(
+      <LocaleIntlProvider locale="en" messages={getMessages("en")}>
+        {await MasterScreenPage({ params: { locale: "en" } })}
+      </LocaleIntlProvider>,
+    );
 
     expect(screen.getByText("No damages found yet.")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Show Transport" }));
