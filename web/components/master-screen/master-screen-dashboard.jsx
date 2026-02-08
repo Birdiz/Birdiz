@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import SectionPanel from "../ui/section-panel";
 
@@ -64,16 +64,16 @@ function TavernIcon() {
   );
 }
 
-function DataTable({ title, headers, rows, getKey }) {
+function DataTable({ title, columns, rows, getKey }) {
   return (
     <div className="table-surface">
       <h4 className="mb-2 text-[var(--accent)]">{title}</h4>
       <table className="w-full border-collapse text-left text-[0.95rem] text-[var(--text-main)]">
         <thead>
           <tr className="border-b border-[var(--line)] text-[var(--accent-strong)]">
-            {headers.map((header) => (
-              <th key={header} className="py-1 pr-2">
-                {header}
+            {columns.map((column) => (
+              <th key={column.key} className="py-1 pr-2">
+                {column.label}
               </th>
             ))}
           </tr>
@@ -81,9 +81,9 @@ function DataTable({ title, headers, rows, getKey }) {
         <tbody>
           {rows.map((row) => (
             <tr key={getKey(row)} className="border-b border-[rgba(221,190,129,0.08)]">
-              {Object.values(row).map((value, index) => (
-                <td key={`${getKey(row)}-${index}`} className="py-1 pr-2">
-                  {value}
+              {columns.map((column) => (
+                <td key={`${getKey(row)}-${column.key}`} className="py-1 pr-2">
+                  {row[column.key]}
                 </td>
               ))}
             </tr>
@@ -101,60 +101,126 @@ function getInitialSection(sections) {
 
 export default function MasterScreenDashboard({ damages, transport, properties, lifestyles }) {
   const intl = useIntl();
+  const t = useCallback((id, values) => intl.formatMessage({ id }, values), [intl]);
+
+  const labels = useMemo(
+    () => ({
+      section: {
+        damages: {
+          title: t("master.section.damages.title"),
+          subtitle: t("master.section.damages.subtitle"),
+          empty: t("master.empty.damages"),
+          stats: t("master.section.damages.stats", { count: damages.length }),
+        },
+        transport: {
+          title: t("master.section.transport.title"),
+          subtitle: t("master.section.transport.subtitle"),
+          empty: t("master.empty.transport"),
+          statsBoats: t("master.section.transport.stats.boats", {
+            count: transport.boats.length,
+          }),
+          statsMounts: t("master.section.transport.stats.mounts", {
+            count: transport.mounts.length,
+          }),
+          statsEquipment: t("master.section.transport.stats.equipment", {
+            count: transport.mountEquipments.length,
+          }),
+        },
+        properties: {
+          title: t("master.section.properties.title"),
+          subtitle: t("master.section.properties.subtitle"),
+          empty: t("master.empty.properties"),
+          statsBuildings: t("master.section.properties.stats.buildings", {
+            count: properties.buildings.length,
+          }),
+          statsMaintenance: t("master.section.properties.stats.maintenance", {
+            count: properties.maintenance.length,
+          }),
+        },
+        lifestyles: {
+          title: t("master.section.lifestyles.title"),
+          subtitle: t("master.section.lifestyles.subtitle"),
+          empty: t("master.empty.lifestyles"),
+          stats: t("master.section.lifestyles.stats", { count: lifestyles.length }),
+        },
+      },
+      state: {
+        ready: t("master.state.ready"),
+        empty: t("master.state.empty"),
+        show: (title) => t("master.card.show", { title }),
+      },
+      table: {
+        boats: t("master.table.boats"),
+        mounts: t("master.table.mounts"),
+        mountEquipment: t("master.table.mountEquipment"),
+        buildings: t("master.table.buildings"),
+        maintenance: t("master.table.maintenance"),
+        columns: {
+          name: t("table.name"),
+          price: t("table.price"),
+          rent: t("table.rent"),
+          charge: t("table.charge"),
+          durationDays: t("table.durationDays"),
+          dailyCost: t("table.dailyCost"),
+          workerUnqualified: t("table.workerUnqualified"),
+          workerQualified: t("table.workerQualified"),
+        },
+      },
+    }),
+    [damages.length, lifestyles.length, properties, t, transport],
+  );
 
   const sections = useMemo(
     () => [
       {
         id: "damages",
-        title: intl.formatMessage({ id: "master.section.damages.title" }),
-        subtitle: intl.formatMessage({ id: "master.section.damages.subtitle" }),
+        title: labels.section.damages.title,
+        subtitle: labels.section.damages.subtitle,
         icon: SwordsIcon,
         hasData: damages.length > 0,
-        stats: [
-          intl.formatMessage({ id: "master.section.damages.stats" }, { count: damages.length }),
-        ],
+        stats: [labels.section.damages.stats],
       },
       {
         id: "transport",
-        title: intl.formatMessage({ id: "master.section.transport.title" }),
-        subtitle: intl.formatMessage({ id: "master.section.transport.subtitle" }),
+        title: labels.section.transport.title,
+        subtitle: labels.section.transport.subtitle,
         icon: ShipIcon,
         hasData:
           transport.boats.length > 0 ||
           transport.mounts.length > 0 ||
           transport.mountEquipments.length > 0,
         stats: [
-          intl.formatMessage({ id: "master.section.transport.stats.boats" }, { count: transport.boats.length }),
-          intl.formatMessage({ id: "master.section.transport.stats.mounts" }, { count: transport.mounts.length }),
-          intl.formatMessage({ id: "master.section.transport.stats.equipment" }, { count: transport.mountEquipments.length }),
+          labels.section.transport.statsBoats,
+          labels.section.transport.statsMounts,
+          labels.section.transport.statsEquipment,
         ],
       },
       {
         id: "properties",
-        title: intl.formatMessage({ id: "master.section.properties.title" }),
-        subtitle: intl.formatMessage({ id: "master.section.properties.subtitle" }),
+        title: labels.section.properties.title,
+        subtitle: labels.section.properties.subtitle,
         icon: CastleIcon,
         hasData: properties.buildings.length > 0 || properties.maintenance.length > 0,
         stats: [
-          intl.formatMessage({ id: "master.section.properties.stats.buildings" }, { count: properties.buildings.length }),
-          intl.formatMessage({ id: "master.section.properties.stats.maintenance" }, { count: properties.maintenance.length }),
+          labels.section.properties.statsBuildings,
+          labels.section.properties.statsMaintenance,
         ],
       },
       {
         id: "lifestyles",
-        title: intl.formatMessage({ id: "master.section.lifestyles.title" }),
-        subtitle: intl.formatMessage({ id: "master.section.lifestyles.subtitle" }),
+        title: labels.section.lifestyles.title,
+        subtitle: labels.section.lifestyles.subtitle,
         icon: TavernIcon,
         hasData: lifestyles.length > 0,
-        stats: [
-          intl.formatMessage({ id: "master.section.lifestyles.stats" }, { count: lifestyles.length }),
-        ],
+        stats: [labels.section.lifestyles.stats],
       },
     ],
-    [damages, intl, lifestyles, properties, transport],
+    [damages.length, labels, lifestyles.length, properties, transport],
   );
 
   const [activeSection, setActiveSection] = useState(() => getInitialSection(sections));
+
+  const nameKey = "name";
 
   return (
     <>
@@ -170,16 +236,14 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
               onClick={() => setActiveSection(section.id)}
               className={`tool-card p-4 text-left ${isActive ? "border-[var(--line-strong)]" : ""}`}
               aria-pressed={isActive}
-              aria-label={intl.formatMessage({ id: "master.card.show" }, { title: section.title })}
+              aria-label={labels.state.show(section.title)}
             >
               <div className="mb-2 flex items-center justify-between gap-2">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[rgba(17,13,10,0.8)] text-[var(--accent)]">
                   <Icon />
                 </span>
                 <span className="tag-chip">
-                  {section.hasData
-                    ? intl.formatMessage({ id: "master.state.ready" })
-                    : intl.formatMessage({ id: "master.state.empty" })}
+                  {section.hasData ? labels.state.ready : labels.state.empty}
                 </span>
               </div>
               <h3 className="m-0 text-[1rem] text-[var(--text-main)]">{section.title}</h3>
@@ -198,13 +262,13 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
 
       {activeSection === "damages" ? (
         <SectionPanel
-          title={intl.formatMessage({ id: "master.section.damages.title" })}
-          subtitle={intl.formatMessage({ id: "master.section.damages.subtitle" })}
+          title={labels.section.damages.title}
+          subtitle={labels.section.damages.subtitle}
           className="animate-in"
         >
           {damages.length === 0 ? (
             <p className="m-0 leading-[1.7] text-[var(--text-main)]">
-              {intl.formatMessage({ id: "master.empty.damages" })}
+              {labels.section.damages.empty}
             </p>
           ) : (
             <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
@@ -233,61 +297,61 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
 
       {activeSection === "transport" ? (
         <SectionPanel
-          title={intl.formatMessage({ id: "master.section.transport.title" })}
-          subtitle={intl.formatMessage({ id: "master.section.transport.subtitle" })}
+          title={labels.section.transport.title}
+          subtitle={labels.section.transport.subtitle}
           className="animate-in"
         >
           {!sections.find((section) => section.id === "transport")?.hasData ? (
             <p className="m-0 leading-[1.7] text-[var(--text-main)]">
-              {intl.formatMessage({ id: "master.empty.transport" })}
+              {labels.section.transport.empty}
             </p>
           ) : (
             <div className="grid gap-3">
               <DataTable
-                title={intl.formatMessage({ id: "master.table.boats" })}
-                headers={[
-                  intl.formatMessage({ id: "table.name" }),
-                  intl.formatMessage({ id: "table.price" }),
-                  intl.formatMessage({ id: "table.rent" }),
+                title={labels.table.boats}
+                columns={[
+                  { key: nameKey, label: labels.table.columns.name },
+                  { key: "price", label: labels.table.columns.price },
+                  { key: "rent", label: labels.table.columns.rent },
                 ]}
                 rows={transport.boats.map((boat) => ({
-                  [intl.formatMessage({ id: "table.name" })]: boat.name,
-                  [intl.formatMessage({ id: "table.price" })]: boat.price,
-                  [intl.formatMessage({ id: "table.rent" })]: boat.rent,
+                  name: boat.name,
+                  price: boat.price,
+                  rent: boat.rent,
                 }))}
-                getKey={(row) => row[intl.formatMessage({ id: "table.name" })]}
+                getKey={(row) => row[nameKey]}
               />
 
               <DataTable
-                title={intl.formatMessage({ id: "master.table.mounts" })}
-                headers={[
-                  intl.formatMessage({ id: "table.name" }),
-                  intl.formatMessage({ id: "table.price" }),
-                  intl.formatMessage({ id: "table.charge" }),
-                  intl.formatMessage({ id: "table.rent" }),
+                title={labels.table.mounts}
+                columns={[
+                  { key: nameKey, label: labels.table.columns.name },
+                  { key: "price", label: labels.table.columns.price },
+                  { key: "charge", label: labels.table.columns.charge },
+                  { key: "rent", label: labels.table.columns.rent },
                 ]}
                 rows={transport.mounts.map((mount) => ({
-                  [intl.formatMessage({ id: "table.name" })]: mount.name,
-                  [intl.formatMessage({ id: "table.price" })]: mount.price,
-                  [intl.formatMessage({ id: "table.charge" })]: mount.charge,
-                  [intl.formatMessage({ id: "table.rent" })]: mount.rent,
+                  name: mount.name,
+                  price: mount.price,
+                  charge: mount.charge,
+                  rent: mount.rent,
                 }))}
-                getKey={(row) => row[intl.formatMessage({ id: "table.name" })]}
+                getKey={(row) => row[nameKey]}
               />
 
               <DataTable
-                title={intl.formatMessage({ id: "master.table.mountEquipment" })}
-                headers={[
-                  intl.formatMessage({ id: "table.name" }),
-                  intl.formatMessage({ id: "table.price" }),
-                  intl.formatMessage({ id: "table.charge" }),
+                title={labels.table.mountEquipment}
+                columns={[
+                  { key: nameKey, label: labels.table.columns.name },
+                  { key: "price", label: labels.table.columns.price },
+                  { key: "charge", label: labels.table.columns.charge },
                 ]}
                 rows={transport.mountEquipments.map((equipment) => ({
-                  [intl.formatMessage({ id: "table.name" })]: equipment.name,
-                  [intl.formatMessage({ id: "table.price" })]: equipment.price,
-                  [intl.formatMessage({ id: "table.charge" })]: equipment.charge,
+                  name: equipment.name,
+                  price: equipment.price,
+                  charge: equipment.charge,
                 }))}
-                getKey={(row) => row[intl.formatMessage({ id: "table.name" })]}
+                getKey={(row) => row[nameKey]}
               />
             </div>
           )}
@@ -296,48 +360,51 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
 
       {activeSection === "properties" ? (
         <SectionPanel
-          title={intl.formatMessage({ id: "master.section.properties.title" })}
-          subtitle={intl.formatMessage({ id: "master.section.properties.subtitle" })}
+          title={labels.section.properties.title}
+          subtitle={labels.section.properties.subtitle}
           className="animate-in"
         >
           {!sections.find((section) => section.id === "properties")?.hasData ? (
             <p className="m-0 leading-[1.7] text-[var(--text-main)]">
-              {intl.formatMessage({ id: "master.empty.properties" })}
+              {labels.section.properties.empty}
             </p>
           ) : (
             <div className="grid gap-3">
               <DataTable
-                title={intl.formatMessage({ id: "master.table.buildings" })}
-                headers={[
-                  intl.formatMessage({ id: "table.name" }),
-                  intl.formatMessage({ id: "table.price" }),
-                  intl.formatMessage({ id: "table.rent" }),
-                  intl.formatMessage({ id: "table.durationDays" }),
+                title={labels.table.buildings}
+                columns={[
+                  { key: nameKey, label: labels.table.columns.name },
+                  { key: "price", label: labels.table.columns.price },
+                  { key: "rent", label: labels.table.columns.rent },
+                  { key: "durationDays", label: labels.table.columns.durationDays },
                 ]}
                 rows={properties.buildings.map((building) => ({
-                  [intl.formatMessage({ id: "table.name" })]: building.name,
-                  [intl.formatMessage({ id: "table.price" })]: building.price,
-                  [intl.formatMessage({ id: "table.rent" })]: building.rent,
-                  [intl.formatMessage({ id: "table.durationDays" })]: building.duration,
+                  name: building.name,
+                  price: building.price,
+                  rent: building.rent,
+                  durationDays: building.duration,
                 }))}
-                getKey={(row) => row[intl.formatMessage({ id: "table.name" })]}
+                getKey={(row) => row[nameKey]}
               />
 
               <DataTable
-                title={intl.formatMessage({ id: "master.table.maintenance" })}
-                headers={[
-                  intl.formatMessage({ id: "table.name" }),
-                  intl.formatMessage({ id: "table.dailyCost" }),
-                  intl.formatMessage({ id: "table.workerUnqualified" }),
-                  intl.formatMessage({ id: "table.workerQualified" }),
+                title={labels.table.maintenance}
+                columns={[
+                  { key: nameKey, label: labels.table.columns.name },
+                  { key: "dailyCost", label: labels.table.columns.dailyCost },
+                  {
+                    key: "workerUnqualified",
+                    label: labels.table.columns.workerUnqualified,
+                  },
+                  { key: "workerQualified", label: labels.table.columns.workerQualified },
                 ]}
                 rows={properties.maintenance.map((maintenance) => ({
-                  [intl.formatMessage({ id: "table.name" })]: maintenance.name,
-                  [intl.formatMessage({ id: "table.dailyCost" })]: maintenance.cost,
-                  [intl.formatMessage({ id: "table.workerUnqualified" })]: maintenance.workerUnqualified,
-                  [intl.formatMessage({ id: "table.workerQualified" })]: maintenance.workerQualified,
+                  name: maintenance.name,
+                  dailyCost: maintenance.cost,
+                  workerUnqualified: maintenance.workerUnqualified,
+                  workerQualified: maintenance.workerQualified,
                 }))}
-                getKey={(row) => row[intl.formatMessage({ id: "table.name" })]}
+                getKey={(row) => row[nameKey]}
               />
             </div>
           )}
@@ -346,13 +413,13 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
 
       {activeSection === "lifestyles" ? (
         <SectionPanel
-          title={intl.formatMessage({ id: "master.section.lifestyles.title" })}
-          subtitle={intl.formatMessage({ id: "master.section.lifestyles.subtitle" })}
+          title={labels.section.lifestyles.title}
+          subtitle={labels.section.lifestyles.subtitle}
           className="animate-in"
         >
           {lifestyles.length === 0 ? (
             <p className="m-0 leading-[1.7] text-[var(--text-main)]">
-              {intl.formatMessage({ id: "master.empty.lifestyles" })}
+              {labels.section.lifestyles.empty}
             </p>
           ) : (
             <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-3">
