@@ -1,14 +1,20 @@
 "use client";
 
+import { useIntl } from "react-intl";
 import { useState } from "react";
 import SiteFooter from "./site-footer";
 import SidebarMenu from "./sidebar-menu";
 
-export default function HomeShell({ content, children }) {
+export default function HomeShell({ content, children, locale }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const intl = useIntl();
 
   const toggleSidebar = () => setIsSidebarOpen((current) => !current);
   const closeSidebar = () => setIsSidebarOpen(false);
+
+  const isOpenLabel = isSidebarOpen
+    ? intl.formatMessage({ id: "nav.closeMenu" })
+    : intl.formatMessage({ id: "nav.openMenu" });
 
   return (
     <div className="grid min-h-screen grid-cols-1 md:grid-cols-[300px_1fr]">
@@ -17,11 +23,11 @@ export default function HomeShell({ content, children }) {
         className="fixed top-4 left-4 z-35 inline-flex cursor-pointer items-center gap-2 rounded-full border border-[var(--line-strong)] bg-[rgba(14,10,7,0.95)] px-3 py-1.5 text-sm tracking-[0.08em] text-[var(--text-main)] uppercase md:hidden"
         aria-controls="site-sidebar"
         aria-expanded={isSidebarOpen}
-        aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+        aria-label={isOpenLabel}
         onClick={toggleSidebar}
       >
         <span className="text-[var(--accent-strong)]">◆</span>
-        {isSidebarOpen ? "Close" : "Menu"}
+        {isOpenLabel}
       </button>
 
       <div
@@ -31,6 +37,7 @@ export default function HomeShell({ content, children }) {
       />
 
       <SidebarMenu
+        locale={locale}
         projectName={content.projectName}
         subtitle={content.subtitle}
         items={content.menuItems}

@@ -1,19 +1,22 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import NextStepsPage from "./page";
-import { homeContent } from "../../lib/homeContent";
+import LocaleIntlProvider from "../../components/i18n/intl-provider";
+import NextStepsPage from "../[locale]/next-steps/page";
+import { getMessages } from "../../lib/i18n/messages";
 
-describe("NextStepsPage", () => {
-  it("renders roadmap heading and milestones", () => {
-    render(<NextStepsPage />);
+describe("LocalizedNextStepsPage", () => {
+  it("renders roadmap heading and milestones", async () => {
+    render(
+      <LocaleIntlProvider locale="en" messages={getMessages("en")}>
+        {await NextStepsPage({ params: { locale: "en" } })}
+      </LocaleIntlProvider>,
+    );
 
-    expect(
-      screen.getByRole("heading", { name: homeContent.nextSteps.title }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Delivery roadmap" })).toBeInTheDocument();
     expect(screen.getByText("Milestones")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
-        name: homeContent.nextSteps.milestones[0].name,
+        name: "Master Screen expansion",
       }),
     ).toBeInTheDocument();
   });

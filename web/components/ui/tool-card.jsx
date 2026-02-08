@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function ToolCard({ title, description, href, status, meta = [] }) {
+export default function ToolCard({ title, description, href, status, meta = [], ctaLabel }) {
   return (
     <article className="tool-card rounded-[14px] border border-[var(--line)] p-4">
       <div className="mb-2 flex items-center justify-between gap-2">
@@ -21,7 +21,7 @@ export default function ToolCard({ title, description, href, status, meta = [] }
         href={href}
         className="mt-4 inline-flex text-sm text-[var(--accent)] no-underline transition hover:text-[var(--accent-strong)]"
       >
-        Open tool
+        {ctaLabel}
       </Link>
     </article>
   );

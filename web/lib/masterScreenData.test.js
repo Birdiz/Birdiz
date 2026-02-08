@@ -16,17 +16,31 @@ describe("master screen data clients", () => {
     process.env.NEXT_PUBLIC_API_BASE_URL = originalPublicApiBase;
   });
 
-  it("returns damages payload", async () => {
-    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+  it("returns damages payload with locale query", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(JSON.stringify({ damages: [{ die: "1d10", examples: [] }] }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       }),
     );
 
-    const result = await getMasterScreenDamages();
+    const result = await getMasterScreenDamages("fr");
 
     expect(result).toEqual([{ die: "1d10", examples: [] }]);
+    expect(fetchSpy.mock.calls[0][0]).toContain("/api/master-screen/damages?locale=fr");
+  });
+
+  it("defaults damages locale query to english", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ damages: [] }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+
+    await getMasterScreenDamages();
+
+    expect(fetchSpy.mock.calls[0][0]).toContain("/api/master-screen/damages?locale=en");
   });
 
   it("returns transport payload", async () => {
