@@ -5,6 +5,7 @@ import type { MasterScreenDamageService } from "../src/master-screen/services/ma
 import type { MasterScreenTransportService } from "../src/master-screen/services/masterScreenTransportService";
 import type { MasterScreenPropertiesService } from "../src/master-screen/services/masterScreenPropertiesService";
 import type { MasterScreenLifestyleService } from "../src/master-screen/services/masterScreenLifestyleService";
+import type { SearchService } from "../src/search/services/searchService";
 
 export function createMockResponse(): {
   json: ReturnType<typeof vi.fn>;
@@ -49,4 +50,10 @@ export function createMasterScreenLifestyleServiceMock(
   getLifestyles: ReturnType<typeof vi.fn>,
 ): MasterScreenLifestyleService {
   return { getLifestyles } as unknown as MasterScreenLifestyleService;
+}
+
+export function createSearchServiceMock(
+  search: ReturnType<typeof vi.fn>,
+): SearchService {
+  return { search } as unknown as SearchService;
 }

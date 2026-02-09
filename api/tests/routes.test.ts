@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { createHealthRouter } from "../src/routes/healthRoutes";
 import { createMasterScreenRouter } from "../src/master-screen/routes/masterScreenRoutes";
+import { createSearchRouter } from "../src/search/routes/searchRoutes";
 
 function getRouteLayer(router: unknown) {
   const stack = (router as { stack?: Array<{ route?: unknown }> }).stack;
@@ -106,5 +107,14 @@ describe("route factories", () => {
       );
 
     expect(lifestylesRoute?.methods.get).toBe(true);
+  });
+
+  it("creates /search GET route", () => {
+    const searchController = vi.fn();
+    const router = createSearchRouter({ searchController });
+    const route = getRouteLayer(router);
+
+    expect(route?.path).toBe("/search");
+    expect(route?.methods.get).toBe(true);
   });
 });
