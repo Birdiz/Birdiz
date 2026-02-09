@@ -32,11 +32,13 @@ export default async function LocalizedMasterScreenPage({ params }) {
     eyebrow: intl.formatMessage({ id: "master.hero.title" }),
     title: intl.formatMessage({ id: "master.hero.eyebrow" }),
     description: intl.formatMessage({ id: "master.hero.description" }),
+    art: intl.formatMessage({ id: "master.hero.art" }),
     badges: [
       intl.formatMessage({ id: "master.hero.badge1" }),
       intl.formatMessage({ id: "master.hero.badge2" }),
       intl.formatMessage({ id: "master.hero.badge3" }),
     ],
+    atmosphereImage: "/ambiance/master-atmosphere.svg",
   };
 
   return (
@@ -46,6 +48,8 @@ export default async function LocalizedMasterScreenPage({ params }) {
         title={hero.title}
         description={hero.description}
         badges={hero.badges}
+        art={hero.art}
+        backgroundImage={hero.atmosphereImage}
       />
 
       <MasterScreenDashboard
