@@ -58,9 +58,17 @@ describe("LocalizedMasterScreenPage", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "In-session references for high-velocity decisions",
+        name: "Master Screen",
       }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText("In-session references for high-velocity decisions"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        "Pick a domain card to focus one data module at a time, then resolve outcomes without scanning through long stacked tables.",
+      ),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Show Damages" })).toHaveAttribute(
       "aria-pressed",
       "true",
@@ -103,6 +111,7 @@ describe("LocalizedMasterScreenPage", () => {
       </LocaleIntlProvider>,
     );
 
+    expect(screen.getByRole("heading", { name: "Écran MJ" })).toBeInTheDocument();
     expect(screen.getByText("Brûler par quelque chose")).toBeInTheDocument();
     expect(getMasterScreenDamages).toHaveBeenCalledWith("fr");
   });

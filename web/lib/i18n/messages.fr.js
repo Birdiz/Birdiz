@@ -71,7 +71,7 @@ export const frMessages = {
   "roadmap.m3.name": "Pack utilitaire joueur",
   "roadmap.m3.status": "Prévu",
   "roadmap.m3.detail": "Fournir des références côté joueur simplifiées avec vues imprimables.",
-  "master.hero.eyebrow": "Master Screen",
+  "master.hero.eyebrow": "Écran MJ",
   "master.hero.title": "Références de session pour des décisions rapides",
   "master.hero.description": "Cet écran regroupe des références pratiques d'économie et d'interactions pour que MJ et joueurs gardent le rythme en résolvant les situations.",
   "master.hero.badge1": "Support combat",

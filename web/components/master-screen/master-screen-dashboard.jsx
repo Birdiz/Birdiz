@@ -145,8 +145,6 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
         },
       },
       state: {
-        ready: t("master.state.ready"),
-        empty: t("master.state.empty"),
         show: (title) => t("master.card.show", { title }),
       },
       table: {
@@ -234,16 +232,13 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
               key={section.id}
               type="button"
               onClick={() => setActiveSection(section.id)}
-              className={`tool-card p-4 text-left ${isActive ? "border-[var(--line-strong)]" : ""}`}
+              className={`tool-card cursor-pointer p-4 text-left ${isActive ? "border-[var(--line-strong)]" : ""}`}
               aria-pressed={isActive}
               aria-label={labels.state.show(section.title)}
             >
-              <div className="mb-2 flex items-center justify-between gap-2">
+              <div className="mb-2 flex items-center gap-2">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[rgba(17,13,10,0.8)] text-[var(--accent)]">
                   <Icon />
-                </span>
-                <span className="tag-chip">
-                  {section.hasData ? labels.state.ready : labels.state.empty}
                 </span>
               </div>
               <h3 className="m-0 text-[1rem] text-[var(--text-main)]">{section.title}</h3>

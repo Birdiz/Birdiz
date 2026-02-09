@@ -29,15 +29,14 @@ export default async function LocalizedMasterScreenPage({ params }) {
   const intl = getIntl(locale);
 
   const hero = {
-    eyebrow: intl.formatMessage({ id: "master.hero.eyebrow" }),
-    title: intl.formatMessage({ id: "master.hero.title" }),
+    eyebrow: intl.formatMessage({ id: "master.hero.title" }),
+    title: intl.formatMessage({ id: "master.hero.eyebrow" }),
     description: intl.formatMessage({ id: "master.hero.description" }),
     badges: [
       intl.formatMessage({ id: "master.hero.badge1" }),
       intl.formatMessage({ id: "master.hero.badge2" }),
       intl.formatMessage({ id: "master.hero.badge3" }),
     ],
-    art: intl.formatMessage({ id: "master.hero.art" }),
   };
 
   return (
@@ -47,7 +46,6 @@ export default async function LocalizedMasterScreenPage({ params }) {
         title={hero.title}
         description={hero.description}
         badges={hero.badges}
-        art={hero.art}
       />
 
       <MasterScreenDashboard
