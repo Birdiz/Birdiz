@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildSeoMetadata } from "./seo";
+import { buildSeoMetadata, createGenerateMetadata } from "./seo";
 
 describe("buildSeoMetadata", () => {
   it("builds canonical and language alternates for home", () => {
@@ -27,5 +27,21 @@ describe("buildSeoMetadata", () => {
     expect(metadata.title).toBe("Écran MJ | DDBuilder");
     expect(metadata.alternates.canonical).toContain("/fr/master-screen");
     expect(metadata.alternates.languages.en).toContain("/en/master-screen");
+  });
+});
+describe("createGenerateMetadata", () => {
+  it("builds metadata from locale params and static seo config", async () => {
+    const generateMetadata = createGenerateMetadata({
+      pathname: "/next-steps",
+      titleId: "seo.roadmap.title",
+      descriptionId: "seo.roadmap.description",
+    });
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ locale: "fr" }),
+    });
+
+    expect(metadata.title).toBe("Feuille de route | DDBuilder");
+    expect(metadata.alternates.canonical).toContain("/fr/next-steps");
   });
 });

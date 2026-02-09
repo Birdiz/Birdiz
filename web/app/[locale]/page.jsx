@@ -3,18 +3,13 @@ import PageHero from "../../components/ui/page-hero";
 import SectionPanel from "../../components/ui/section-panel";
 import ToolCard from "../../components/ui/tool-card";
 import { getHomeContent } from "../../lib/homeContent";
-import { buildSeoMetadata } from "../../lib/seo";
+import { createGenerateMetadata } from "../../lib/seo";
 
-export async function generateMetadata({ params }) {
-  const { locale } = await params;
-
-  return buildSeoMetadata({
-    locale,
-    pathname: "/",
-    titleId: "seo.home.title",
-    descriptionId: "seo.home.description",
-  });
-}
+export const generateMetadata = createGenerateMetadata({
+  pathname: "/",
+  titleId: "seo.home.title",
+  descriptionId: "seo.home.description",
+});
 
 export default async function LocalizedHomePage({ params }) {
   const { locale } = await params;
