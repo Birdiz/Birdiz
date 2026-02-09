@@ -51,3 +51,16 @@ export function buildSeoMetadata({ locale, pathname = "/", titleId, descriptionI
     },
   };
 }
+
+export function createGenerateMetadata({ pathname = "/", titleId, descriptionId }) {
+  return async function generateMetadata({ params }) {
+    const { locale } = await params;
+
+    return buildSeoMetadata({
+      locale,
+      pathname,
+      titleId,
+      descriptionId,
+    });
+  };
+}

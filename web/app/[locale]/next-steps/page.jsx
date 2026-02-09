@@ -2,18 +2,13 @@ import HomeShell from "../../../components/home-shell";
 import PageHero from "../../../components/ui/page-hero";
 import SectionPanel from "../../../components/ui/section-panel";
 import { getHomeContent } from "../../../lib/homeContent";
-import { buildSeoMetadata } from "../../../lib/seo";
+import { createGenerateMetadata } from "../../../lib/seo";
 
-export async function generateMetadata({ params }) {
-  const { locale } = await params;
-
-  return buildSeoMetadata({
-    locale,
-    pathname: "/next-steps",
-    titleId: "seo.roadmap.title",
-    descriptionId: "seo.roadmap.description",
-  });
-}
+export const generateMetadata = createGenerateMetadata({
+  pathname: "/next-steps",
+  titleId: "seo.roadmap.title",
+  descriptionId: "seo.roadmap.description",
+});
 
 export default async function LocalizedNextStepsPage({ params }) {
   const { locale } = await params;
