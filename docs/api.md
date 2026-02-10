@@ -37,3 +37,4 @@ Base URL: `http://localhost:4000`
 
 - [Development Setup And Commands](development.md)
 - [Environment Variables And Docker Defaults](environment.md)
+- [Search Engine Architecture](search-engine.md)

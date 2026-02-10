@@ -21,4 +21,5 @@ docker compose up --build
 - [Documentation Index](docs/README.md)
 - [Development And Commands](docs/development.md)
 - [API Reference](docs/api.md)
+- [Search Engine Architecture](docs/search-engine.md)
 - [Environment Variables](docs/environment.md)

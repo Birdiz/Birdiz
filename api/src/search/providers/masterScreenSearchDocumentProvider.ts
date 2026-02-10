@@ -12,6 +12,24 @@ import { masterScreenLifestyles } from "../../master-screen/data/masterScreenLif
 import type { SupportedLocale } from "../../master-screen/utils/locale";
 import type { SearchDocument, SearchDocumentProvider } from "../types/searchTypes";
 
+const SECTION_TITLES: Record<
+  SupportedLocale,
+  Record<"damages" | "transport" | "properties" | "lifestyles", string>
+> = {
+  en: {
+    damages: "Damages",
+    transport: "Transport",
+    properties: "Properties",
+    lifestyles: "Lifestyles",
+  },
+  fr: {
+    damages: "Dégâts",
+    transport: "Transport",
+    properties: "Propriétés",
+    lifestyles: "Modes de vie",
+  },
+};
+
 function toAnchor(value: string): string {
   return value
     .toLowerCase()
@@ -21,17 +39,11 @@ function toAnchor(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-function sectionTitle(section: "damages" | "transport" | "properties" | "lifestyles"): string {
-  switch (section) {
-    case "damages":
-      return "Damages";
-    case "transport":
-      return "Transport";
-    case "properties":
-      return "Properties";
-    default:
-      return "Lifestyles";
-  }
+function sectionTitle(
+  locale: SupportedLocale,
+  section: "damages" | "transport" | "properties" | "lifestyles",
+): string {
+  return SECTION_TITLES[locale][section];
 }
 
 export class MasterScreenSearchDocumentProvider implements SearchDocumentProvider {
@@ -49,7 +61,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
         entityType: "damage",
         title: damage.die,
         body: examples.join(" "),
-        keywords: [sectionTitle("damages"), "dice", "damage"],
+        keywords: [sectionTitle(locale, "damages"), "dice", "damage"],
         href: `${baseHref}?section=damages`,
         anchor: toAnchor(damage.die),
         weight: 100,
@@ -66,7 +78,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
         entityType: "boat",
         title: boat.name,
         body: `${boat.price} ${boat.rent}`,
-        keywords: [sectionTitle("transport"), "boat", "rent", "price"],
+        keywords: [sectionTitle(locale, "transport"), "boat", "rent", "price"],
         href: `${baseHref}?section=transport`,
         anchor: toAnchor(boat.name),
         weight: 80,
@@ -83,7 +95,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
         entityType: "mount",
         title: mount.name,
         body: `${mount.price} ${mount.rent} ${mount.charge}`,
-        keywords: [sectionTitle("transport"), "mount", "rent", "price", "charge"],
+        keywords: [sectionTitle(locale, "transport"), "mount", "rent", "price", "charge"],
         href: `${baseHref}?section=transport`,
         anchor: toAnchor(mount.name),
         weight: 80,
@@ -100,7 +112,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
         entityType: "mount-equipment",
         title: equipment.name,
         body: `${equipment.price} ${equipment.charge}`,
-        keywords: [sectionTitle("transport"), "mount equipment", "price", "charge"],
+        keywords: [sectionTitle(locale, "transport"), "mount equipment", "price", "charge"],
         href: `${baseHref}?section=transport`,
         anchor: toAnchor(equipment.name),
         weight: 75,
@@ -117,7 +129,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
         entityType: "building",
         title: building.name,
         body: `${building.price} ${building.rent} ${building.duration}`,
-        keywords: [sectionTitle("properties"), "building", "price", "rent"],
+        keywords: [sectionTitle(locale, "properties"), "building", "price", "rent"],
         href: `${baseHref}?section=properties`,
         anchor: toAnchor(building.name),
         weight: 80,
@@ -138,7 +150,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
         entityType: "maintenance",
         title: maintenance.name,
         body: `${maintenance.cost} ${maintenance.workerUnqualified} ${maintenance.workerQualified}`,
-        keywords: [sectionTitle("properties"), "maintenance", "cost", "workers"],
+        keywords: [sectionTitle(locale, "properties"), "maintenance", "cost", "workers"],
         href: `${baseHref}?section=properties`,
         anchor: toAnchor(maintenance.name),
         weight: 70,
@@ -159,7 +171,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
         entityType: "lifestyle",
         title: lifestyle.name,
         body: `${lifestyle.price} ${lifestyle.description}`,
-        keywords: [sectionTitle("lifestyles"), "lifestyle", "price"],
+        keywords: [sectionTitle(locale, "lifestyles"), "lifestyle", "price"],
         href: `${baseHref}?section=lifestyles`,
         anchor: toAnchor(lifestyle.name),
         weight: 85,
@@ -175,7 +187,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
           entityType: "service",
           title: service.name,
           body: `${service.price} ${lifestyle.name}`,
-          keywords: [sectionTitle("lifestyles"), "service", lifestyle.name],
+          keywords: [sectionTitle(locale, "lifestyles"), "service", lifestyle.name],
           href: `${baseHref}?section=lifestyles`,
           anchor: toAnchor(lifestyle.name),
           weight: 65,
