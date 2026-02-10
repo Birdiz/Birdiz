@@ -22,6 +22,7 @@ export default async function LocalizedNextStepsPage({ params }) {
         description={content.nextSteps.description}
         badges={content.nextSteps.badges}
         art={content.nextSteps.art}
+        backgroundImage={content.nextSteps.atmosphereImage}
       />
 
       <SectionPanel
@@ -32,7 +33,7 @@ export default async function LocalizedNextStepsPage({ params }) {
           {content.nextSteps.milestones.map((milestone) => (
             <li
               key={milestone.name}
-              className="list-none rounded-[14px] border border-[var(--line)] bg-[rgba(16,12,9,0.72)] p-4"
+              className="milestone-card list-none rounded-[14px] border border-[var(--line)] p-4"
             >
               <div className="mb-2 flex items-center justify-between gap-2">
                 <h4 className="m-0 text-[var(--text-main)]">{milestone.name}</h4>

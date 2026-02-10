@@ -232,7 +232,7 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
               key={section.id}
               type="button"
               onClick={() => setActiveSection(section.id)}
-              className={`tool-card cursor-pointer p-4 text-left ${isActive ? "border-[var(--line-strong)]" : ""}`}
+              className={`dashboard-nav-card tool-card cursor-pointer p-4 text-left ${isActive ? "dashboard-nav-card-active border-[var(--line-strong)]" : ""}`}
               aria-pressed={isActive}
               aria-label={labels.state.show(section.title)}
             >
@@ -270,7 +270,7 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
               {damages.map((damage) => (
                 <article
                   key={damage.die}
-                  className="rounded-xl border border-[var(--line)] bg-[rgba(14,11,8,0.68)] px-4 py-3"
+                  className="data-card rounded-xl border border-[var(--line)] px-4 py-3"
                 >
                   <h4 className="mb-2 text-[1.05rem] text-[var(--accent)]">{damage.die}</h4>
                   <ul className="m-0 list-none p-0 leading-[1.7] text-[var(--text-main)]">
@@ -421,7 +421,7 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
               {lifestyles.map((lifestyle) => (
                 <article
                   key={lifestyle.name}
-                  className="rounded-xl border border-[var(--line)] bg-[rgba(14,11,8,0.68)] px-4 py-3"
+                  className="data-card rounded-xl border border-[var(--line)] px-4 py-3"
                 >
                   <h4 className="mb-1 text-[var(--accent)]">{lifestyle.name}</h4>
                   <p className="m-0 mb-2 text-[var(--accent-soft)]">{lifestyle.price}</p>
@@ -429,14 +429,14 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
                     {lifestyle.description}
                   </p>
                   {lifestyle.services.length > 0 && (
-                    <ul className="m-0 list-none p-0 text-[var(--text-main)]">
+                    <ul className="lifestyle-services m-0 list-none p-0 text-[var(--text-main)]">
                       {lifestyle.services.map((service) => (
                         <li
                           key={`${lifestyle.name}-${service.name}`}
-                          className="mb-1 flex items-center justify-between gap-2"
+                          className="lifestyle-service-row mb-1 flex items-center justify-between gap-2 rounded-[8px] px-2 py-1.5"
                         >
-                          <span>{service.name}</span>
-                          <span className="text-[var(--accent-soft)]">{service.price}</span>
+                          <span className="lifestyle-service-name">{service.name}</span>
+                          <span className="lifestyle-service-price">{service.price}</span>
                         </li>
                       ))}
                     </ul>

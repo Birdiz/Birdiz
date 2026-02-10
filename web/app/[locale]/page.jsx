@@ -23,6 +23,7 @@ export default async function LocalizedHomePage({ params }) {
         description={content.hero.description}
         badges={content.hero.badges}
         art={content.hero.art}
+        backgroundImage={content.hero.atmosphereImage}
       />
 
       <SectionPanel title={content.intentionsTitle} subtitle={content.intentionsSubtitle}>
@@ -30,7 +31,7 @@ export default async function LocalizedHomePage({ params }) {
           {content.intentions.map((intention) => (
             <li
               key={intention}
-              className="list-none rounded-[12px] border border-[var(--line)] bg-[rgba(19,14,11,0.7)] px-3 py-3 text-sm leading-6 text-[var(--text-soft)]"
+              className="intention-card list-none rounded-[12px] border border-[var(--line)] px-3 py-3 text-sm leading-6 text-[var(--text-soft)]"
             >
               {intention}
             </li>
@@ -49,6 +50,7 @@ export default async function LocalizedHomePage({ params }) {
               status={group.status}
               meta={group.meta}
               ctaLabel={content.openToolLabel}
+              featureImage={group.image}
             />
           ))}
         </div>

@@ -6,6 +6,7 @@ export function buildHomeSection(t) {
       description: t("home.hero.description"),
       badges: [t("home.hero.badge1"), t("home.hero.badge2"), t("home.hero.badge3")],
       art: t("home.hero.art"),
+      atmosphereImage: "/ambiance/hero-atmosphere.svg",
     },
     intentionsTitle: t("home.intentions.title"),
     intentionsSubtitle: t("home.intentions.subtitle"),
@@ -32,6 +33,7 @@ export function buildToolGroups(t, locale) {
         t("home.tool.master.meta2"),
         t("home.tool.master.meta3"),
       ],
+      image: "/features/master-screen.svg",
     },
     {
       title: t("home.tool.encounter.title"),
@@ -43,6 +45,7 @@ export function buildToolGroups(t, locale) {
         t("home.tool.encounter.meta2"),
         t("home.tool.encounter.meta3"),
       ],
+      image: "/features/encounter-utilities.svg",
     },
     {
       title: t("home.tool.player.title"),
@@ -54,6 +57,7 @@ export function buildToolGroups(t, locale) {
         t("home.tool.player.meta2"),
         t("home.tool.player.meta3"),
       ],
+      image: "/features/character-aids.svg",
     },
   ];
 }

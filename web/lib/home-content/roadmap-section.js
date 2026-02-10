@@ -5,6 +5,7 @@ export function buildRoadmapSection(t) {
     description: t("roadmap.description"),
     badges: [t("roadmap.badge1"), t("roadmap.badge2"), t("roadmap.badge3")],
     art: t("roadmap.art"),
+    atmosphereImage: "/ambiance/roadmap-atmosphere.svg",
     milestonesTitle: t("roadmap.milestones.title"),
     milestonesSubtitle: t("roadmap.milestones.subtitle"),
     milestones: [

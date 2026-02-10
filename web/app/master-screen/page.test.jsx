@@ -65,10 +65,10 @@ describe("LocalizedMasterScreenPage", () => {
       screen.getByText("In-session references for high-velocity decisions"),
     ).toBeInTheDocument();
     expect(
-      screen.queryByText(
+      screen.getByText(
         "Pick a domain card to focus one data module at a time, then resolve outcomes without scanning through long stacked tables.",
       ),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Show Damages" })).toHaveAttribute(
       "aria-pressed",
       "true",
@@ -84,6 +84,10 @@ describe("LocalizedMasterScreenPage", () => {
     );
     expect(screen.getByText("Barque")).toBeInTheDocument();
     expect(screen.queryByText("1d10")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Show Lifestyles" }));
+    expect(screen.getByText("Transport en ville")).toBeInTheDocument();
+    expect(screen.getByText("1 PC/j")).toBeInTheDocument();
     expect(getMasterScreenDamages).toHaveBeenCalledWith("en");
   });
 
