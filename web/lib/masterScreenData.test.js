@@ -44,7 +44,7 @@ describe("master screen data clients", () => {
   });
 
   it("returns transport payload", async () => {
-    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(
         JSON.stringify({
           boats: [{ name: "Boat" }],
@@ -58,13 +58,14 @@ describe("master screen data clients", () => {
       ),
     );
 
-    const result = await getMasterScreenTransport();
+    const result = await getMasterScreenTransport("fr");
 
     expect(result.boats).toEqual([{ name: "Boat" }]);
+    expect(fetchSpy.mock.calls[0][0]).toContain("/api/master-screen/transport?locale=fr");
   });
 
   it("returns properties payload", async () => {
-    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(
         JSON.stringify({
           buildings: [{ name: "Build" }],
@@ -77,25 +78,31 @@ describe("master screen data clients", () => {
       ),
     );
 
-    const result = await getMasterScreenProperties();
+    const result = await getMasterScreenProperties("en");
 
     expect(result).toEqual({
       buildings: [{ name: "Build" }],
       maintenance: [{ name: "Maint" }],
     });
+    expect(fetchSpy.mock.calls[0][0]).toContain(
+      "/api/master-screen/properties?locale=en",
+    );
   });
 
   it("returns lifestyles payload", async () => {
-    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(JSON.stringify({ lifestyles: [{ name: "Modeste" }] }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       }),
     );
 
-    const result = await getMasterScreenLifestyles();
+    const result = await getMasterScreenLifestyles("fr");
 
     expect(result).toEqual([{ name: "Modeste" }]);
+    expect(fetchSpy.mock.calls[0][0]).toContain(
+      "/api/master-screen/lifestyles?locale=fr",
+    );
   });
 
   it("returns empty fallback for failed requests", async () => {

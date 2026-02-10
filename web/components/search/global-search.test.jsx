@@ -33,7 +33,7 @@ describe("GlobalSearch", () => {
       </LocaleIntlProvider>,
     );
 
-    fireEvent.change(screen.getByRole("searchbox"), {
+    fireEvent.change(await screen.findByRole("searchbox"), {
       target: { value: "master" },
     });
 
@@ -62,7 +62,7 @@ describe("GlobalSearch", () => {
       </LocaleIntlProvider>,
     );
 
-    fireEvent.change(screen.getByRole("searchbox"), {
+    fireEvent.change(await screen.findByRole("searchbox"), {
       target: { value: "zzzz" },
     });
 
@@ -85,7 +85,7 @@ describe("GlobalSearch", () => {
       </LocaleIntlProvider>,
     );
 
-    fireEvent.change(screen.getByRole("searchbox"), {
+    fireEvent.change(await screen.findByRole("searchbox"), {
       target: { value: "master" },
     });
 

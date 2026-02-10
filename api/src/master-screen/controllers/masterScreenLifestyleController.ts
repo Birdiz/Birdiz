@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 import type { MasterScreenLifestyleService } from "../services/masterScreenLifestyleService";
+import { resolveLocale } from "../utils/locale";
 
 interface MasterScreenLifestyleControllerOptions {
   masterScreenLifestyleService: MasterScreenLifestyleService;
@@ -12,9 +13,10 @@ function getErrorMessage(error: unknown): string {
 export function createMasterScreenLifestyleController({
   masterScreenLifestyleService,
 }: MasterScreenLifestyleControllerOptions): RequestHandler {
-  return async function masterScreenLifestyleController(_req, res): Promise<void> {
+  return async function masterScreenLifestyleController(req, res): Promise<void> {
     try {
-      const lifestyles = await masterScreenLifestyleService.getLifestyles();
+      const locale = resolveLocale(req.query?.locale);
+      const lifestyles = await masterScreenLifestyleService.getLifestyles(locale);
 
       res.json({ lifestyles });
     } catch (error: unknown) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import SectionPanel from "../ui/section-panel";
 
@@ -99,7 +99,21 @@ function getInitialSection(sections) {
   return firstWithData ? firstWithData.id : sections[0]?.id;
 }
 
-export default function MasterScreenDashboard({ damages, transport, properties, lifestyles }) {
+function resolveInitialSection(sections, initialSection) {
+  if (typeof initialSection === "string" && sections.some((section) => section.id === initialSection)) {
+    return initialSection;
+  }
+
+  return getInitialSection(sections);
+}
+
+export default function MasterScreenDashboard({
+  damages,
+  transport,
+  properties,
+  lifestyles,
+  initialSection = null,
+}) {
   const intl = useIntl();
   const t = useCallback((id, values) => intl.formatMessage({ id }, values), [intl]);
 
@@ -216,7 +230,15 @@ export default function MasterScreenDashboard({ damages, transport, properties, 
     [damages.length, labels, lifestyles.length, properties, transport],
   );
 
-  const [activeSection, setActiveSection] = useState(() => getInitialSection(sections));
+  const resolvedInitialSection = useMemo(
+    () => resolveInitialSection(sections, initialSection),
+    [sections, initialSection],
+  );
+  const [activeSection, setActiveSection] = useState(resolvedInitialSection);
+
+  useEffect(() => {
+    setActiveSection(resolvedInitialSection);
+  }, [resolvedInitialSection]);
 
   const nameKey = "name";
 

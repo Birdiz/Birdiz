@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { SUPPORTED_LOCALES } from "../lib/i18n/locales";
 import { getLocalePath } from "../lib/i18n/routing";
@@ -18,7 +19,13 @@ export default function SidebarMenu({
   onClose,
 }) {
   const intl = useIntl();
-  const pathname = usePathname() ?? "/";
+  const pathname = usePathname();
+  const [isClientReady, setIsClientReady] = useState(false);
+  const stablePathname = isClientReady && pathname ? pathname : `/${locale}`;
+
+  useEffect(() => {
+    setIsClientReady(true);
+  }, []);
 
   return (
     <aside
@@ -63,7 +70,7 @@ export default function SidebarMenu({
             return (
               <Link
                 key={targetLocale}
-                href={getLocalePath(pathname, targetLocale)}
+                href={getLocalePath(stablePathname, targetLocale)}
                 onClick={onClose}
                 className={`locale-pill rounded-full border px-3 py-1 text-xs uppercase tracking-[0.08em] no-underline transition ${isActive ? "locale-pill-active border-[var(--line-strong)] text-[var(--accent-strong)]" : "border-[var(--line)] text-[var(--text-muted)] hover:border-[var(--line-strong)] hover:text-[var(--text-main)]"}`}
               >

@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 import type { MasterScreenTransportService } from "../services/masterScreenTransportService";
+import { resolveLocale } from "../utils/locale";
 
 interface MasterScreenTransportControllerOptions {
   masterScreenTransportService: MasterScreenTransportService;
@@ -12,9 +13,10 @@ function getErrorMessage(error: unknown): string {
 export function createMasterScreenTransportController({
   masterScreenTransportService,
 }: MasterScreenTransportControllerOptions): RequestHandler {
-  return async function masterScreenTransportController(_req, res): Promise<void> {
+  return async function masterScreenTransportController(req, res): Promise<void> {
     try {
-      const transport = await masterScreenTransportService.getTransportData();
+      const locale = resolveLocale(req.query?.locale);
+      const transport = await masterScreenTransportService.getTransportData(locale);
 
       res.json(transport);
     } catch (error: unknown) {

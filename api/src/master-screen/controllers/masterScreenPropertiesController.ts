@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 import type { MasterScreenPropertiesService } from "../services/masterScreenPropertiesService";
+import { resolveLocale } from "../utils/locale";
 
 interface MasterScreenPropertiesControllerOptions {
   masterScreenPropertiesService: MasterScreenPropertiesService;
@@ -12,9 +13,10 @@ function getErrorMessage(error: unknown): string {
 export function createMasterScreenPropertiesController({
   masterScreenPropertiesService,
 }: MasterScreenPropertiesControllerOptions): RequestHandler {
-  return async function masterScreenPropertiesController(_req, res): Promise<void> {
+  return async function masterScreenPropertiesController(req, res): Promise<void> {
     try {
-      const properties = await masterScreenPropertiesService.getPropertiesData();
+      const locale = resolveLocale(req.query?.locale);
+      const properties = await masterScreenPropertiesService.getPropertiesData(locale);
 
       res.json(properties);
     } catch (error: unknown) {

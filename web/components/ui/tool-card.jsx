@@ -4,7 +4,6 @@ export default function ToolCard({
   title,
   description,
   href,
-  status,
   meta = [],
   ctaLabel,
   featureImage = null,
@@ -25,7 +24,12 @@ export default function ToolCard({
       ) : null}
       <div className="mb-2 flex items-center justify-between gap-2">
         <h4 className="m-0 text-[1.05rem] text-[var(--text-main)]">{title}</h4>
-        <span className="tag-chip">{status}</span>
+        <Link
+          href={href}
+          className="tag-chip no-underline transition hover:text-[var(--accent-strong)]"
+        >
+          {ctaLabel}
+        </Link>
       </div>
       <p className="m-0 text-sm leading-6 text-[var(--text-muted)]">{description}</p>
       {meta.length > 0 ? (
@@ -37,12 +41,6 @@ export default function ToolCard({
           ))}
         </ul>
       ) : null}
-      <Link
-        href={href}
-        className="mt-4 inline-flex text-sm text-[var(--accent)] no-underline transition hover:text-[var(--accent-strong)]"
-      >
-        {ctaLabel}
-      </Link>
     </article>
   );
 }

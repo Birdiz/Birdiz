@@ -1,10 +1,10 @@
-import type { Collection } from "mongodb";
 import type { DatabaseClient } from "../../db/mongoClient";
 import type {
   MasterScreenBoat,
   MasterScreenMount,
   MasterScreenMountEquipment,
 } from "../data/masterScreenTransport";
+import { BaseSeededRepository } from "./baseSeededRepository";
 
 export interface MasterScreenTransportData {
   boats: MasterScreenBoat[];
@@ -19,8 +19,7 @@ interface MasterScreenTransportRepositoryOptions {
   mountEquipments: MasterScreenMountEquipment[];
 }
 
-export class MasterScreenTransportRepository {
-  private readonly databaseClient: DatabaseClient;
+export class MasterScreenTransportRepository extends BaseSeededRepository {
   private readonly boats: MasterScreenBoat[];
   private readonly mounts: MasterScreenMount[];
   private readonly mountEquipments: MasterScreenMountEquipment[];
@@ -31,7 +30,7 @@ export class MasterScreenTransportRepository {
     mounts,
     mountEquipments,
   }: MasterScreenTransportRepositoryOptions) {
-    this.databaseClient = databaseClient;
+    super(databaseClient);
     this.boats = boats;
     this.mounts = mounts;
     this.mountEquipments = mountEquipments;
@@ -50,45 +49,13 @@ export class MasterScreenTransportRepository {
 
   async findTransportData(): Promise<MasterScreenTransportData> {
     const [boats, mounts, mountEquipments] = await Promise.all([
-      this.findAll<MasterScreenBoat>("master_screen_boats"),
-      this.findAll<MasterScreenMount>("master_screen_mounts"),
-      this.findAll<MasterScreenMountEquipment>("master_screen_mount_equipments"),
+      this.findAllFromCollection<MasterScreenBoat>("master_screen_boats"),
+      this.findAllFromCollection<MasterScreenMount>("master_screen_mounts"),
+      this.findAllFromCollection<MasterScreenMountEquipment>(
+        "master_screen_mount_equipments",
+      ),
     ]);
 
     return { boats, mounts, mountEquipments };
-  }
-
-  private async ensureCollectionSeedData(
-    collectionName: string,
-    seedData: object[],
-  ): Promise<void> {
-    const collection = await this.getCollection(collectionName);
-    const totalDocuments = await collection.estimatedDocumentCount();
-
-    if (totalDocuments > 0) {
-      return;
-    }
-
-    await collection.insertMany(
-      seedData.map((entry, index) => ({
-        ...entry,
-        sortOrder: index + 1,
-      })),
-    );
-  }
-
-  private async findAll<T>(collectionName: string): Promise<T[]> {
-    const collection = await this.getCollection(collectionName);
-
-    return collection
-      .find({}, { projection: { _id: 0, sortOrder: 0 } })
-      .sort({ sortOrder: 1 })
-      .toArray() as Promise<T[]>;
-  }
-
-  private async getCollection(collectionName: string): Promise<Collection<object>> {
-    const database = await this.databaseClient.getDatabase();
-
-    return database.collection<object>(collectionName);
   }
 }

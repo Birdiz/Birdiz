@@ -9,6 +9,7 @@ import {
 } from "../../master-screen/data/masterScreenBuildings";
 import { masterScreenDamages } from "../../master-screen/data/masterScreenDamages";
 import { masterScreenLifestyles } from "../../master-screen/data/masterScreenLifestyles";
+import { localizeCurrencyUnits } from "../../master-screen/utils/currency";
 import type { SupportedLocale } from "../../master-screen/utils/locale";
 import type { SearchDocument, SearchDocumentProvider } from "../types/searchTypes";
 
@@ -46,6 +47,17 @@ function sectionTitle(
   return SECTION_TITLES[locale][section];
 }
 
+function getLocalizedText(
+  locale: SupportedLocale,
+  options: { defaultValue?: string; valueEn?: string; valueFr?: string },
+): string {
+  if (locale === "en") {
+    return options.valueEn ?? options.defaultValue ?? options.valueFr ?? "";
+  }
+
+  return options.valueFr ?? options.defaultValue ?? options.valueEn ?? "";
+}
+
 export class MasterScreenSearchDocumentProvider implements SearchDocumentProvider {
   async getDocuments(locale: SupportedLocale): Promise<SearchDocument[]> {
     const baseHref = `/${locale}/master-screen`;
@@ -70,92 +82,132 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
     }
 
     for (const boat of masterScreenBoats) {
+      const boatName = getLocalizedText(locale, {
+        defaultValue: boat.name,
+        valueEn: boat.nameEn,
+        valueFr: boat.nameFr,
+      });
+
       documents.push({
-        id: `boat-${toAnchor(boat.name)}-${locale}`,
+        id: `boat-${toAnchor(boatName)}-${locale}`,
         locale,
         module: "master-screen",
         section: "transport",
         entityType: "boat",
-        title: boat.name,
-        body: `${boat.price} ${boat.rent}`,
+        title: boatName,
+        body: `${localizeCurrencyUnits(boat.price, locale)} ${localizeCurrencyUnits(boat.rent, locale)}`,
         keywords: [sectionTitle(locale, "transport"), "boat", "rent", "price"],
         href: `${baseHref}?section=transport`,
-        anchor: toAnchor(boat.name),
+        anchor: toAnchor(boatName),
         weight: 80,
-        metadata: { price: boat.price, rent: boat.rent },
+        metadata: {
+          price: localizeCurrencyUnits(boat.price, locale),
+          rent: localizeCurrencyUnits(boat.rent, locale),
+        },
       });
     }
 
     for (const mount of masterScreenMounts) {
+      const mountName = getLocalizedText(locale, {
+        defaultValue: mount.name,
+        valueEn: mount.nameEn,
+        valueFr: mount.nameFr,
+      });
+
       documents.push({
-        id: `mount-${toAnchor(mount.name)}-${locale}`,
+        id: `mount-${toAnchor(mountName)}-${locale}`,
         locale,
         module: "master-screen",
         section: "transport",
         entityType: "mount",
-        title: mount.name,
-        body: `${mount.price} ${mount.rent} ${mount.charge}`,
+        title: mountName,
+        body: `${localizeCurrencyUnits(mount.price, locale)} ${localizeCurrencyUnits(mount.rent, locale)} ${mount.charge}`,
         keywords: [sectionTitle(locale, "transport"), "mount", "rent", "price", "charge"],
         href: `${baseHref}?section=transport`,
-        anchor: toAnchor(mount.name),
+        anchor: toAnchor(mountName),
         weight: 80,
-        metadata: { price: mount.price, rent: mount.rent, charge: mount.charge },
+        metadata: {
+          price: localizeCurrencyUnits(mount.price, locale),
+          rent: localizeCurrencyUnits(mount.rent, locale),
+          charge: mount.charge,
+        },
       });
     }
 
     for (const equipment of masterScreenMountEquipments) {
+      const equipmentName = getLocalizedText(locale, {
+        defaultValue: equipment.name,
+        valueEn: equipment.nameEn,
+        valueFr: equipment.nameFr,
+      });
+
       documents.push({
-        id: `mount-equipment-${toAnchor(equipment.name)}-${locale}`,
+        id: `mount-equipment-${toAnchor(equipmentName)}-${locale}`,
         locale,
         module: "master-screen",
         section: "transport",
         entityType: "mount-equipment",
-        title: equipment.name,
-        body: `${equipment.price} ${equipment.charge}`,
+        title: equipmentName,
+        body: `${localizeCurrencyUnits(equipment.price, locale)} ${equipment.charge}`,
         keywords: [sectionTitle(locale, "transport"), "mount equipment", "price", "charge"],
         href: `${baseHref}?section=transport`,
-        anchor: toAnchor(equipment.name),
+        anchor: toAnchor(equipmentName),
         weight: 75,
-        metadata: { price: equipment.price, charge: equipment.charge },
+        metadata: {
+          price: localizeCurrencyUnits(equipment.price, locale),
+          charge: equipment.charge,
+        },
       });
     }
 
     for (const building of masterScreenBuildings) {
+      const buildingName = getLocalizedText(locale, {
+        defaultValue: building.name,
+        valueEn: building.nameEn,
+        valueFr: building.nameFr,
+      });
+
       documents.push({
-        id: `building-${toAnchor(building.name)}-${locale}`,
+        id: `building-${toAnchor(buildingName)}-${locale}`,
         locale,
         module: "master-screen",
         section: "properties",
         entityType: "building",
-        title: building.name,
-        body: `${building.price} ${building.rent} ${building.duration}`,
+        title: buildingName,
+        body: `${localizeCurrencyUnits(building.price, locale)} ${localizeCurrencyUnits(building.rent, locale)} ${building.duration}`,
         keywords: [sectionTitle(locale, "properties"), "building", "price", "rent"],
         href: `${baseHref}?section=properties`,
-        anchor: toAnchor(building.name),
+        anchor: toAnchor(buildingName),
         weight: 80,
         metadata: {
-          price: building.price,
-          rent: building.rent,
+          price: localizeCurrencyUnits(building.price, locale),
+          rent: localizeCurrencyUnits(building.rent, locale),
           duration: building.duration,
         },
       });
     }
 
     for (const maintenance of masterScreenMaintenances) {
+      const maintenanceName = getLocalizedText(locale, {
+        defaultValue: maintenance.name,
+        valueEn: maintenance.nameEn,
+        valueFr: maintenance.nameFr,
+      });
+
       documents.push({
-        id: `maintenance-${toAnchor(maintenance.name)}-${locale}`,
+        id: `maintenance-${toAnchor(maintenanceName)}-${locale}`,
         locale,
         module: "master-screen",
         section: "properties",
         entityType: "maintenance",
-        title: maintenance.name,
-        body: `${maintenance.cost} ${maintenance.workerUnqualified} ${maintenance.workerQualified}`,
+        title: maintenanceName,
+        body: `${localizeCurrencyUnits(maintenance.cost, locale)} ${maintenance.workerUnqualified} ${maintenance.workerQualified}`,
         keywords: [sectionTitle(locale, "properties"), "maintenance", "cost", "workers"],
         href: `${baseHref}?section=properties`,
-        anchor: toAnchor(maintenance.name),
+        anchor: toAnchor(maintenanceName),
         weight: 70,
         metadata: {
-          cost: maintenance.cost,
+          cost: localizeCurrencyUnits(maintenance.cost, locale),
           workerUnqualified: maintenance.workerUnqualified,
           workerQualified: maintenance.workerQualified,
         },
@@ -163,37 +215,54 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
     }
 
     for (const lifestyle of masterScreenLifestyles) {
+      const lifestyleName = getLocalizedText(locale, {
+        defaultValue: lifestyle.name,
+        valueEn: lifestyle.nameEn,
+        valueFr: lifestyle.nameFr,
+      });
+      const lifestyleDescription = getLocalizedText(locale, {
+        defaultValue: lifestyle.description,
+        valueEn: lifestyle.descriptionEn,
+        valueFr: lifestyle.descriptionFr,
+      });
+
       documents.push({
-        id: `lifestyle-${toAnchor(lifestyle.name)}-${locale}`,
+        id: `lifestyle-${toAnchor(lifestyleName)}-${locale}`,
         locale,
         module: "master-screen",
         section: "lifestyles",
         entityType: "lifestyle",
-        title: lifestyle.name,
-        body: `${lifestyle.price} ${lifestyle.description}`,
+        title: lifestyleName,
+        body: `${localizeCurrencyUnits(lifestyle.price, locale)} ${lifestyleDescription}`,
         keywords: [sectionTitle(locale, "lifestyles"), "lifestyle", "price"],
         href: `${baseHref}?section=lifestyles`,
-        anchor: toAnchor(lifestyle.name),
+        anchor: toAnchor(lifestyleName),
         weight: 85,
-        metadata: { price: lifestyle.price },
+        metadata: { price: localizeCurrencyUnits(lifestyle.price, locale) },
       });
 
       for (const service of lifestyle.services) {
+        const serviceName = getLocalizedText(locale, {
+          defaultValue: service.name,
+          valueEn: service.nameEn,
+          valueFr: service.nameFr,
+        });
+
         documents.push({
-          id: `service-${toAnchor(lifestyle.name)}-${toAnchor(service.name)}-${locale}`,
+          id: `service-${toAnchor(lifestyleName)}-${toAnchor(serviceName)}-${locale}`,
           locale,
           module: "master-screen",
           section: "lifestyles",
           entityType: "service",
-          title: service.name,
-          body: `${service.price} ${lifestyle.name}`,
-          keywords: [sectionTitle(locale, "lifestyles"), "service", lifestyle.name],
+          title: serviceName,
+          body: `${localizeCurrencyUnits(service.price, locale)} ${lifestyleName}`,
+          keywords: [sectionTitle(locale, "lifestyles"), "service", lifestyleName],
           href: `${baseHref}?section=lifestyles`,
-          anchor: toAnchor(lifestyle.name),
+          anchor: toAnchor(lifestyleName),
           weight: 65,
           metadata: {
-            price: service.price,
-            lifestyle: lifestyle.name,
+            price: localizeCurrencyUnits(service.price, locale),
+            lifestyle: lifestyleName,
           },
         });
       }

@@ -31,6 +31,35 @@ describe("MasterScreenTransportRepository", () => {
     expect(insertMany).toHaveBeenCalledTimes(3);
   });
 
+  it("backfills localization fields when transport collections are already seeded", async () => {
+    const estimatedDocumentCount = vi.fn().mockResolvedValue(1);
+    const insertMany = vi.fn().mockResolvedValue(undefined);
+    const updateOne = vi.fn().mockResolvedValue(undefined);
+
+    const collection = {
+      estimatedDocumentCount,
+      insertMany,
+      updateOne,
+      find: vi.fn(),
+    } as unknown as Collection;
+
+    const database = {
+      collection: vi.fn().mockReturnValue(collection),
+    } as unknown as Db;
+
+    const repository = new MasterScreenTransportRepository({
+      databaseClient: createDatabaseClientMock(vi.fn().mockResolvedValue(database)),
+      boats: [{ name: "Boat", nameEn: "Boat", nameFr: "Bateau", price: "1", rent: "1" }],
+      mounts: [{ name: "Mount", nameEn: "Mount", nameFr: "Monture", price: "1", rent: "1", charge: "1" }],
+      mountEquipments: [{ name: "Equip", nameEn: "Equipment", nameFr: "Equipement", price: "1", charge: "1" }],
+    });
+
+    await repository.ensureSeedData();
+
+    expect(insertMany).not.toHaveBeenCalled();
+    expect(updateOne).toHaveBeenCalledTimes(3);
+  });
+
   it("returns grouped transport data", async () => {
     const makeCollection = (payload: Array<Record<string, unknown>>) => {
       const toArray = vi.fn().mockResolvedValue(payload);
@@ -40,6 +69,7 @@ describe("MasterScreenTransportRepository", () => {
       return {
         estimatedDocumentCount: vi.fn(),
         insertMany: vi.fn(),
+        updateOne: vi.fn(),
         find,
       };
     };

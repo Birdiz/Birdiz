@@ -31,6 +31,45 @@ describe("MasterScreenLifestyleRepository", () => {
     expect(insertMany).toHaveBeenCalledOnce();
   });
 
+  it("backfills localization fields when lifestyles collection is already seeded", async () => {
+    const estimatedDocumentCount = vi.fn().mockResolvedValue(1);
+    const insertMany = vi.fn().mockResolvedValue(undefined);
+    const updateOne = vi.fn().mockResolvedValue(undefined);
+    const find = vi.fn();
+
+    const collection = {
+      estimatedDocumentCount,
+      insertMany,
+      updateOne,
+      find,
+    } as unknown as Collection;
+
+    const database = {
+      collection: vi.fn().mockReturnValue(collection),
+    } as unknown as Db;
+
+    const repository = new MasterScreenLifestyleRepository({
+      databaseClient: createDatabaseClientMock(vi.fn().mockResolvedValue(database)),
+      lifestyles: [
+        {
+          name: "Modeste",
+          nameEn: "Modest",
+          nameFr: "Modeste",
+          price: "1",
+          description: "Desc",
+          descriptionEn: "Description",
+          descriptionFr: "Description",
+          services: [{ name: "Service", nameEn: "Service", nameFr: "Service", price: "1" }],
+        },
+      ],
+    });
+
+    await repository.ensureSeedData();
+
+    expect(insertMany).not.toHaveBeenCalled();
+    expect(updateOne).toHaveBeenCalledOnce();
+  });
+
   it("returns sorted lifestyles", async () => {
     const lifestyles = [{ name: "Modeste" }];
     const toArray = vi.fn().mockResolvedValue(lifestyles);
@@ -40,6 +79,7 @@ describe("MasterScreenLifestyleRepository", () => {
     const collection = {
       estimatedDocumentCount: vi.fn(),
       insertMany: vi.fn(),
+      updateOne: vi.fn(),
       find,
     } as unknown as Collection;
 

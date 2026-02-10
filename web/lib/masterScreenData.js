@@ -14,16 +14,21 @@ export async function getMasterScreenDamages(locale) {
   return payload.damages || [];
 }
 
-export async function getMasterScreenTransport() {
-  return fetchApiJson("/api/master-screen/transport", EMPTY_TRANSPORT);
+export async function getMasterScreenTransport(locale) {
+  const safeLocale = resolveLocale(locale);
+  return fetchApiJson(`/api/master-screen/transport?locale=${safeLocale}`, EMPTY_TRANSPORT);
 }
 
-export async function getMasterScreenProperties() {
-  return fetchApiJson("/api/master-screen/properties", EMPTY_PROPERTIES);
+export async function getMasterScreenProperties(locale) {
+  const safeLocale = resolveLocale(locale);
+  return fetchApiJson(`/api/master-screen/properties?locale=${safeLocale}`, EMPTY_PROPERTIES);
 }
 
-export async function getMasterScreenLifestyles() {
-  const payload = await fetchApiJson("/api/master-screen/lifestyles", { lifestyles: [] });
+export async function getMasterScreenLifestyles(locale) {
+  const safeLocale = resolveLocale(locale);
+  const payload = await fetchApiJson(`/api/master-screen/lifestyles?locale=${safeLocale}`, {
+    lifestyles: [],
+  });
 
   return payload.lifestyles || [];
 }

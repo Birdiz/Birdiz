@@ -38,12 +38,17 @@ function truncateSnippet(value) {
 
 export default function GlobalSearch({ locale, onNavigate }) {
   const intl = useIntl();
+  const [isMounted, setIsMounted] = useState(false);
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [error, setError] = useState(null);
   const [hasRequested, setHasRequested] = useState(false);
   const cacheRef = useRef(new Map());
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const trimmedQuery = query.trim();
 
@@ -122,6 +127,10 @@ export default function GlobalSearch({ locale, onNavigate }) {
       return accumulator;
     }, new Map());
   }, [results]);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="mt-6 border-t border-[var(--line)] pt-4">

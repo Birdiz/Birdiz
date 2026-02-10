@@ -11,18 +11,39 @@ import {
   getMasterScreenTransport,
 } from "../../../lib/masterScreenData";
 
+const MASTER_SCREEN_SECTIONS = new Set([
+  "damages",
+  "transport",
+  "properties",
+  "lifestyles",
+]);
+
+function resolveInitialSection(rawSection) {
+  const candidate = Array.isArray(rawSection) ? rawSection[0] : rawSection;
+  if (typeof candidate !== "string") {
+    return null;
+  }
+
+  return MASTER_SCREEN_SECTIONS.has(candidate) ? candidate : null;
+}
+
 export const generateMetadata = createGenerateMetadata({
   pathname: "/master-screen",
   titleId: "seo.masterScreen.title",
   descriptionId: "seo.masterScreen.description",
 });
-export default async function LocalizedMasterScreenPage({ params }) {
+export default async function LocalizedMasterScreenPage({
+  params,
+  searchParams = {},
+}) {
   const { locale } = await params;
+  const nextSearchParams = /** @type {any} */ (await searchParams);
+  const initialSection = resolveInitialSection(nextSearchParams.section);
   const [damages, transport, properties, lifestyles] = await Promise.all([
     getMasterScreenDamages(locale),
-    getMasterScreenTransport(),
-    getMasterScreenProperties(),
-    getMasterScreenLifestyles(),
+    getMasterScreenTransport(locale),
+    getMasterScreenProperties(locale),
+    getMasterScreenLifestyles(locale),
   ]);
 
   const content = getHomeContent(locale);
@@ -57,6 +78,7 @@ export default async function LocalizedMasterScreenPage({ params }) {
         transport={transport}
         properties={properties}
         lifestyles={lifestyles}
+        initialSection={initialSection}
       />
     </HomeShell>
   );

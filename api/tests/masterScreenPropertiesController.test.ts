@@ -17,10 +17,27 @@ describe("createMasterScreenPropertiesController", () => {
       masterScreenPropertiesService,
     });
 
-    await controller({} as never, res, vi.fn());
+    await controller({ query: {} } as never, res, vi.fn());
 
-    expect(masterScreenPropertiesService.getPropertiesData).toHaveBeenCalledOnce();
+    expect(masterScreenPropertiesService.getPropertiesData).toHaveBeenCalledWith("fr");
     expect(json).toHaveBeenCalledWith(properties);
+  });
+
+  it("passes locale query to the service", async () => {
+    const masterScreenPropertiesService = createMasterScreenPropertiesServiceMock(
+      vi.fn().mockResolvedValue({ buildings: [], maintenance: [] }),
+    );
+    const { res } = createMockResponse();
+
+    const controller = createMasterScreenPropertiesController({
+      masterScreenPropertiesService,
+    });
+
+    await controller({ query: { locale: "en" } } as never, res, vi.fn());
+
+    expect(masterScreenPropertiesService.getPropertiesData).toHaveBeenCalledWith(
+      "en",
+    );
   });
 
   it("returns 500 when service throws", async () => {

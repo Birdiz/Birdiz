@@ -37,6 +37,43 @@ describe("MasterScreenPropertiesRepository", () => {
     expect(insertMany).toHaveBeenCalledTimes(2);
   });
 
+  it("backfills localization fields when properties collections are already seeded", async () => {
+    const estimatedDocumentCount = vi.fn().mockResolvedValue(1);
+    const insertMany = vi.fn().mockResolvedValue(undefined);
+    const updateOne = vi.fn().mockResolvedValue(undefined);
+
+    const collection = {
+      estimatedDocumentCount,
+      insertMany,
+      updateOne,
+      find: vi.fn(),
+    } as unknown as Collection;
+
+    const database = {
+      collection: vi.fn().mockReturnValue(collection),
+    } as unknown as Db;
+
+    const repository = new MasterScreenPropertiesRepository({
+      databaseClient: createDatabaseClientMock(vi.fn().mockResolvedValue(database)),
+      buildings: [{ name: "Building", nameEn: "Building", nameFr: "Batiment", price: "1", rent: "1", duration: "1" }],
+      maintenances: [
+        {
+          name: "Maintenance",
+          nameEn: "Maintenance",
+          nameFr: "Entretien",
+          cost: "1",
+          workerUnqualified: "1",
+          workerQualified: "1",
+        },
+      ],
+    });
+
+    await repository.ensureSeedData();
+
+    expect(insertMany).not.toHaveBeenCalled();
+    expect(updateOne).toHaveBeenCalledTimes(2);
+  });
+
   it("returns grouped properties data", async () => {
     const makeCollection = (payload: Array<Record<string, unknown>>) => {
       const toArray = vi.fn().mockResolvedValue(payload);
@@ -46,6 +83,7 @@ describe("MasterScreenPropertiesRepository", () => {
       return {
         estimatedDocumentCount: vi.fn(),
         insertMany: vi.fn(),
+        updateOne: vi.fn(),
         find,
       };
     };

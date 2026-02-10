@@ -28,4 +28,30 @@ describe("MasterScreenSearchDocumentProvider", () => {
       "Lifestyles",
     );
   });
+
+  it("localizes document titles by locale", async () => {
+    const provider = new MasterScreenSearchDocumentProvider();
+
+    const frDocs = await provider.getDocuments("fr");
+    const enDocs = await provider.getDocuments("en");
+
+    expect(
+      frDocs.some((doc) => doc.entityType === "boat" && doc.title === "Barque"),
+    ).toBe(true);
+    expect(
+      enDocs.some((doc) => doc.entityType === "boat" && doc.title === "Rowboat"),
+    ).toBe(true);
+  });
+
+  it("localizes currency units in english search bodies", async () => {
+    const provider = new MasterScreenSearchDocumentProvider();
+    const enDocs = await provider.getDocuments("en");
+
+    const boatDoc = enDocs.find(
+      (doc) => doc.entityType === "boat" && doc.title === "Rowboat",
+    );
+
+    expect(boatDoc?.body).toContain("GP");
+    expect(boatDoc?.body).toContain("SP");
+  });
 });

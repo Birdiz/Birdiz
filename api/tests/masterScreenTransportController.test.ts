@@ -17,10 +17,25 @@ describe("createMasterScreenTransportController", () => {
       masterScreenTransportService,
     });
 
-    await controller({} as never, res, vi.fn());
+    await controller({ query: {} } as never, res, vi.fn());
 
-    expect(masterScreenTransportService.getTransportData).toHaveBeenCalledOnce();
+    expect(masterScreenTransportService.getTransportData).toHaveBeenCalledWith("fr");
     expect(json).toHaveBeenCalledWith(transport);
+  });
+
+  it("passes locale query to the service", async () => {
+    const masterScreenTransportService = createMasterScreenTransportServiceMock(
+      vi.fn().mockResolvedValue({ boats: [], mounts: [], mountEquipments: [] }),
+    );
+    const { res } = createMockResponse();
+
+    const controller = createMasterScreenTransportController({
+      masterScreenTransportService,
+    });
+
+    await controller({ query: { locale: "en" } } as never, res, vi.fn());
+
+    expect(masterScreenTransportService.getTransportData).toHaveBeenCalledWith("en");
   });
 
   it("returns 500 when service throws", async () => {

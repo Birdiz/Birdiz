@@ -47,7 +47,6 @@ export default async function LocalizedHomePage({ params }) {
               title={group.title}
               description={group.description}
               href={group.href}
-              status={group.status}
               meta={group.meta}
               ctaLabel={content.openToolLabel}
               featureImage={group.image}

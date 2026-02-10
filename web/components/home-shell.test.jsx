@@ -15,7 +15,7 @@ const content = {
 };
 
 describe("HomeShell", () => {
-  it("renders navigation and children content", () => {
+  it("renders navigation and children content", async () => {
     render(
       <LocaleIntlProvider locale="en" messages={getMessages("en")}>
         <HomeShell content={content} locale="en">
@@ -26,7 +26,7 @@ describe("HomeShell", () => {
 
     expect(screen.getByRole("heading", { name: /DDBuilder/ })).toBeInTheDocument();
     expect(screen.getByText("Child content")).toBeInTheDocument();
-    expect(screen.getByLabelText("Search")).toBeInTheDocument();
+    expect(await screen.findByLabelText("Search")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/Birdiz/Birdiz",

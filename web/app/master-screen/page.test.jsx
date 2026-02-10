@@ -89,6 +89,9 @@ describe("LocalizedMasterScreenPage", () => {
     expect(screen.getByText("Transport en ville")).toBeInTheDocument();
     expect(screen.getByText("1 PC/j")).toBeInTheDocument();
     expect(getMasterScreenDamages).toHaveBeenCalledWith("en");
+    expect(getMasterScreenTransport).toHaveBeenCalledWith("en");
+    expect(getMasterScreenProperties).toHaveBeenCalledWith("en");
+    expect(getMasterScreenLifestyles).toHaveBeenCalledWith("en");
   });
 
   it("requests french locale damages payload for fr route", async () => {
@@ -118,6 +121,9 @@ describe("LocalizedMasterScreenPage", () => {
     expect(screen.getByRole("heading", { name: "Écran MJ" })).toBeInTheDocument();
     expect(screen.getByText("Brûler par quelque chose")).toBeInTheDocument();
     expect(getMasterScreenDamages).toHaveBeenCalledWith("fr");
+    expect(getMasterScreenTransport).toHaveBeenCalledWith("fr");
+    expect(getMasterScreenProperties).toHaveBeenCalledWith("fr");
+    expect(getMasterScreenLifestyles).toHaveBeenCalledWith("fr");
   });
 
   it("renders empty state when selected section has no data", async () => {
@@ -142,5 +148,42 @@ describe("LocalizedMasterScreenPage", () => {
     expect(screen.getByText("No damages found yet.")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Show Transport" }));
     expect(screen.getByText("No transport data found yet.")).toBeInTheDocument();
+  });
+
+  it("opens the section requested via search params", async () => {
+    vi.mocked(getMasterScreenDamages).mockResolvedValue([
+      {
+        die: "1d10",
+        examples: ["Burned by something"],
+      },
+    ]);
+    vi.mocked(getMasterScreenTransport).mockResolvedValue({
+      boats: [{ name: "Barque", price: "50 PO", rent: "5 PA" }],
+      mounts: [],
+      mountEquipments: [],
+    });
+    vi.mocked(getMasterScreenProperties).mockResolvedValue({
+      buildings: [],
+      maintenance: [],
+    });
+    vi.mocked(getMasterScreenLifestyles).mockResolvedValue([]);
+
+    render(
+      <LocaleIntlProvider locale="en" messages={getMessages("en")}>
+        {
+          await MasterScreenPage({
+            params: { locale: "en" },
+            searchParams: { section: "transport" },
+          })
+        }
+      </LocaleIntlProvider>,
+    );
+
+    expect(screen.getByRole("button", { name: "Show Transport" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(screen.getByText("Barque")).toBeInTheDocument();
+    expect(screen.queryByText("1d10")).not.toBeInTheDocument();
   });
 });
