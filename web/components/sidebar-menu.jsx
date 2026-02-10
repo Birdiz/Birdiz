@@ -6,6 +6,7 @@ import { useIntl } from "react-intl";
 import { SUPPORTED_LOCALES } from "../lib/i18n/locales";
 import { getLocalePath } from "../lib/i18n/routing";
 import MedievalCrest from "./medieval-crest";
+import GlobalSearch from "./search/global-search";
 
 export default function SidebarMenu({
   locale,
@@ -49,6 +50,8 @@ export default function SidebarMenu({
           ))}
         </ul>
       </nav>
+
+      <GlobalSearch locale={locale} onNavigate={onClose} />
 
       <div className="mt-6 border-t border-[var(--line)] pt-4">
         <p className="m-0 mb-2 text-xs tracking-[0.08em] text-[var(--text-muted)] uppercase">

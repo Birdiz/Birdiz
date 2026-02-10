@@ -26,6 +26,7 @@ describe("HomeShell", () => {
 
     expect(screen.getByRole("heading", { name: /DDBuilder/ })).toBeInTheDocument();
     expect(screen.getByText("Child content")).toBeInTheDocument();
+    expect(screen.getByLabelText("Search")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/Birdiz/Birdiz",

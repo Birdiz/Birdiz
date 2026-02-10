@@ -5,6 +5,7 @@ const routeFactoryMocks = vi.hoisted(() => ({
   createMasterScreenRouter: vi.fn(
     () => (_req: unknown, _res: unknown, next: () => void) => next(),
   ),
+  createSearchRouter: vi.fn(() => (_req: unknown, _res: unknown, next: () => void) => next()),
 }));
 
 vi.mock("../src/routes/healthRoutes", () => ({
@@ -12,6 +13,9 @@ vi.mock("../src/routes/healthRoutes", () => ({
 }));
 vi.mock("../src/master-screen/routes/masterScreenRoutes", () => ({
   createMasterScreenRouter: routeFactoryMocks.createMasterScreenRouter,
+}));
+vi.mock("../src/search/routes/searchRoutes", () => ({
+  createSearchRouter: routeFactoryMocks.createSearchRouter,
 }));
 
 describe("createApp", () => {
@@ -23,6 +27,7 @@ describe("createApp", () => {
     const masterScreenTransportController = vi.fn();
     const masterScreenPropertiesController = vi.fn();
     const masterScreenLifestyleController = vi.fn();
+    const searchController = vi.fn();
 
     const app = createApp({
       corsOrigin: "https://birdiz.dev",
@@ -31,6 +36,7 @@ describe("createApp", () => {
       masterScreenTransportController,
       masterScreenPropertiesController,
       masterScreenLifestyleController,
+      searchController,
     });
 
     expect(typeof app.use).toBe("function");
@@ -42,6 +48,9 @@ describe("createApp", () => {
       masterScreenTransportController,
       masterScreenPropertiesController,
       masterScreenLifestyleController,
+    });
+    expect(routeFactoryMocks.createSearchRouter).toHaveBeenCalledWith({
+      searchController,
     });
   });
 });

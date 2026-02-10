@@ -6,6 +6,7 @@ A skill is a set of local instructions to follow that is stored in a `SKILL.md` 
 - prettier-workflow: Run Prettier through Makefile targets, verify formatting completes successfully, and report touched files concisely. (file: ./.codex/skills/prettier-workflow/SKILL.md)
 - test-maintenance-workflow: Add or update automated tests whenever code behavior changes in api or web, and run lint + typecheck + tests before handoff. (file: ./.codex/skills/test-maintenance-workflow/SKILL.md)
 - readme-maintenance: Keep README.md concise and keep detailed docs in docs/ while ensuring documentation stays aligned with commands, endpoints, and environment variables. (file: ./.codex/skills/readme-maintenance/SKILL.md)
+- search-architecture: Design scalable DDBuilder search with one global index and page-level refinement, including locale-aware indexing and deep links to target modules/sections. (file: ./.codex/skills/search-architecture/SKILL.md)
 
 ### How to use skills
 - Discovery: The list above is the skills available in this session (name + description + file path). Skill bodies live on disk at the listed paths.

@@ -2,6 +2,7 @@ import cors from "cors";
 import express, { type RequestHandler, type Express } from "express";
 import { createHealthRouter } from "./routes/healthRoutes";
 import { createMasterScreenRouter } from "./master-screen/routes/masterScreenRoutes";
+import { createSearchRouter } from "./search/routes/searchRoutes";
 
 interface CreateAppOptions {
   corsOrigin: string;
@@ -10,6 +11,7 @@ interface CreateAppOptions {
   masterScreenTransportController: RequestHandler;
   masterScreenPropertiesController: RequestHandler;
   masterScreenLifestyleController: RequestHandler;
+  searchController: RequestHandler;
 }
 
 export function createApp({
@@ -19,6 +21,7 @@ export function createApp({
   masterScreenTransportController,
   masterScreenPropertiesController,
   masterScreenLifestyleController,
+  searchController,
 }: CreateAppOptions): Express {
   const app = express();
 
@@ -38,6 +41,7 @@ export function createApp({
       masterScreenLifestyleController,
     }),
   );
+  app.use("/api", createSearchRouter({ searchController }));
 
   return app;
 }

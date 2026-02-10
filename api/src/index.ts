@@ -25,6 +25,9 @@ import {
   masterScreenMaintenances,
 } from "./master-screen/data/masterScreenBuildings";
 import { masterScreenLifestyles } from "./master-screen/data/masterScreenLifestyles";
+import { SearchService } from "./search/services/searchService";
+import { createSearchController } from "./search/controllers/searchController";
+import { createSearchProviders } from "./search/providers/searchProviders";
 
 const databaseClient = new DatabaseClient(env.mongoUrl);
 const masterScreenDamageRepository = new MasterScreenDamageRepository({
@@ -71,6 +74,8 @@ const masterScreenPropertiesController = createMasterScreenPropertiesController(
 const masterScreenLifestyleController = createMasterScreenLifestyleController({
   masterScreenLifestyleService,
 });
+const searchService = new SearchService(createSearchProviders());
+const searchController = createSearchController({ searchService });
 
 const app = createApp({
   corsOrigin: env.corsOrigin,
@@ -79,6 +84,7 @@ const app = createApp({
   masterScreenTransportController,
   masterScreenPropertiesController,
   masterScreenLifestyleController,
+  searchController,
 });
 
 const server = app.listen(env.port, () => {
