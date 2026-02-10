@@ -8,13 +8,6 @@ export function buildHomeSection(t) {
       art: t("home.hero.art"),
       atmosphereImage: "/ambiance/hero-atmosphere.svg",
     },
-    intentionsTitle: t("home.intentions.title"),
-    intentionsSubtitle: t("home.intentions.subtitle"),
-    intentions: [
-      t("home.intentions.1"),
-      t("home.intentions.2"),
-      t("home.intentions.3"),
-    ],
     toolsTitle: t("home.tools.title"),
     toolsSubtitle: t("home.tools.subtitle"),
     openToolLabel: t("home.tools.open"),

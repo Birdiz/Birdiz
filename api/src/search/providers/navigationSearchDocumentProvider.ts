@@ -32,8 +32,8 @@ export class NavigationSearchDocumentProvider implements SearchDocumentProvider 
         title: labels.home,
         body:
           locale === "en"
-            ? "Landing page with DDBuilder intentions and tool modules"
-            : "Page d'accueil avec les intentions DDBuilder et les modules d'outils",
+            ? "Landing page with DDBuilder tool modules"
+            : "Page d'accueil avec les modules d'outils DDBuilder",
         keywords: [
           labels.home,
           locale === "en" ? "landing page" : "page d'accueil",

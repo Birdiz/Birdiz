@@ -17,7 +17,6 @@ describe("LocalizedHomePage", () => {
         name: "Tools first. Lore second. Faster play for everyone.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Intentions")).toBeInTheDocument();
     expect(screen.getByText("Tool Modules")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Master Screen" })).toBeInTheDocument();
   });
@@ -34,7 +33,6 @@ describe("LocalizedHomePage", () => {
         name: "Les outils d'abord. Le lore ensuite. Plus fluide pour tous.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Intentions")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Écran MJ" })).toBeInTheDocument();
   });
 });

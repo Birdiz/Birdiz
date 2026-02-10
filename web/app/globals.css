@@ -35,6 +35,16 @@
   }
 }
 
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -265,7 +275,6 @@
     background-position: center;
   }
 
-  .intention-card,
   .milestone-card,
   .data-card {
     background:
@@ -310,6 +319,39 @@
   .table-surface {
     overflow-x: auto;
     border-radius: 12px;
+    border: 1px solid rgba(217, 178, 110, 0.22);
+    background:
+      linear-gradient(150deg, rgba(141, 42, 29, 0.14), transparent 35%),
+      rgba(17, 12, 9, 0.82);
+    padding: 0.9rem;
+  }
+
+  .skeleton-shimmer {
+    border: 1px solid rgba(217, 178, 110, 0.14);
+    background:
+      linear-gradient(
+        110deg,
+        rgba(79, 54, 37, 0.26) 8%,
+        rgba(217, 178, 110, 0.22) 18%,
+        rgba(79, 54, 37, 0.26) 33%
+      ),
+      rgba(24, 16, 12, 0.9);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s linear infinite;
+  }
+
+  .skeleton-line {
+    height: 0.8rem;
+    border-radius: 999px;
+  }
+
+  .skeleton-line-lg {
+    height: 1.2rem;
+    border-radius: 999px;
+  }
+
+  .skeleton-panel {
+    border-radius: 14px;
     border: 1px solid rgba(217, 178, 110, 0.22);
     background:
       linear-gradient(150deg, rgba(141, 42, 29, 0.14), transparent 35%),

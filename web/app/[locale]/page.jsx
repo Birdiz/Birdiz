@@ -26,19 +26,6 @@ export default async function LocalizedHomePage({ params }) {
         backgroundImage={content.hero.atmosphereImage}
       />
 
-      <SectionPanel title={content.intentionsTitle} subtitle={content.intentionsSubtitle}>
-        <ul className="m-0 grid gap-2 p-0 md:grid-cols-3">
-          {content.intentions.map((intention) => (
-            <li
-              key={intention}
-              className="intention-card list-none rounded-[12px] border border-[var(--line)] px-3 py-3 text-sm leading-6 text-[var(--text-soft)]"
-            >
-              {intention}
-            </li>
-          ))}
-        </ul>
-      </SectionPanel>
-
       <SectionPanel title={content.toolsTitle} subtitle={content.toolsSubtitle}>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {content.toolGroups.map((group) => (
