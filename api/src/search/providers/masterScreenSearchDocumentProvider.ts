@@ -11,6 +11,7 @@ import { masterScreenDamages } from "../../master-screen/data/masterScreenDamage
 import { masterScreenLifestyles } from "../../master-screen/data/masterScreenLifestyles";
 import { localizeCurrencyUnits } from "../../master-screen/utils/currency";
 import type { SupportedLocale } from "../../master-screen/utils/locale";
+import { getLocalizedName, getLocalizedDescription } from "../../master-screen/utils/localization";
 import type { SearchDocument, SearchDocumentProvider } from "../types/searchTypes";
 
 const SECTION_TITLES: Record<
@@ -47,17 +48,6 @@ function sectionTitle(
   return SECTION_TITLES[locale][section];
 }
 
-function getLocalizedText(
-  locale: SupportedLocale,
-  options: { defaultValue?: string; valueEn?: string; valueFr?: string },
-): string {
-  if (locale === "en") {
-    return options.valueEn ?? options.defaultValue ?? options.valueFr ?? "";
-  }
-
-  return options.valueFr ?? options.defaultValue ?? options.valueEn ?? "";
-}
-
 export class MasterScreenSearchDocumentProvider implements SearchDocumentProvider {
   async getDocuments(locale: SupportedLocale): Promise<SearchDocument[]> {
     const baseHref = `/${locale}/master-screen`;
@@ -82,11 +72,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
     }
 
     for (const boat of masterScreenBoats) {
-      const boatName = getLocalizedText(locale, {
-        defaultValue: boat.name,
-        valueEn: boat.nameEn,
-        valueFr: boat.nameFr,
-      });
+      const boatName = getLocalizedName(locale, boat);
 
       documents.push({
         id: `boat-${toAnchor(boatName)}-${locale}`,
@@ -108,11 +94,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
     }
 
     for (const mount of masterScreenMounts) {
-      const mountName = getLocalizedText(locale, {
-        defaultValue: mount.name,
-        valueEn: mount.nameEn,
-        valueFr: mount.nameFr,
-      });
+      const mountName = getLocalizedName(locale, mount);
 
       documents.push({
         id: `mount-${toAnchor(mountName)}-${locale}`,
@@ -135,11 +117,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
     }
 
     for (const equipment of masterScreenMountEquipments) {
-      const equipmentName = getLocalizedText(locale, {
-        defaultValue: equipment.name,
-        valueEn: equipment.nameEn,
-        valueFr: equipment.nameFr,
-      });
+      const equipmentName = getLocalizedName(locale, equipment);
 
       documents.push({
         id: `mount-equipment-${toAnchor(equipmentName)}-${locale}`,
@@ -161,11 +139,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
     }
 
     for (const building of masterScreenBuildings) {
-      const buildingName = getLocalizedText(locale, {
-        defaultValue: building.name,
-        valueEn: building.nameEn,
-        valueFr: building.nameFr,
-      });
+      const buildingName = getLocalizedName(locale, building);
 
       documents.push({
         id: `building-${toAnchor(buildingName)}-${locale}`,
@@ -188,11 +162,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
     }
 
     for (const maintenance of masterScreenMaintenances) {
-      const maintenanceName = getLocalizedText(locale, {
-        defaultValue: maintenance.name,
-        valueEn: maintenance.nameEn,
-        valueFr: maintenance.nameFr,
-      });
+      const maintenanceName = getLocalizedName(locale, maintenance);
 
       documents.push({
         id: `maintenance-${toAnchor(maintenanceName)}-${locale}`,
@@ -215,16 +185,8 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
     }
 
     for (const lifestyle of masterScreenLifestyles) {
-      const lifestyleName = getLocalizedText(locale, {
-        defaultValue: lifestyle.name,
-        valueEn: lifestyle.nameEn,
-        valueFr: lifestyle.nameFr,
-      });
-      const lifestyleDescription = getLocalizedText(locale, {
-        defaultValue: lifestyle.description,
-        valueEn: lifestyle.descriptionEn,
-        valueFr: lifestyle.descriptionFr,
-      });
+      const lifestyleName = getLocalizedName(locale, lifestyle);
+      const lifestyleDescription = getLocalizedDescription(locale, lifestyle);
 
       documents.push({
         id: `lifestyle-${toAnchor(lifestyleName)}-${locale}`,
@@ -242,11 +204,7 @@ export class MasterScreenSearchDocumentProvider implements SearchDocumentProvide
       });
 
       for (const service of lifestyle.services) {
-        const serviceName = getLocalizedText(locale, {
-          defaultValue: service.name,
-          valueEn: service.nameEn,
-          valueFr: service.nameFr,
-        });
+        const serviceName = getLocalizedName(locale, service);
 
         documents.push({
           id: `service-${toAnchor(lifestyleName)}-${toAnchor(serviceName)}-${locale}`,

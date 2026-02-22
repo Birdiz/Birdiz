@@ -1,6 +1,7 @@
 import type { DatabaseClient } from "../../db/mongoClient";
 import type { MasterScreenLifestyle } from "../data/masterScreenLifestyles";
 import { BaseSeededRepository } from "./baseSeededRepository";
+import { COLLECTION_NAMES } from "../constants/collectionNames";
 
 interface MasterScreenLifestyleRepositoryOptions {
   databaseClient: DatabaseClient;
@@ -19,13 +20,11 @@ export class MasterScreenLifestyleRepository extends BaseSeededRepository {
   }
 
   async ensureSeedData(): Promise<void> {
-    await this.ensureCollectionSeedData("master_screen_lifestyles", this.lifestyles);
+    await this.ensureCollectionSeedData(COLLECTION_NAMES.LIFESTYLES, this.lifestyles);
   }
 
   async findAll(): Promise<MasterScreenLifestyle[]> {
-    return this.findAllFromCollection<MasterScreenLifestyle>(
-      "master_screen_lifestyles",
-    );
+    return this.findAllFromCollection<MasterScreenLifestyle>(COLLECTION_NAMES.LIFESTYLES);
   }
 
   protected createLocalizationBackfillPayload(

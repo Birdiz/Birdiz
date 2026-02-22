@@ -3,7 +3,7 @@ import { MasterScreenDamageService } from "../src/master-screen/services/masterS
 import type { MasterScreenDamageRepository } from "../src/master-screen/repositories/masterScreenDamageRepository";
 
 describe("MasterScreenDamageService", () => {
-  it("ensures seed data before returning localized damages", async () => {
+  it("returns localized damages", async () => {
     const damages = [
       {
         die: "2d10",
@@ -12,11 +12,9 @@ describe("MasterScreenDamageService", () => {
         sortOrder: 2,
       },
     ];
-    const ensureSeedData = vi.fn().mockResolvedValue(undefined);
     const findAll = vi.fn().mockResolvedValue(damages);
 
     const repository = {
-      ensureSeedData,
       findAll,
     } as unknown as MasterScreenDamageRepository;
 
@@ -30,15 +28,10 @@ describe("MasterScreenDamageService", () => {
         sortOrder: 2,
       },
     ]);
-    expect(ensureSeedData).toHaveBeenCalledOnce();
     expect(findAll).toHaveBeenCalledOnce();
-    expect(ensureSeedData.mock.invocationCallOrder[0]).toBeLessThan(
-      findAll.mock.invocationCallOrder[0],
-    );
   });
 
   it("falls back to french examples for legacy records", async () => {
-    const ensureSeedData = vi.fn().mockResolvedValue(undefined);
     const findAll = vi.fn().mockResolvedValue([
       {
         die: "1d10",
@@ -48,7 +41,6 @@ describe("MasterScreenDamageService", () => {
     ]);
 
     const repository = {
-      ensureSeedData,
       findAll,
     } as unknown as MasterScreenDamageRepository;
 

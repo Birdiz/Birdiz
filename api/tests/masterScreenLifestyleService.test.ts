@@ -3,7 +3,7 @@ import { MasterScreenLifestyleService } from "../src/master-screen/services/mast
 import type { MasterScreenLifestyleRepository } from "../src/master-screen/repositories/masterScreenLifestyleRepository";
 
 describe("MasterScreenLifestyleService", () => {
-  it("ensures seed data before returning localized lifestyles", async () => {
+  it("returns localized lifestyles", async () => {
     const lifestyles = [
       {
         name: "Modeste",
@@ -23,11 +23,9 @@ describe("MasterScreenLifestyleService", () => {
         ],
       },
     ];
-    const ensureSeedData = vi.fn().mockResolvedValue(undefined);
     const findAll = vi.fn().mockResolvedValue(lifestyles);
 
     const repository = {
-      ensureSeedData,
       findAll,
     } as unknown as MasterScreenLifestyleRepository;
 
@@ -45,7 +43,6 @@ describe("MasterScreenLifestyleService", () => {
         ],
       },
     ]);
-    expect(ensureSeedData).toHaveBeenCalledOnce();
     expect(findAll).toHaveBeenCalledOnce();
   });
 
@@ -70,7 +67,6 @@ describe("MasterScreenLifestyleService", () => {
       },
     ];
     const repository = {
-      ensureSeedData: vi.fn().mockResolvedValue(undefined),
       findAll: vi.fn().mockResolvedValue(lifestyles),
     } as unknown as MasterScreenLifestyleRepository;
 

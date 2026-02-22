@@ -8,17 +8,7 @@ import type {
 } from "../data/masterScreenBuildings";
 import { localizeCurrencyUnits } from "../utils/currency";
 import type { SupportedLocale } from "../utils/locale";
-
-function getLocalizedName(
-  locale: SupportedLocale,
-  entry: { name?: string; nameEn?: string; nameFr?: string },
-): string {
-  if (locale === "en") {
-    return entry.nameEn ?? entry.name ?? entry.nameFr ?? "";
-  }
-
-  return entry.nameFr ?? entry.name ?? entry.nameEn ?? "";
-}
+import { getLocalizedName } from "../utils/localization";
 
 export class MasterScreenPropertiesService {
   private readonly masterScreenPropertiesRepository: MasterScreenPropertiesRepository;
@@ -30,8 +20,6 @@ export class MasterScreenPropertiesService {
   async getPropertiesData(
     locale: SupportedLocale = "fr",
   ): Promise<MasterScreenPropertiesData> {
-    await this.masterScreenPropertiesRepository.ensureSeedData();
-
     const propertiesData = await this.masterScreenPropertiesRepository.findPropertiesData();
 
     return {

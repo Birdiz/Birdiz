@@ -1,5 +1,7 @@
 import cors from "cors";
 import express, { type RequestHandler, type Express } from "express";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 import { createHealthRouter } from "./routes/healthRoutes";
 import { createMasterScreenRouter } from "./master-screen/routes/masterScreenRoutes";
 import { createSearchRouter } from "./search/routes/searchRoutes";
@@ -25,6 +27,15 @@ export function createApp({
 }: CreateAppOptions): Express {
   const app = express();
 
+  app.use(helmet());
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000,
+      limit: 200,
+      standardHeaders: true,
+      legacyHeaders: false,
+    }),
+  );
   app.use(
     cors({
       origin: corsOrigin,

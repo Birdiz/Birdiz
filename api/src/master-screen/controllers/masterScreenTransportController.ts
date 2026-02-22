@@ -1,13 +1,10 @@
 import type { RequestHandler } from "express";
 import type { MasterScreenTransportService } from "../services/masterScreenTransportService";
 import { resolveLocale } from "../utils/locale";
+import { getErrorMessage } from "../../utils/error";
 
 interface MasterScreenTransportControllerOptions {
   masterScreenTransportService: MasterScreenTransportService;
-}
-
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "Unknown error";
 }
 
 export function createMasterScreenTransportController({

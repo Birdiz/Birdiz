@@ -1,13 +1,10 @@
 import type { RequestHandler } from "express";
 import type { SearchService } from "../services/searchService";
 import { parseSearchQuery } from "../utils/searchQuery";
+import { getErrorMessage } from "../../utils/error";
 
 interface SearchControllerOptions {
   searchService: SearchService;
-}
-
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "Unknown error";
 }
 
 export function createSearchController({

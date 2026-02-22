@@ -1,13 +1,10 @@
 import type { RequestHandler } from "express";
 import type { MasterScreenPropertiesService } from "../services/masterScreenPropertiesService";
 import { resolveLocale } from "../utils/locale";
+import { getErrorMessage } from "../../utils/error";
 
 interface MasterScreenPropertiesControllerOptions {
   masterScreenPropertiesService: MasterScreenPropertiesService;
-}
-
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "Unknown error";
 }
 
 export function createMasterScreenPropertiesController({

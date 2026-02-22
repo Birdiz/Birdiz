@@ -9,17 +9,7 @@ import type {
 } from "../data/masterScreenTransport";
 import { localizeCurrencyUnits } from "../utils/currency";
 import type { SupportedLocale } from "../utils/locale";
-
-function getLocalizedName(
-  locale: SupportedLocale,
-  entry: { name?: string; nameEn?: string; nameFr?: string },
-): string {
-  if (locale === "en") {
-    return entry.nameEn ?? entry.name ?? entry.nameFr ?? "";
-  }
-
-  return entry.nameFr ?? entry.name ?? entry.nameEn ?? "";
-}
+import { getLocalizedName } from "../utils/localization";
 
 export class MasterScreenTransportService {
   private readonly masterScreenTransportRepository: MasterScreenTransportRepository;
@@ -29,8 +19,6 @@ export class MasterScreenTransportService {
   }
 
   async getTransportData(locale: SupportedLocale = "fr"): Promise<MasterScreenTransportData> {
-    await this.masterScreenTransportRepository.ensureSeedData();
-
     const transportData = await this.masterScreenTransportRepository.findTransportData();
 
     return {

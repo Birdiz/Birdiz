@@ -3,7 +3,7 @@ import { MasterScreenPropertiesService } from "../src/master-screen/services/mas
 import type { MasterScreenPropertiesRepository } from "../src/master-screen/repositories/masterScreenPropertiesRepository";
 
 describe("MasterScreenPropertiesService", () => {
-  it("ensures seed data before returning localized properties", async () => {
+  it("returns localized properties", async () => {
     const properties = {
       buildings: [
         { name: "Atelier", nameEn: "Workshop", nameFr: "Atelier", price: "1", rent: "1", duration: "1" },
@@ -19,11 +19,9 @@ describe("MasterScreenPropertiesService", () => {
         },
       ],
     };
-    const ensureSeedData = vi.fn().mockResolvedValue(undefined);
     const findPropertiesData = vi.fn().mockResolvedValue(properties);
 
     const repository = {
-      ensureSeedData,
       findPropertiesData,
     } as unknown as MasterScreenPropertiesRepository;
 
@@ -34,7 +32,6 @@ describe("MasterScreenPropertiesService", () => {
       buildings: [{ ...properties.buildings[0], name: "Workshop", price: "1", rent: "1" }],
       maintenance: [{ ...properties.maintenance[0], name: "Farm", cost: "1" }],
     });
-    expect(ensureSeedData).toHaveBeenCalledOnce();
     expect(findPropertiesData).toHaveBeenCalledOnce();
   });
 
@@ -55,7 +52,6 @@ describe("MasterScreenPropertiesService", () => {
       ],
     };
     const repository = {
-      ensureSeedData: vi.fn().mockResolvedValue(undefined),
       findPropertiesData: vi.fn().mockResolvedValue(properties),
     } as unknown as MasterScreenPropertiesRepository;
 

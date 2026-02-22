@@ -20,8 +20,6 @@ export class MasterScreenDamageService {
   async getDamages(
     locale: SupportedLocale = "fr",
   ): Promise<MasterScreenLocalizedDamage[]> {
-    await this.masterScreenDamageRepository.ensureSeedData();
-
     const damages = await this.masterScreenDamageRepository.findAll();
 
     return damages.map((damage) => this.localizeDamage(damage, locale));
