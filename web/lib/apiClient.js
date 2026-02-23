@@ -9,7 +9,7 @@ function getApiBaseUrl() {
 async function fetchApiJsonWithMeta(path, fallbackValue, options = {}) {
   try {
     const response = await fetch(`${getApiBaseUrl()}${path}`, {
-      cache: "no-store",
+      ...(options.next ? { next: options.next } : { cache: "no-store" }),
       signal: options.signal,
     });
 
@@ -36,8 +36,8 @@ async function fetchApiJsonWithMeta(path, fallbackValue, options = {}) {
   }
 }
 
-export async function fetchApiJson(path, fallbackValue) {
-  const { data } = await fetchApiJsonWithMeta(path, fallbackValue);
+export async function fetchApiJson(path, fallbackValue, options = {}) {
+  const { data } = await fetchApiJsonWithMeta(path, fallbackValue, options);
   return data;
 }
 

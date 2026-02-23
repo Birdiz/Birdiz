@@ -64,6 +64,8 @@ function TavernIcon() {
   );
 }
 
+const NAME_KEY = "name";
+
 function DataTable({ title, columns, rows, getKey }) {
   return (
     <div className="table-surface">
@@ -240,8 +242,6 @@ export default function MasterScreenDashboard({
     setActiveSection(resolvedInitialSection);
   }, [resolvedInitialSection]);
 
-  const nameKey = "name";
-
   return (
     <>
       <section className="mb-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -318,7 +318,7 @@ export default function MasterScreenDashboard({
           subtitle={labels.section.transport.subtitle}
           className="animate-in"
         >
-          {!sections.find((section) => section.id === "transport")?.hasData ? (
+          {!transport.boats.length && !transport.mounts.length && !transport.mountEquipments.length ? (
             <p className="m-0 leading-[1.7] text-[var(--text-main)]">
               {labels.section.transport.empty}
             </p>
@@ -327,7 +327,7 @@ export default function MasterScreenDashboard({
               <DataTable
                 title={labels.table.boats}
                 columns={[
-                  { key: nameKey, label: labels.table.columns.name },
+                  { key: NAME_KEY, label: labels.table.columns.name },
                   { key: "price", label: labels.table.columns.price },
                   { key: "rent", label: labels.table.columns.rent },
                 ]}
@@ -336,13 +336,13 @@ export default function MasterScreenDashboard({
                   price: boat.price,
                   rent: boat.rent,
                 }))}
-                getKey={(row) => row[nameKey]}
+                getKey={(row) => row[NAME_KEY]}
               />
 
               <DataTable
                 title={labels.table.mounts}
                 columns={[
-                  { key: nameKey, label: labels.table.columns.name },
+                  { key: NAME_KEY, label: labels.table.columns.name },
                   { key: "price", label: labels.table.columns.price },
                   { key: "charge", label: labels.table.columns.charge },
                   { key: "rent", label: labels.table.columns.rent },
@@ -353,13 +353,13 @@ export default function MasterScreenDashboard({
                   charge: mount.charge,
                   rent: mount.rent,
                 }))}
-                getKey={(row) => row[nameKey]}
+                getKey={(row) => row[NAME_KEY]}
               />
 
               <DataTable
                 title={labels.table.mountEquipment}
                 columns={[
-                  { key: nameKey, label: labels.table.columns.name },
+                  { key: NAME_KEY, label: labels.table.columns.name },
                   { key: "price", label: labels.table.columns.price },
                   { key: "charge", label: labels.table.columns.charge },
                 ]}
@@ -368,7 +368,7 @@ export default function MasterScreenDashboard({
                   price: equipment.price,
                   charge: equipment.charge,
                 }))}
-                getKey={(row) => row[nameKey]}
+                getKey={(row) => row[NAME_KEY]}
               />
             </div>
           )}
@@ -381,7 +381,7 @@ export default function MasterScreenDashboard({
           subtitle={labels.section.properties.subtitle}
           className="animate-in"
         >
-          {!sections.find((section) => section.id === "properties")?.hasData ? (
+          {!properties.buildings.length && !properties.maintenance.length ? (
             <p className="m-0 leading-[1.7] text-[var(--text-main)]">
               {labels.section.properties.empty}
             </p>
@@ -390,7 +390,7 @@ export default function MasterScreenDashboard({
               <DataTable
                 title={labels.table.buildings}
                 columns={[
-                  { key: nameKey, label: labels.table.columns.name },
+                  { key: NAME_KEY, label: labels.table.columns.name },
                   { key: "price", label: labels.table.columns.price },
                   { key: "rent", label: labels.table.columns.rent },
                   { key: "durationDays", label: labels.table.columns.durationDays },
@@ -401,13 +401,13 @@ export default function MasterScreenDashboard({
                   rent: building.rent,
                   durationDays: building.duration,
                 }))}
-                getKey={(row) => row[nameKey]}
+                getKey={(row) => row[NAME_KEY]}
               />
 
               <DataTable
                 title={labels.table.maintenance}
                 columns={[
-                  { key: nameKey, label: labels.table.columns.name },
+                  { key: NAME_KEY, label: labels.table.columns.name },
                   { key: "dailyCost", label: labels.table.columns.dailyCost },
                   {
                     key: "workerUnqualified",
@@ -421,7 +421,7 @@ export default function MasterScreenDashboard({
                   workerUnqualified: maintenance.workerUnqualified,
                   workerQualified: maintenance.workerQualified,
                 }))}
-                getKey={(row) => row[nameKey]}
+                getKey={(row) => row[NAME_KEY]}
               />
             </div>
           )}

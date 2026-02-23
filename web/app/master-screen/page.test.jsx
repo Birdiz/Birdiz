@@ -58,12 +58,10 @@ describe("LocalizedMasterScreenPage", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Master Screen",
+        name: "In-session references for high-velocity decisions",
       }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText("In-session references for high-velocity decisions"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Master Screen", { selector: "p" })).toBeInTheDocument();
     expect(
       screen.getByText(
         "Pick a domain card to focus one data module at a time, then resolve outcomes without scanning through long stacked tables.",
@@ -118,7 +116,7 @@ describe("LocalizedMasterScreenPage", () => {
       </LocaleIntlProvider>,
     );
 
-    expect(screen.getByRole("heading", { name: "Écran MJ" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Références de session pour des décisions rapides" })).toBeInTheDocument();
     expect(screen.getByText("Brûler par quelque chose")).toBeInTheDocument();
     expect(getMasterScreenDamages).toHaveBeenCalledWith("fr");
     expect(getMasterScreenTransport).toHaveBeenCalledWith("fr");

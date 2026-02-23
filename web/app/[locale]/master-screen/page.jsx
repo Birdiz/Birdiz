@@ -50,8 +50,8 @@ export default async function LocalizedMasterScreenPage({
   const intl = getIntl(locale);
 
   const hero = {
-    eyebrow: intl.formatMessage({ id: "master.hero.title" }),
-    title: intl.formatMessage({ id: "master.hero.eyebrow" }),
+    eyebrow: intl.formatMessage({ id: "master.hero.eyebrow" }),
+    title: intl.formatMessage({ id: "master.hero.title" }),
     description: intl.formatMessage({ id: "master.hero.description" }),
     art: intl.formatMessage({ id: "master.hero.art" }),
     badges: [
