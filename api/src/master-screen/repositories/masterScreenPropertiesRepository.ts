@@ -4,6 +4,7 @@ import type {
   MasterScreenMaintenance,
 } from "../data/masterScreenBuildings";
 import { BaseSeededRepository } from "./baseSeededRepository";
+import { COLLECTION_NAMES } from "../constants/collectionNames";
 
 export interface MasterScreenPropertiesData {
   buildings: MasterScreenBuilding[];
@@ -32,20 +33,15 @@ export class MasterScreenPropertiesRepository extends BaseSeededRepository {
 
   async ensureSeedData(): Promise<void> {
     await Promise.all([
-      this.ensureCollectionSeedData("master_screen_buildings", this.buildings),
-      this.ensureCollectionSeedData(
-        "master_screen_maintenances",
-        this.maintenances,
-      ),
+      this.ensureCollectionSeedData(COLLECTION_NAMES.BUILDINGS, this.buildings),
+      this.ensureCollectionSeedData(COLLECTION_NAMES.MAINTENANCES, this.maintenances),
     ]);
   }
 
   async findPropertiesData(): Promise<MasterScreenPropertiesData> {
     const [buildings, maintenance] = await Promise.all([
-      this.findAllFromCollection<MasterScreenBuilding>("master_screen_buildings"),
-      this.findAllFromCollection<MasterScreenMaintenance>(
-        "master_screen_maintenances",
-      ),
+      this.findAllFromCollection<MasterScreenBuilding>(COLLECTION_NAMES.BUILDINGS),
+      this.findAllFromCollection<MasterScreenMaintenance>(COLLECTION_NAMES.MAINTENANCES),
     ]);
 
     return { buildings, maintenance };

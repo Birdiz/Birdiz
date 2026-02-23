@@ -87,14 +87,11 @@ const app = createApp({
   searchController,
 });
 
-const server = app.listen(env.port, () => {
-  console.log(`Birdiz API listening on port ${env.port}`);
-});
-
+let server: ReturnType<typeof app.listen> | null = null;
 let shuttingDown = false;
 
 async function shutdown(signal: string): Promise<void> {
-  if (shuttingDown) {
+  if (shuttingDown || !server) {
     return;
   }
 
@@ -113,4 +110,22 @@ process.on("SIGINT", () => {
 
 process.on("SIGTERM", () => {
   void shutdown("SIGTERM");
+});
+
+async function start(): Promise<void> {
+  await Promise.all([
+    masterScreenDamageRepository.ensureSeedData(),
+    masterScreenTransportRepository.ensureSeedData(),
+    masterScreenPropertiesRepository.ensureSeedData(),
+    masterScreenLifestyleRepository.ensureSeedData(),
+  ]);
+
+  server = app.listen(env.port, () => {
+    console.log(`Birdiz API listening on port ${env.port}`);
+  });
+}
+
+void start().catch((error: unknown) => {
+  console.error("Failed to start Birdiz API:", error);
+  process.exit(1);
 });

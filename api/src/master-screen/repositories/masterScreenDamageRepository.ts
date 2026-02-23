@@ -1,6 +1,7 @@
 import type { Collection } from "mongodb";
 import type { DatabaseClient } from "../../db/mongoClient";
 import type { MasterScreenDamage } from "../data/masterScreenDamages";
+import { COLLECTION_NAMES } from "../constants/collectionNames";
 
 export interface MasterScreenDamageDocument {
   die: string;
@@ -26,7 +27,7 @@ export class MasterScreenDamageRepository {
   }: MasterScreenDamageRepositoryOptions) {
     this.databaseClient = databaseClient;
     this.seedData = seedData;
-    this.collectionName = "master_screen_damages";
+    this.collectionName = COLLECTION_NAMES.DAMAGES;
   }
 
   async ensureSeedData(): Promise<void> {

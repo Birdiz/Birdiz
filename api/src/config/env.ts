@@ -1,3 +1,13 @@
+import { z } from "zod";
+
+const envSchema = z.object({
+  PORT: z.coerce.number().default(4000),
+  MONGO_URL: z.string().min(1).default("mongodb://localhost:27017/birdiz"),
+  CORS_ORIGIN: z.string().default("http://localhost:3000"),
+});
+
+const parsed = envSchema.parse(process.env);
+
 export interface EnvConfig {
   port: number;
   mongoUrl: string;
@@ -5,7 +15,7 @@ export interface EnvConfig {
 }
 
 export const env: EnvConfig = {
-  port: Number(process.env.PORT || 4000),
-  mongoUrl: process.env.MONGO_URL || "mongodb://localhost:27017/birdiz",
-  corsOrigin: process.env.CORS_ORIGIN || "*",
+  port: parsed.PORT,
+  mongoUrl: parsed.MONGO_URL,
+  corsOrigin: parsed.CORS_ORIGIN,
 };

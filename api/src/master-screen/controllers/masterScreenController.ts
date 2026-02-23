@@ -1,13 +1,10 @@
 import type { RequestHandler } from "express";
 import type { MasterScreenDamageService } from "../services/masterScreenDamageService";
 import { resolveLocale } from "../utils/locale";
+import { getErrorMessage } from "../../utils/error";
 
 interface MasterScreenDamagesControllerOptions {
   masterScreenDamageService: MasterScreenDamageService;
-}
-
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "Unknown error";
 }
 
 export function createMasterScreenDamagesController({

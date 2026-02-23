@@ -5,6 +5,7 @@ import type {
   MasterScreenMountEquipment,
 } from "../data/masterScreenTransport";
 import { BaseSeededRepository } from "./baseSeededRepository";
+import { COLLECTION_NAMES } from "../constants/collectionNames";
 
 export interface MasterScreenTransportData {
   boats: MasterScreenBoat[];
@@ -38,22 +39,17 @@ export class MasterScreenTransportRepository extends BaseSeededRepository {
 
   async ensureSeedData(): Promise<void> {
     await Promise.all([
-      this.ensureCollectionSeedData("master_screen_boats", this.boats),
-      this.ensureCollectionSeedData("master_screen_mounts", this.mounts),
-      this.ensureCollectionSeedData(
-        "master_screen_mount_equipments",
-        this.mountEquipments,
-      ),
+      this.ensureCollectionSeedData(COLLECTION_NAMES.BOATS, this.boats),
+      this.ensureCollectionSeedData(COLLECTION_NAMES.MOUNTS, this.mounts),
+      this.ensureCollectionSeedData(COLLECTION_NAMES.MOUNT_EQUIPMENTS, this.mountEquipments),
     ]);
   }
 
   async findTransportData(): Promise<MasterScreenTransportData> {
     const [boats, mounts, mountEquipments] = await Promise.all([
-      this.findAllFromCollection<MasterScreenBoat>("master_screen_boats"),
-      this.findAllFromCollection<MasterScreenMount>("master_screen_mounts"),
-      this.findAllFromCollection<MasterScreenMountEquipment>(
-        "master_screen_mount_equipments",
-      ),
+      this.findAllFromCollection<MasterScreenBoat>(COLLECTION_NAMES.BOATS),
+      this.findAllFromCollection<MasterScreenMount>(COLLECTION_NAMES.MOUNTS),
+      this.findAllFromCollection<MasterScreenMountEquipment>(COLLECTION_NAMES.MOUNT_EQUIPMENTS),
     ]);
 
     return { boats, mounts, mountEquipments };

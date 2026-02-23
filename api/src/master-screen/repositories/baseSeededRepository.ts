@@ -48,23 +48,26 @@ export abstract class BaseSeededRepository {
     seedData: object[],
   ): Promise<void> {
     await Promise.all(
-      seedData.map((entry, index) => {
-        const payload = this.createLocalizationBackfillPayload(
-          entry as Record<string, unknown>,
-        );
+      seedData.map((entry) => {
+        const record = entry as Record<string, unknown>;
+        const payload = this.createLocalizationBackfillPayload(record);
 
         if (Object.keys(payload).length === 0) {
           return Promise.resolve();
         }
 
         return collection.updateOne(
-          { sortOrder: index + 1 },
+          this.getUniqueFilter(record),
           {
             $set: payload,
           },
         );
       }),
     );
+  }
+
+  protected getUniqueFilter(entry: Record<string, unknown>): Record<string, unknown> {
+    return { name: entry.name };
   }
 
   protected createLocalizationBackfillPayload(

@@ -1,13 +1,10 @@
 import type { RequestHandler } from "express";
 import type { MasterScreenLifestyleService } from "../services/masterScreenLifestyleService";
 import { resolveLocale } from "../utils/locale";
+import { getErrorMessage } from "../../utils/error";
 
 interface MasterScreenLifestyleControllerOptions {
   masterScreenLifestyleService: MasterScreenLifestyleService;
-}
-
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "Unknown error";
 }
 
 export function createMasterScreenLifestyleController({
