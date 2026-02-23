@@ -99,6 +99,10 @@ export class AideddClient {
   }
 
   private async fetchHtmlWithCurl(url: string): Promise<string> {
+    if (!url.startsWith("https://")) {
+      throw new Error(`Only HTTPS URLs are permitted for curl fallback, got: ${url}`);
+    }
+
     const { stdout } = await execFile(
       "curl",
       ["-sSL", "-A", env.magicItemsImportUserAgent, url],

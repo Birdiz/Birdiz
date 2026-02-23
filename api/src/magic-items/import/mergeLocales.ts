@@ -94,7 +94,16 @@ export function mergeMagicItemLocales(
 
   for (const enItem of enItems) {
     const keys = buildMatchKeys(enItem);
-    const frItem = keys.map((key) => frByKey.get(key)).find((candidate) => Boolean(candidate));
+    let frItem: RawListingItem | undefined;
+
+    for (const key of keys) {
+      const candidate = frByKey.get(key);
+
+      if (candidate) {
+        frItem = candidate;
+        break;
+      }
+    }
 
     if (!frItem) {
       warnings.push(`No french match found for EN item: ${enItem.name}`);

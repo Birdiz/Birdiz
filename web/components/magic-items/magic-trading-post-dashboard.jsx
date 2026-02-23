@@ -192,7 +192,7 @@ export default function MagicTradingPostDashboard({
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {randomStock.items.map((entry) => (
               <article
-                key={`${entry.item.canonicalId}-${entry.buyPriceGp}`}
+                key={entry.item.canonicalId}
                 className="rounded-[14px] border border-[var(--line)] [background:linear-gradient(140deg,rgb(133_42_26_/_14%),transparent_34%),linear-gradient(180deg,rgb(31_22_17_/_96%),rgb(17_12_9_/_93%))] p-4"
               >
                 <div className="mb-2 flex items-center justify-between gap-2">

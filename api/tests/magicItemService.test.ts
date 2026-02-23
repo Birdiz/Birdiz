@@ -215,26 +215,28 @@ describe("MagicItemService", () => {
   });
 
   it("returns random stock with generated prices and merchant data", async () => {
+    const stockItems = [
+      {
+        canonicalId: "bag-of-holding",
+        status: "active",
+        nameEn: "Bag of Holding",
+        nameFr: "Sac sans fond",
+        rarity: "Uncommon",
+        sortOrder: 1,
+      },
+      {
+        canonicalId: "cloak-of-protection",
+        status: "active",
+        nameEn: "Cloak of Protection",
+        nameFr: "Cape de protection",
+        rarity: "Rare",
+        sortOrder: 2,
+      },
+    ];
     const repository = {
       ensureSeedData: vi.fn().mockResolvedValue(undefined),
-      findAll: vi.fn().mockResolvedValue([
-        {
-          canonicalId: "bag-of-holding",
-          status: "active",
-          nameEn: "Bag of Holding",
-          nameFr: "Sac sans fond",
-          rarity: "Uncommon",
-          sortOrder: 1,
-        },
-        {
-          canonicalId: "cloak-of-protection",
-          status: "active",
-          nameEn: "Cloak of Protection",
-          nameFr: "Cape de protection",
-          rarity: "Rare",
-          sortOrder: 2,
-        },
-      ]),
+      findAll: vi.fn().mockResolvedValue(stockItems),
+      findByStatus: vi.fn().mockResolvedValue(stockItems),
     } as unknown as MagicItemRepository;
 
     const service = new MagicItemService(repository);

@@ -210,7 +210,10 @@ export class MagicItemService {
   ): Promise<MagicItemRandomStockResult> {
     await this.magicItemRepository.ensureSeedData();
 
-    const items = await this.magicItemRepository.findAll();
+    const items =
+      query.status !== null
+        ? await this.magicItemRepository.findByStatus(query.status)
+        : await this.magicItemRepository.findAll();
     const localized = items.map((item) => this.localizeItem(item, query.locale));
     const availableItems = localized.filter((item) =>
       applyFilters(item, {
@@ -219,7 +222,7 @@ export class MagicItemService {
         rarity: null,
         type: null,
         attunement: null,
-        status: query.status,
+        status: null,
         limit: query.limit,
         offset: 0,
       }),
@@ -264,10 +267,10 @@ export class MagicItemService {
     const resolvedDescription = primaryDescription ?? fallbackDescription ?? null;
     const descriptionFallbackUsed =
       resolvedDescription !== null &&
-      primaryDescription == null &&
-      fallbackDescription != null;
+      primaryDescription === null &&
+      fallbackDescription !== null;
     const descriptionLocaleUsed =
-      resolvedDescription == null
+      resolvedDescription === null
         ? null
         : descriptionFallbackUsed
           ? isEnglish
@@ -278,9 +281,9 @@ export class MagicItemService {
     const fallbackItemUrl = isEnglish ? item.itemUrlFr : item.itemUrlEn;
     const resolvedItemUrl = primaryItemUrl ?? fallbackItemUrl ?? null;
     const itemUrlFallbackUsed =
-      resolvedItemUrl !== null && primaryItemUrl == null && fallbackItemUrl != null;
+      resolvedItemUrl !== null && primaryItemUrl === null && fallbackItemUrl !== null;
     const itemUrlLocaleUsed =
-      resolvedItemUrl == null
+      resolvedItemUrl === null
         ? null
         : itemUrlFallbackUsed
           ? isEnglish
@@ -291,9 +294,9 @@ export class MagicItemService {
     const fallbackImage = isEnglish ? item.imageUrlFr : item.imageUrlEn;
     const resolvedImageUrl = primaryImage ?? fallbackImage ?? null;
     const imageFallbackUsed =
-      resolvedImageUrl !== null && primaryImage == null && fallbackImage != null;
+      resolvedImageUrl !== null && primaryImage === null && fallbackImage !== null;
     const imageLocaleUsed =
-      resolvedImageUrl == null ? null : imageFallbackUsed ? (isEnglish ? "fr" : "en") : locale;
+      resolvedImageUrl === null ? null : imageFallbackUsed ? (isEnglish ? "fr" : "en") : locale;
 
     return {
       canonicalId: item.canonicalId,

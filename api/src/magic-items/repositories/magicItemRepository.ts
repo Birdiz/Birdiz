@@ -58,6 +58,15 @@ export class MagicItemRepository {
       .toArray();
   }
 
+  async findByStatus(status: MagicItemDocument["status"]): Promise<MagicItemDocument[]> {
+    const collection = await this.getCollection();
+
+    return collection
+      .find({ status }, { projection: { _id: 0 } })
+      .sort({ sortOrder: 1 })
+      .toArray();
+  }
+
   async findByCanonicalId(canonicalId: string): Promise<MagicItemDocument | null> {
     const collection = await this.getCollection();
 
@@ -79,27 +88,25 @@ export class MagicItemRepository {
     );
     const importedIds = new Set(items.map((item) => item.canonicalId));
 
-    let inserted = 0;
-    let updated = 0;
-    let unchanged = 0;
-    let deactivated = 0;
+    type SyncItemResult = "inserted" | "updated" | "unchanged";
 
-    await Promise.all(
-      items.map(async (item, index) => {
+    const itemResults = await Promise.all(
+      items.map(async (item, index): Promise<SyncItemResult> => {
         const existing = existingById.get(item.canonicalId);
         const sortOrder = index + 1;
+        let result: SyncItemResult;
 
         if (!existing) {
-          inserted += 1;
+          result = "inserted";
         } else if (
           existing.sourceRowHash &&
           item.sourceRowHash &&
           existing.sourceRowHash === item.sourceRowHash &&
           existing.status === item.status
         ) {
-          unchanged += 1;
+          result = "unchanged";
         } else {
-          updated += 1;
+          result = "updated";
         }
 
         await collection.updateOne(
@@ -107,26 +114,33 @@ export class MagicItemRepository {
           { $set: { ...item, sortOrder } },
           { upsert: true },
         );
+
+        return result;
       }),
     );
 
+    const inserted = itemResults.filter((r) => r === "inserted").length;
+    const updated = itemResults.filter((r) => r === "updated").length;
+    const unchanged = itemResults.filter((r) => r === "unchanged").length;
+
+    const toDeactivate = existingItems.filter(
+      (item) => !importedIds.has(item.canonicalId) && item.status === "active",
+    );
+
     await Promise.all(
-      existingItems
-        .filter((item) => !importedIds.has(item.canonicalId) && item.status === "active")
-        .map(async (item) => {
-          deactivated += 1;
-          await collection.updateOne(
-            { canonicalId: item.canonicalId },
-            { $set: { status: "inactive" } },
-          );
-        }),
+      toDeactivate.map((item) =>
+        collection.updateOne(
+          { canonicalId: item.canonicalId },
+          { $set: { status: "inactive" } },
+        ),
+      ),
     );
 
     return {
       inserted,
       updated,
       unchanged,
-      deactivated,
+      deactivated: toDeactivate.length,
     };
   }
 
