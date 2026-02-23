@@ -49,4 +49,26 @@ describe("parseSearchQuery", () => {
       offset: 0,
     });
   });
+
+  it("accepts magic item filter values", () => {
+    const query = parseSearchQuery({
+      query: {
+        q: "bag",
+        locale: "en",
+        module: "magic-items",
+        section: "magic-trading-post",
+        entityType: "magic-item",
+      },
+    } as never);
+
+    expect(query).toEqual({
+      q: "bag",
+      locale: "en",
+      module: "magic-items",
+      section: "magic-trading-post",
+      entityType: "magic-item",
+      limit: 20,
+      offset: 0,
+    });
+  });
 });

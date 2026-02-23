@@ -17,10 +17,10 @@ export default function HomeShell({ content, children, locale }) {
     : intl.formatMessage({ id: "nav.openMenu" });
 
   return (
-    <div className="site-shell grid min-h-screen grid-cols-1 md:grid-cols-[300px_1fr]">
+    <div className="relative isolate grid min-h-screen grid-cols-1 md:grid-cols-[300px_1fr]">
       <button
         type="button"
-        className="fixed top-4 left-4 z-35 inline-flex cursor-pointer items-center gap-2 rounded-full border border-[var(--line-strong)] bg-[rgba(14,10,7,0.95)] px-3 py-1.5 text-sm tracking-[0.08em] text-[var(--text-main)] uppercase md:hidden"
+        className="fixed top-4 left-4 z-35 inline-flex cursor-pointer items-center gap-2 rounded-full border border-[var(--line-strong)] bg-[rgba(14,10,7,0.95)] px-3 py-1.5 text-[0.95rem] tracking-[0.08em] text-[var(--text-main)] uppercase md:hidden"
         aria-controls="site-sidebar"
         aria-expanded={isSidebarOpen}
         aria-label={isOpenLabel}
@@ -47,7 +47,9 @@ export default function HomeShell({ content, children, locale }) {
       />
 
       <main className="relative px-4 pt-17 pb-24 md:px-8 md:pt-8 md:pb-21">
-        <article className="content-column w-full">{children}</article>
+        <article className="mx-auto w-full max-w-[1240px] [animation:reveal-rise_300ms_ease]">
+          {children}
+        </article>
         <SiteFooter githubUrl={content.githubUrl} />
       </main>
     </div>

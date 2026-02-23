@@ -8,9 +8,14 @@ A skill is a set of local instructions to follow that is stored in a `SKILL.md` 
 - readme-maintenance: Keep README.md concise and keep detailed docs in docs/ while ensuring documentation stays aligned with commands, endpoints, and environment variables. (file: ./.codex/skills/readme-maintenance/SKILL.md)
 - search-architecture: Design scalable DDBuilder search with one global index and page-level refinement, including locale-aware indexing and deep links to target modules/sections. (file: ./.codex/skills/search-architecture/SKILL.md)
 - dataset-translation: Translate structured datasets between English and French and fill missing locale fields while preserving compatibility and locale-aware API delivery. (file: ./.codex/skills/dataset-translation/SKILL.md)
-- plan-confirm-workflow: Plan first and request explicit user confirmation before implementation for risky or multi-step changes. (file: ./.codex/skills/plan-confirm-workflow/SKILL.md)
+- plan-confirm-workflow: Plan first and request explicit user confirmation before implementation for all code changes by default. (file: ./.codex/skills/plan-confirm-workflow/SKILL.md)
 
 ### How to use skills
 - Discovery: The list above is the skills available in this session (name + description + file path). Skill bodies live on disk at the listed paths.
 - Trigger rules: If the user names a skill (with `$SkillName` or plain text) OR the task clearly matches a skill's description shown above, you must use that skill for that turn. Multiple mentions mean use them all. Do not carry skills across turns unless re-mentioned.
 - Missing/blocked: If a named skill isn't in the list or the path can't be read, say so briefly and continue with the best fallback.
+
+## Planning Policy
+- Default policy: Always apply `plan-confirm-workflow` before any code implementation task.
+- Required sequence: provide a concise plan, ask for explicit go/no-go, then implement only after confirmation.
+- Exception: read-only requests (explanations, inspections, reviews without code edits) do not require confirmation.

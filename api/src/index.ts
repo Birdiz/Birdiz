@@ -25,6 +25,14 @@ import {
   masterScreenMaintenances,
 } from "./master-screen/data/masterScreenBuildings";
 import { masterScreenLifestyles } from "./master-screen/data/masterScreenLifestyles";
+import { magicItems } from "./magic-items/data/magicItems";
+import { MagicItemRepository } from "./magic-items/repositories/magicItemRepository";
+import { MagicItemService } from "./magic-items/services/magicItemService";
+import {
+  createMagicItemDetailController,
+  createMagicItemListController,
+  createMagicItemRandomStockController,
+} from "./magic-items/controllers/magicItemController";
 import { SearchService } from "./search/services/searchService";
 import { createSearchController } from "./search/controllers/searchController";
 import { createSearchProviders } from "./search/providers/searchProviders";
@@ -61,6 +69,11 @@ const masterScreenLifestyleRepository = new MasterScreenLifestyleRepository({
 const masterScreenLifestyleService = new MasterScreenLifestyleService(
   masterScreenLifestyleRepository,
 );
+const magicItemRepository = new MagicItemRepository({
+  databaseClient,
+  seedData: magicItems,
+});
+const magicItemService = new MagicItemService(magicItemRepository);
 
 const masterScreenDamagesController = createMasterScreenDamagesController({
   masterScreenDamageService,
@@ -74,7 +87,16 @@ const masterScreenPropertiesController = createMasterScreenPropertiesController(
 const masterScreenLifestyleController = createMasterScreenLifestyleController({
   masterScreenLifestyleService,
 });
-const searchService = new SearchService(createSearchProviders());
+const magicItemListController = createMagicItemListController({
+  magicItemService,
+});
+const magicItemDetailController = createMagicItemDetailController({
+  magicItemService,
+});
+const magicItemRandomStockController = createMagicItemRandomStockController({
+  magicItemService,
+});
+const searchService = new SearchService(createSearchProviders({ magicItemService }));
 const searchController = createSearchController({ searchService });
 
 const app = createApp({
@@ -84,6 +106,9 @@ const app = createApp({
   masterScreenTransportController,
   masterScreenPropertiesController,
   masterScreenLifestyleController,
+  magicItemListController,
+  magicItemDetailController,
+  magicItemRandomStockController,
   searchController,
 });
 

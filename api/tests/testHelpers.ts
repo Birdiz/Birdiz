@@ -6,6 +6,7 @@ import type { MasterScreenTransportService } from "../src/master-screen/services
 import type { MasterScreenPropertiesService } from "../src/master-screen/services/masterScreenPropertiesService";
 import type { MasterScreenLifestyleService } from "../src/master-screen/services/masterScreenLifestyleService";
 import type { SearchService } from "../src/search/services/searchService";
+import type { MagicItemService } from "../src/magic-items/services/magicItemService";
 
 export function createMockResponse(): {
   json: ReturnType<typeof vi.fn>;
@@ -56,4 +57,16 @@ export function createSearchServiceMock(
   search: ReturnType<typeof vi.fn>,
 ): SearchService {
   return { search } as unknown as SearchService;
+}
+
+export function createMagicItemServiceMock(
+  getMagicItems: ReturnType<typeof vi.fn>,
+  getMagicItemByCanonicalId: ReturnType<typeof vi.fn>,
+  getRandomStock: ReturnType<typeof vi.fn> = vi.fn(),
+): MagicItemService {
+  return {
+    getMagicItems,
+    getMagicItemByCanonicalId,
+    getRandomStock,
+  } as unknown as MagicItemService;
 }

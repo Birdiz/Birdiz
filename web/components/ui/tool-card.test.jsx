@@ -21,7 +21,7 @@ describe("ToolCard", () => {
     expect(cardArt).toBeInTheDocument();
     expect(cardArt.getAttribute("style")).toContain("/features/master-screen.svg");
     expect(ctaLinks).toHaveLength(1);
-    expect(ctaLinks[0]).toHaveClass("tag-chip");
+    expect(ctaLinks[0]).toHaveClass("rounded-full");
     expect(ctaLinks[0]).toHaveAttribute("href", "/en/master-screen");
   });
 });

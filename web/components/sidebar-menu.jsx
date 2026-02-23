@@ -30,10 +30,10 @@ export default function SidebarMenu({
   return (
     <aside
       id={sidebarId}
-      className={`sidebar-shell fixed top-0 left-0 z-20 min-h-screen w-[min(80vw,320px)] p-5 transition-transform duration-200 md:sticky md:w-auto md:min-w-[300px] md:translate-x-0 md:self-start md:p-8 ${isOpen ? "translate-x-0" : "-translate-x-[105%]"}`}
+      className={`fixed top-0 left-0 z-20 min-h-screen w-[min(80vw,320px)] border-r border-[var(--line)] [background:linear-gradient(180deg,rgb(33_20_15_/_96%),rgb(10_6_4_/_96%)),url('/ambiance/parchment-grid.svg')] bg-cover p-5 shadow-[inset_-1px_0_0_rgb(238_205_145_/_8%)] transition-transform duration-200 md:sticky md:w-auto md:min-w-[300px] md:translate-x-0 md:self-start md:p-8 ${isOpen ? "translate-x-0" : "-translate-x-[105%]"}`}
       aria-label={intl.formatMessage({ id: "nav.pages" })}
     >
-      <div className="sidebar-brand rounded-[14px] p-4">
+      <div className="rounded-[14px] border border-[var(--line)] [background:linear-gradient(180deg,rgb(45_30_21_/_92%),rgb(28_18_13_/_92%)),linear-gradient(90deg,rgb(155_43_27_/_24%),transparent_40%)] p-4 shadow-[var(--shadow-soft)]">
         <h1 className="m-0 flex items-center gap-2 text-[1.85rem] tracking-[0.03em] text-[var(--accent)]">
           <MedievalCrest className="h-7 w-7 shrink-0 text-[var(--accent)] opacity-90" />
           <span>{projectName}</span>
@@ -46,7 +46,7 @@ export default function SidebarMenu({
           {items.map((item) => (
             <li key={item.href}>
               <Link
-                className="sidebar-link group flex items-center justify-between rounded-[10px] border border-transparent px-3 py-2 text-[var(--text-main)] no-underline transition"
+                className="group flex items-center justify-between rounded-[10px] border border-transparent px-3 py-2 text-[var(--text-main)] no-underline transition-[border-color,background-color,transform] duration-150 hover:translate-x-[2px] hover:border-[var(--line)] hover:bg-[rgb(57_36_26_/_75%)]"
                 href={item.href}
                 onClick={onClose}
               >
@@ -72,7 +72,7 @@ export default function SidebarMenu({
                 key={targetLocale}
                 href={getLocalePath(stablePathname, targetLocale)}
                 onClick={onClose}
-                className={`locale-pill rounded-full border px-3 py-1 text-xs uppercase tracking-[0.08em] no-underline transition ${isActive ? "locale-pill-active border-[var(--line-strong)] text-[var(--accent-strong)]" : "border-[var(--line)] text-[var(--text-muted)] hover:border-[var(--line-strong)] hover:text-[var(--text-main)]"}`}
+                className={`rounded-full border bg-[rgb(30_20_14_/_80%)] px-3 py-1 text-xs uppercase tracking-[0.08em] no-underline transition ${isActive ? "border-[var(--line-strong)] bg-[linear-gradient(180deg,rgb(164_56_37_/_36%),rgb(95_36_25_/_30%))] text-[var(--accent-strong)]" : "border-[var(--line)] text-[var(--text-muted)] hover:border-[var(--line-strong)] hover:text-[var(--text-main)]"}`}
               >
                 {targetLocale}
               </Link>

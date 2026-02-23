@@ -28,6 +28,6 @@ Apply these rules for this repository:
 - After API changes:
 `make lint-api`, `make typecheck-api`, and `make test-api`
 - After web changes:
-`make lint-web`, `make typecheck-web`, and `make test-web`
+`make lint-web`, `make lint-css`, `make typecheck-web`, and `make test-web`
 - After touching both services:
 `make lint`, `make typecheck`, and `make test`

@@ -1,7 +1,7 @@
 import { SUPPORTED_LOCALES } from "../lib/i18n/locales";
 import { getSiteUrl } from "../lib/seo";
 
-const PATHS = ["", "/master-screen", "/next-steps"];
+const PATHS = ["", "/master-screen", "/magic-trading-post", "/next-steps"];
 
 export default function sitemap() {
   const siteUrl = getSiteUrl();

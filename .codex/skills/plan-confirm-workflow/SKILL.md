@@ -1,9 +1,12 @@
 ---
 name: plan-confirm-workflow
-description: Plan first and request user confirmation before implementation. Use when the user wants explicit validation before code changes, risky refactors, migrations, or any multi-step change where approval is required before building.
+description: Plan first and request user confirmation before implementation. Use by default before any code change, and always for explicit-validation requests, risky refactors, migrations, or multi-step work.
 ---
 
 # Plan Confirm Workflow
+
+This workflow is mandatory by default for implementation tasks in this repository.
+Do not edit files or run modifying commands until the user explicitly confirms the plan.
 
 1. Clarify scope and assumptions before editing:
 - Restate the requested outcome.

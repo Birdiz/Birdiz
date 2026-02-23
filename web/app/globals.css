@@ -13,17 +13,17 @@
   --accent-soft: #b38847;
   --accent-deep: #8a5f30;
   --accent-crimson: #a63b2a;
-  --line: rgba(217, 178, 110, 0.24);
-  --line-strong: rgba(217, 178, 110, 0.42);
-  --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.42);
-  --shadow-panel: 0 18px 46px rgba(0, 0, 0, 0.5);
+  --line: rgb(217 178 110 / 24%);
+  --line-strong: rgb(217 178 110 / 42%);
+  --shadow-soft: 0 16px 40px rgb(0 0 0 / 42%);
+  --shadow-panel: 0 18px 46px rgb(0 0 0 / 50%);
   --font-heading:
     "Cinzel Decorative", "IM FELL English SC", "Iowan Old Style", "Palatino Linotype", serif;
   --font-body:
     "Source Serif 4", "Goudy Old Style", "Book Antiqua", "Hoefler Text", serif;
 }
 
-@keyframes revealRise {
+@keyframes reveal-rise {
   from {
     opacity: 0;
     transform: translateY(7px);
@@ -35,7 +35,7 @@
   }
 }
 
-@keyframes skeletonShimmer {
+@keyframes skeleton-shimmer {
   0% {
     background-position: 200% 0;
   }
@@ -54,11 +54,14 @@
   body {
     min-height: 100%;
     margin: 0;
+  }
+
+  body {
     font-family: var(--font-body);
     color: var(--text-main);
     background:
-      radial-gradient(circle at 12% 12%, rgba(201, 85, 48, 0.24), transparent 34%),
-      radial-gradient(circle at 88% 6%, rgba(160, 112, 48, 0.2), transparent 30%),
+      radial-gradient(circle at 12% 12%, rgb(201 85 48 / 24%), transparent 34%),
+      radial-gradient(circle at 88% 6%, rgb(160 112 48 / 20%), transparent 30%),
       linear-gradient(145deg, #120a08 0%, #1a100d 40%, #0d0706 100%);
     background-attachment: fixed;
   }
@@ -69,7 +72,7 @@
     inset: 0;
     pointer-events: none;
     background-image:
-      linear-gradient(180deg, rgba(131, 43, 28, 0.11), rgba(18, 10, 8, 0.08)),
+      linear-gradient(180deg, rgb(131 43 28 / 11%), rgb(18 10 8 / 8%)),
       url("/ambiance/parchment-grid.svg"),
       url("/ambiance/ember-orbs.svg");
     background-size: cover, cover, cover;
@@ -84,8 +87,8 @@
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(circle at 50% 120%, rgba(0, 0, 0, 0.64), transparent 56%),
-      linear-gradient(0deg, rgba(6, 4, 3, 0.6), transparent 22%);
+      radial-gradient(circle at 50% 120%, rgb(0 0 0 / 64%), transparent 56%),
+      linear-gradient(0deg, rgb(6 4 3 / 60%), transparent 22%);
     z-index: -1;
   }
 
@@ -101,6 +104,8 @@
 
   p {
     color: var(--text-soft);
+    font-size: 1.1rem;
+    line-height: 1.75;
   }
 
   a {
@@ -117,23 +122,23 @@
   .content-column {
     max-width: 1240px;
     margin-inline: auto;
-    animation: revealRise 300ms ease;
+    animation: reveal-rise 300ms ease;
   }
 
   .sidebar-shell {
     border-right: 1px solid var(--line);
     background:
-      linear-gradient(180deg, rgba(33, 20, 15, 0.96), rgba(10, 6, 4, 0.96)),
+      linear-gradient(180deg, rgb(33 20 15 / 96%), rgb(10 6 4 / 96%)),
       url("/ambiance/parchment-grid.svg");
     background-size: cover;
-    box-shadow: inset -1px 0 0 rgba(238, 205, 145, 0.08);
+    box-shadow: inset -1px 0 0 rgb(238 205 145 / 8%);
   }
 
   .sidebar-brand {
     border: 1px solid var(--line);
     background:
-      linear-gradient(180deg, rgba(45, 30, 21, 0.92), rgba(28, 18, 13, 0.92)),
-      linear-gradient(90deg, rgba(155, 43, 27, 0.24), transparent 40%);
+      linear-gradient(180deg, rgb(45 30 21 / 92%), rgb(28 18 13 / 92%)),
+      linear-gradient(90deg, rgb(155 43 27 / 24%), transparent 40%);
     box-shadow: var(--shadow-soft);
   }
 
@@ -144,31 +149,31 @@
 
   .sidebar-link:hover {
     border-color: var(--line);
-    background: rgba(57, 36, 26, 0.75);
+    background: rgb(57 36 26 / 75%);
     transform: translateX(2px);
   }
 
   .locale-pill {
-    background: rgba(30, 20, 14, 0.8);
+    background: rgb(30 20 14 / 80%);
   }
 
   .locale-pill-active {
-    background: linear-gradient(180deg, rgba(164, 56, 37, 0.36), rgba(95, 36, 25, 0.3));
+    background: linear-gradient(180deg, rgb(164 56 37 / 36%), rgb(95 36 25 / 30%));
   }
 
   .site-footer {
     border-top: 1px solid var(--line);
     background:
-      linear-gradient(180deg, rgba(17, 10, 8, 0.94), rgba(8, 5, 4, 0.98)),
-      linear-gradient(90deg, rgba(150, 52, 35, 0.18), transparent 40%);
-    box-shadow: 0 -7px 24px rgba(0, 0, 0, 0.34);
+      linear-gradient(180deg, rgb(17 10 8 / 94%), rgb(8 5 4 / 98%)),
+      linear-gradient(90deg, rgb(150 52 35 / 18%), transparent 40%);
+    box-shadow: 0 -7px 24px rgb(0 0 0 / 34%);
   }
 
   .hero-surface {
-    border: 1px solid rgba(217, 178, 110, 0.2);
+    border: 1px solid rgb(217 178 110 / 20%);
     background:
-      linear-gradient(135deg, rgba(176, 56, 38, 0.2), transparent 36%),
-      linear-gradient(180deg, rgba(38, 24, 18, 0.96), rgba(20, 13, 10, 0.95));
+      linear-gradient(135deg, rgb(176 56 38 / 20%), transparent 36%),
+      linear-gradient(180deg, rgb(38 24 18 / 96%), rgb(20 13 10 / 95%));
     box-shadow: var(--shadow-panel);
   }
 
@@ -184,7 +189,7 @@
     right: 0;
     top: 0;
     height: 3px;
-    background: linear-gradient(90deg, transparent 0%, rgba(245, 217, 166, 0.84) 16%, rgba(166, 59, 42, 0.82) 60%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgb(245 217 166 / 84%) 16%, rgb(166 59 42 / 82%) 60%, transparent 100%);
   }
 
   .hero-eyebrow {
@@ -206,35 +211,35 @@
   }
 
   .hero-art {
-    border: 1px solid rgba(217, 178, 110, 0.2);
+    border: 1px solid rgb(217 178 110 / 20%);
     background:
-      linear-gradient(145deg, rgba(161, 55, 38, 0.2), transparent 42%),
-      linear-gradient(180deg, rgba(23, 15, 11, 0.88), rgba(14, 9, 7, 0.92));
+      linear-gradient(145deg, rgb(161 55 38 / 20%), transparent 42%),
+      linear-gradient(180deg, rgb(23 15 11 / 88%), rgb(14 9 7 / 92%));
   }
 
   .hero-atmosphere {
-    border: 1px solid rgba(217, 178, 110, 0.2);
+    border: 1px solid rgb(217 178 110 / 20%);
     background-size: cover;
     background-position: center;
     box-shadow:
-      inset 0 -44px 74px rgba(0, 0, 0, 0.56),
-      0 10px 26px rgba(0, 0, 0, 0.24);
+      inset 0 -44px 74px rgb(0 0 0 / 56%),
+      0 10px 26px rgb(0 0 0 / 24%);
   }
 
   .hero-badges .tag-chip {
-    background: linear-gradient(180deg, rgba(128, 37, 26, 0.36), rgba(108, 34, 24, 0.24));
+    background: linear-gradient(180deg, rgb(128 37 26 / 36%), rgb(108 34 24 / 24%));
   }
 
   .shell-panel {
-    border: 1px solid rgba(217, 178, 110, 0.18);
+    border: 1px solid rgb(217 178 110 / 18%);
     background:
-      linear-gradient(130deg, rgba(153, 49, 33, 0.14), transparent 32%),
-      linear-gradient(180deg, rgba(34, 22, 16, 0.94), rgba(21, 14, 10, 0.92));
+      linear-gradient(130deg, rgb(153 49 33 / 14%), transparent 32%),
+      linear-gradient(180deg, rgb(34 22 16 / 94%), rgb(21 14 10 / 92%));
     box-shadow: var(--shadow-soft);
   }
 
   .section-panel-heading {
-    border-bottom: 1px solid rgba(217, 178, 110, 0.14);
+    border-bottom: 1px solid rgb(217 178 110 / 14%);
     padding-bottom: 0.7rem;
   }
 
@@ -252,25 +257,25 @@
     border-radius: 14px;
     border: 1px solid var(--line);
     background:
-      linear-gradient(140deg, rgba(123, 35, 23, 0.14), transparent 34%),
-      linear-gradient(180deg, rgba(30, 20, 15, 0.95), rgba(16, 11, 8, 0.93));
+      linear-gradient(140deg, rgb(123 35 23 / 14%), transparent 34%),
+      linear-gradient(180deg, rgb(30 20 15 / 95%), rgb(16 11 8 / 93%));
     transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
   }
 
   .tool-card:hover {
     border-color: var(--line-strong);
     transform: translateY(-2px);
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34);
+    box-shadow: 0 14px 34px rgb(0 0 0 / 34%);
   }
 
   .tool-card-ribbon {
     height: 3px;
     border-radius: 999px;
-    background: linear-gradient(90deg, rgba(169, 52, 36, 0.85), rgba(243, 217, 170, 0.66));
+    background: linear-gradient(90deg, rgb(169 52 36 / 85%), rgb(243 217 170 / 66%));
   }
 
   .tool-card-art {
-    border: 1px solid rgba(217, 178, 110, 0.24);
+    border: 1px solid rgb(217 178 110 / 24%);
     background-size: cover;
     background-position: center;
   }
@@ -278,8 +283,8 @@
   .milestone-card,
   .data-card {
     background:
-      linear-gradient(140deg, rgba(153, 45, 30, 0.13), transparent 34%),
-      linear-gradient(180deg, rgba(23, 16, 12, 0.92), rgba(14, 9, 7, 0.87));
+      linear-gradient(140deg, rgb(153 45 30 / 13%), transparent 34%),
+      linear-gradient(180deg, rgb(23 16 12 / 92%), rgb(14 9 7 / 87%));
   }
 
   .dashboard-nav-card {
@@ -287,7 +292,7 @@
   }
 
   .dashboard-nav-card-active {
-    box-shadow: inset 0 0 0 1px rgba(243, 217, 170, 0.26);
+    box-shadow: inset 0 0 0 1px rgb(243 217 170 / 26%);
   }
 
   .lifestyle-services {
@@ -296,12 +301,12 @@
   }
 
   .lifestyle-service-row {
-    border: 1px solid rgba(217, 178, 110, 0.16);
-    background: rgba(16, 10, 8, 0.34);
+    border: 1px solid rgb(217 178 110 / 16%);
+    background: rgb(16 10 8 / 34%);
   }
 
   .lifestyle-service-row:nth-child(even) {
-    background: rgba(40, 25, 17, 0.54);
+    background: rgb(40 25 17 / 54%);
   }
 
   .lifestyle-service-name {
@@ -319,25 +324,25 @@
   .table-surface {
     overflow-x: auto;
     border-radius: 12px;
-    border: 1px solid rgba(217, 178, 110, 0.22);
+    border: 1px solid rgb(217 178 110 / 22%);
     background:
-      linear-gradient(150deg, rgba(141, 42, 29, 0.14), transparent 35%),
-      rgba(17, 12, 9, 0.82);
+      linear-gradient(150deg, rgb(141 42 29 / 14%), transparent 35%),
+      rgb(17 12 9 / 82%);
     padding: 0.9rem;
   }
 
   .skeleton-shimmer {
-    border: 1px solid rgba(217, 178, 110, 0.14);
+    border: 1px solid rgb(217 178 110 / 14%);
     background:
       linear-gradient(
         110deg,
-        rgba(79, 54, 37, 0.26) 8%,
-        rgba(217, 178, 110, 0.22) 18%,
-        rgba(79, 54, 37, 0.26) 33%
+        rgb(79 54 37 / 26%) 8%,
+        rgb(217 178 110 / 22%) 18%,
+        rgb(79 54 37 / 26%) 33%
       ),
-      rgba(24, 16, 12, 0.9);
+      rgb(24 16 12 / 90%);
     background-size: 200% 100%;
-    animation: skeletonShimmer 1.5s linear infinite;
+    animation: skeleton-shimmer 1.5s linear infinite;
   }
 
   .skeleton-line {
@@ -352,10 +357,10 @@
 
   .skeleton-panel {
     border-radius: 14px;
-    border: 1px solid rgba(217, 178, 110, 0.22);
+    border: 1px solid rgb(217 178 110 / 22%);
     background:
-      linear-gradient(150deg, rgba(141, 42, 29, 0.14), transparent 35%),
-      rgba(17, 12, 9, 0.82);
+      linear-gradient(150deg, rgb(141 42 29 / 14%), transparent 35%),
+      rgb(17 12 9 / 82%);
     padding: 0.9rem;
   }
 
@@ -367,7 +372,7 @@
     text-transform: uppercase;
     letter-spacing: 0.07em;
     color: var(--accent-strong);
-    background: rgba(128, 37, 26, 0.2);
+    background: rgb(128 37 26 / 20%);
   }
 
   .info-pill {
@@ -376,10 +381,10 @@
     padding: 0.2rem 0.56rem;
     font-size: 0.72rem;
     color: var(--text-muted);
-    background: rgba(35, 24, 18, 0.78);
+    background: rgb(35 24 18 / 78%);
   }
 
   .animate-in {
-    animation: revealRise 220ms ease;
+    animation: reveal-rise 220ms ease;
   }
 }

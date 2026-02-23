@@ -10,12 +10,13 @@ Apply these rules for this repository:
 1. Prefer `make` targets instead of direct `npm` commands whenever a Makefile target exists.
 2. Exception: dependency installation uses `npm install` (or `npm i`) and should not be replaced with `make`.
 3. Before any `npm install` command, request escalation/permission so the install can run without stalling.
-4. After any code change, run both lint and typecheck commands for the affected service(s).
+4. After any code change, run lint (including CSS lint for web) and typecheck commands for the affected service(s).
 
 ## Command Guidance
 
 - Web service checks:
   - `make lint-web`
+  - `make lint-css`
   - `make typecheck-web`
 - API service checks:
   - `make lint-api`

@@ -66,7 +66,7 @@ function TavernIcon() {
 
 function DataTable({ title, columns, rows, getKey }) {
   return (
-    <div className="table-surface">
+    <div className="overflow-x-auto rounded-[12px] border border-[rgb(217_178_110_/_22%)] [background:linear-gradient(150deg,rgb(141_42_29_/_14%),transparent_35%),rgb(17_12_9_/_82%)] p-[0.9rem]">
       <h4 className="mb-2 text-[var(--accent)]">{title}</h4>
       <table className="w-full border-collapse text-left text-[0.95rem] text-[var(--text-main)]">
         <thead>
@@ -80,7 +80,7 @@ function DataTable({ title, columns, rows, getKey }) {
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={getKey(row)} className="border-b border-[rgba(221,190,129,0.08)]">
+            <tr key={getKey(row)} className="border-b border-[rgb(221_190_129_/_8%)]">
               {columns.map((column) => (
                 <td key={`${getKey(row)}-${column.key}`} className="py-1 pr-2">
                   {row[column.key]}
@@ -254,20 +254,23 @@ export default function MasterScreenDashboard({
               key={section.id}
               type="button"
               onClick={() => setActiveSection(section.id)}
-              className={`dashboard-nav-card tool-card cursor-pointer p-4 text-left ${isActive ? "dashboard-nav-card-active border-[var(--line-strong)]" : ""}`}
+              className={`relative cursor-pointer rounded-[14px] border [background:linear-gradient(140deg,rgb(123_35_23_/_14%),transparent_34%),linear-gradient(180deg,rgb(30_20_15_/_95%),rgb(16_11_8_/_93%))] p-4 text-left transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-[2px] hover:border-[var(--line-strong)] hover:shadow-[0_14px_34px_rgb(0_0_0_/_34%)] ${isActive ? "border-[var(--line-strong)] shadow-[inset_0_0_0_1px_rgb(243_217_170_/_26%)]" : "border-[var(--line)]"}`}
               aria-pressed={isActive}
               aria-label={labels.state.show(section.title)}
             >
               <div className="mb-2 flex items-center gap-2">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[rgba(17,13,10,0.8)] text-[var(--accent)]">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[rgb(17_13_10_/_80%)] text-[var(--accent)]">
                   <Icon />
                 </span>
               </div>
               <h3 className="m-0 text-[1rem] text-[var(--text-main)]">{section.title}</h3>
-              <p className="mt-1 mb-0 text-sm text-[var(--text-muted)]">{section.subtitle}</p>
+              <p className="mt-1 mb-0 text-[0.95rem] text-[var(--text-muted)]">{section.subtitle}</p>
               <ul className="mt-3 flex flex-wrap gap-2 p-0">
                 {section.stats.map((stat) => (
-                  <li key={stat} className="info-pill list-none">
+                  <li
+                    key={stat}
+                    className="list-none rounded-full border border-[var(--line)] bg-[rgb(35_24_18_/_78%)] px-[0.56rem] py-[0.2rem] text-[0.72rem] text-[var(--text-muted)]"
+                  >
                     {stat}
                   </li>
                 ))}
@@ -292,7 +295,7 @@ export default function MasterScreenDashboard({
               {damages.map((damage) => (
                 <article
                   key={damage.die}
-                  className="data-card rounded-xl border border-[var(--line)] px-4 py-3"
+                  className="rounded-xl border border-[var(--line)] [background:linear-gradient(140deg,rgb(153_45_30_/_13%),transparent_34%),linear-gradient(180deg,rgb(23_16_12_/_92%),rgb(14_9_7_/_87%))] px-4 py-3"
                 >
                   <h4 className="mb-2 text-[1.05rem] text-[var(--accent)]">{damage.die}</h4>
                   <ul className="m-0 list-none p-0 leading-[1.7] text-[var(--text-main)]">
@@ -443,7 +446,7 @@ export default function MasterScreenDashboard({
               {lifestyles.map((lifestyle) => (
                 <article
                   key={lifestyle.name}
-                  className="data-card rounded-xl border border-[var(--line)] px-4 py-3"
+                  className="rounded-xl border border-[var(--line)] [background:linear-gradient(140deg,rgb(153_45_30_/_13%),transparent_34%),linear-gradient(180deg,rgb(23_16_12_/_92%),rgb(14_9_7_/_87%))] px-4 py-3"
                 >
                   <h4 className="mb-1 text-[var(--accent)]">{lifestyle.name}</h4>
                   <p className="m-0 mb-2 text-[var(--accent-soft)]">{lifestyle.price}</p>
@@ -451,14 +454,16 @@ export default function MasterScreenDashboard({
                     {lifestyle.description}
                   </p>
                   {lifestyle.services.length > 0 && (
-                    <ul className="lifestyle-services m-0 list-none p-0 text-[var(--text-main)]">
+                    <ul className="m-0 grid list-none gap-[0.4rem] p-0 text-[var(--text-main)]">
                       {lifestyle.services.map((service) => (
                         <li
                           key={`${lifestyle.name}-${service.name}`}
-                          className="lifestyle-service-row mb-1 flex items-center justify-between gap-2 rounded-[8px] px-2 py-1.5"
+                          className="mb-1 flex items-center justify-between gap-2 rounded-[8px] border border-[rgb(217_178_110_/_16%)] bg-[rgb(16_10_8_/_34%)] px-2 py-1.5 even:bg-[rgb(40_25_17_/_54%)]"
                         >
-                          <span className="lifestyle-service-name">{service.name}</span>
-                          <span className="lifestyle-service-price">{service.price}</span>
+                          <span className="leading-[1.45] text-[var(--text-soft)]">{service.name}</span>
+                          <span className="min-w-[6.5rem] text-right font-semibold text-[var(--accent-strong)]">
+                            {service.price}
+                          </span>
                         </li>
                       ))}
                     </ul>

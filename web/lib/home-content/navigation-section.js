@@ -3,6 +3,7 @@ export function buildNavigationContent(t, locale) {
     menuItems: [
       { label: t("nav.home"), href: `/${locale}` },
       { label: t("nav.masterScreen"), href: `/${locale}/master-screen` },
+      { label: t("nav.magicTradingPost"), href: `/${locale}/magic-trading-post` },
       { label: t("nav.roadmap"), href: `/${locale}/next-steps` },
     ],
     githubUrl: "https://github.com/Birdiz/Birdiz",

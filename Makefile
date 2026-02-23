@@ -4,7 +4,7 @@ WEB_DIR := web
 API_DIR := api
 NPM := npm
 
-.PHONY: help install install-web install-api dev dev-web dev-api start-web start-api build-web build-api build lint lint-web lint-api prettier prettier-web prettier-api typecheck typecheck-web typecheck-api test test-web test-api docker-build-api docker-up-api docker-up check clean
+.PHONY: help install install-web install-api dev dev-web dev-api start-web start-api build-web build-api build lint lint-web lint-api lint-css prettier prettier-web prettier-api typecheck typecheck-web typecheck-api test test-web test-api import-magic-items docker-build-api docker-up-api docker-up check clean
 
 help:
 	@echo "Available targets:"
@@ -23,9 +23,11 @@ help:
 	@echo "  make docker-up        - Build and start full Docker stack"
 	@echo "  make build        - Build web app"
 	@echo "  make lint         - Run lint in web and api"
+	@echo "  make lint-css     - Run CSS lint in web"
 	@echo "  make prettier     - Run Prettier in web and api"
 	@echo "  make typecheck    - Run type checks in web and api"
 	@echo "  make test         - Run tests in web and api"
+	@echo "  make import-magic-items - Import magic items from external listing source"
 	@echo "  make check        - Run lint and typecheck in both services"
 	@echo "  make clean        - Remove local node_modules and web build output"
 
@@ -79,6 +81,9 @@ lint-web:
 lint-api:
 	$(NPM) --prefix $(API_DIR) run lint
 
+lint-css:
+	$(NPM) --prefix $(WEB_DIR) run lint:css
+
 lint: lint-web lint-api
 
 prettier-web:
@@ -104,6 +109,9 @@ test-api:
 	$(NPM) --prefix $(API_DIR) run test
 
 test: test-web test-api
+
+import-magic-items:
+	$(NPM) --prefix $(API_DIR) run import:magic-items
 
 check: lint typecheck
 

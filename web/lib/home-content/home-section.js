@@ -31,7 +31,7 @@ export function buildToolGroups(t, locale) {
     {
       title: t("home.tool.encounter.title"),
       description: t("home.tool.encounter.description"),
-      href: `/${locale}/next-steps`,
+      href: `/${locale}/magic-trading-post`,
       status: t("home.tool.encounter.status"),
       meta: [
         t("home.tool.encounter.meta1"),

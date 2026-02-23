@@ -1,8 +1,11 @@
 export default function LocalizedMasterScreenLoading() {
   return (
-    <div className="site-shell grid min-h-screen grid-cols-1 md:grid-cols-[300px_1fr]">
-      <aside className="sidebar-shell hidden p-4 md:block" aria-hidden="true">
-        <div className="sidebar-brand mb-4 rounded-[14px] p-4">
+    <div className="relative isolate grid min-h-screen grid-cols-1 md:grid-cols-[300px_1fr]">
+      <aside
+        className="hidden border-r border-[var(--line)] [background:linear-gradient(180deg,rgb(33_20_15_/_96%),rgb(10_6_4_/_96%)),url('/ambiance/parchment-grid.svg')] bg-cover p-4 shadow-[inset_-1px_0_0_rgb(238_205_145_/_8%)] md:block"
+        aria-hidden="true"
+      >
+        <div className="mb-4 rounded-[14px] border border-[var(--line)] [background:linear-gradient(180deg,rgb(45_30_21_/_92%),rgb(28_18_13_/_92%)),linear-gradient(90deg,rgb(155_43_27_/_24%),transparent_40%)] p-4 shadow-[var(--shadow-soft)]">
           <div className="skeleton-shimmer skeleton-line-lg mb-2 w-2/3" />
           <div className="skeleton-shimmer skeleton-line w-4/5" />
         </div>
@@ -15,12 +18,12 @@ export default function LocalizedMasterScreenLoading() {
 
       <main className="relative px-4 pt-17 pb-24 md:px-8 md:pt-8 md:pb-21">
         <article
-          className="content-column w-full"
+          className="mx-auto w-full max-w-[1240px] [animation:reveal-rise_300ms_ease]"
           aria-busy="true"
           aria-live="polite"
           data-testid="master-screen-loading"
         >
-          <header className="hero-surface hero-frame mb-5 rounded-[18px] p-5 md:p-7">
+          <header className="relative mb-5 overflow-hidden rounded-[18px] border border-[rgb(217_178_110_/_20%)] [background:linear-gradient(135deg,rgb(176_56_38_/_20%),transparent_36%),linear-gradient(180deg,rgb(38_24_18_/_96%),rgb(20_13_10_/_95%))] p-5 shadow-[var(--shadow-panel)] before:absolute before:top-0 before:right-0 before:left-0 before:h-[3px] before:content-[''] before:[background:linear-gradient(90deg,transparent_0%,rgb(245_217_166_/_84%)_16%,rgb(166_59_42_/_82%)_60%,transparent_100%)] md:p-7">
             <div className="skeleton-shimmer mb-5 h-[168px] w-full rounded-[14px] md:h-[220px]" />
             <div className="grid gap-5 lg:grid-cols-[1.5fr_1fr] lg:items-end">
               <div>
@@ -42,7 +45,7 @@ export default function LocalizedMasterScreenLoading() {
             {[0, 1, 2, 3].map((index) => (
               <article
                 key={index}
-                className="tool-card rounded-[14px] p-4"
+                className="rounded-[14px] border border-[var(--line)] [background:linear-gradient(140deg,rgb(123_35_23_/_14%),transparent_34%),linear-gradient(180deg,rgb(30_20_15_/_95%),rgb(16_11_8_/_93%))] p-4"
                 data-testid="skeleton-nav-card"
                 aria-hidden="true"
               >
@@ -57,8 +60,8 @@ export default function LocalizedMasterScreenLoading() {
             ))}
           </section>
 
-          <section className="section-panel shell-panel mb-4 rounded-[16px] p-4 md:p-5">
-            <div className="section-panel-heading mb-3">
+          <section className="mb-4 rounded-[16px] border border-[rgb(217_178_110_/_18%)] [background:linear-gradient(130deg,rgb(153_49_33_/_14%),transparent_32%),linear-gradient(180deg,rgb(34_22_16_/_94%),rgb(21_14_10_/_92%))] p-4 shadow-[var(--shadow-soft)] md:p-5">
+            <div className="mb-3 border-b border-[rgb(217_178_110_/_14%)] pb-[0.7rem]">
               <div className="skeleton-shimmer skeleton-line-lg mb-2 w-1/3" />
               <div className="skeleton-shimmer skeleton-line w-2/5" />
             </div>

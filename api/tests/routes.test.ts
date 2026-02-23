@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { createHealthRouter } from "../src/routes/healthRoutes";
 import { createMasterScreenRouter } from "../src/master-screen/routes/masterScreenRoutes";
 import { createSearchRouter } from "../src/search/routes/searchRoutes";
+import { createMagicItemRouter } from "../src/magic-items/routes/magicItemRoutes";
 
 function getRouteLayer(router: unknown) {
   const stack = (router as { stack?: Array<{ route?: unknown }> }).stack;
@@ -116,5 +117,64 @@ describe("route factories", () => {
 
     expect(route?.path).toBe("/search");
     expect(route?.methods.get).toBe(true);
+  });
+
+  it("creates /magic-items GET route", () => {
+    const magicItemListController = vi.fn();
+    const magicItemDetailController = vi.fn();
+    const magicItemRandomStockController = vi.fn();
+    const router = createMagicItemRouter({
+      magicItemListController,
+      magicItemDetailController,
+      magicItemRandomStockController,
+    });
+    const route = getRouteLayer(router);
+
+    expect(route?.path).toBe("/magic-items");
+    expect(route?.methods.get).toBe(true);
+  });
+
+  it("creates /magic-items/:canonicalId GET route", () => {
+    const magicItemListController = vi.fn();
+    const magicItemDetailController = vi.fn();
+    const magicItemRandomStockController = vi.fn();
+    const router = createMagicItemRouter({
+      magicItemListController,
+      magicItemDetailController,
+      magicItemRandomStockController,
+    });
+    const stack = (router as { stack?: Array<{ route?: unknown }> }).stack || [];
+    const detailRoute = stack
+      .map((layer) => layer.route)
+      .find(
+        (route): route is { path: string; methods: Record<string, boolean> } =>
+          Boolean(route) &&
+          typeof (route as { path?: unknown }).path === "string" &&
+          (route as { path: string }).path === "/magic-items/:canonicalId",
+      );
+
+    expect(detailRoute?.methods.get).toBe(true);
+  });
+
+  it("creates /magic-items/random-stock GET route", () => {
+    const magicItemListController = vi.fn();
+    const magicItemDetailController = vi.fn();
+    const magicItemRandomStockController = vi.fn();
+    const router = createMagicItemRouter({
+      magicItemListController,
+      magicItemDetailController,
+      magicItemRandomStockController,
+    });
+    const stack = (router as { stack?: Array<{ route?: unknown }> }).stack || [];
+    const randomRoute = stack
+      .map((layer) => layer.route)
+      .find(
+        (route): route is { path: string; methods: Record<string, boolean> } =>
+          Boolean(route) &&
+          typeof (route as { path?: unknown }).path === "string" &&
+          (route as { path: string }).path === "/magic-items/random-stock",
+      );
+
+    expect(randomRoute?.methods.get).toBe(true);
   });
 });

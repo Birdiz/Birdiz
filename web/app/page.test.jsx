@@ -19,6 +19,9 @@ describe("LocalizedHomePage", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Tool Modules")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Master Screen" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Magic Trading Post" }),
+    ).toBeInTheDocument();
   });
 
   it("renders french locale content", async () => {
@@ -34,5 +37,6 @@ describe("LocalizedHomePage", () => {
       }),
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Écran MJ" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Comptoir magique" })).toBeInTheDocument();
   });
 });

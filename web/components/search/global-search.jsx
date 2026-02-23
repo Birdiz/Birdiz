@@ -13,6 +13,8 @@ function getSectionLabel(intl, section) {
       return intl.formatMessage({ id: "search.section.home" });
     case "master-screen":
       return intl.formatMessage({ id: "search.section.masterScreen" });
+    case "magic-trading-post":
+      return intl.formatMessage({ id: "search.section.magicTradingPost" });
     case "next-steps":
       return intl.formatMessage({ id: "search.section.nextSteps" });
     case "damages":
@@ -146,7 +148,7 @@ export default function GlobalSearch({ locale, onNavigate }) {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder={intl.formatMessage({ id: "search.placeholder" })}
-        className="w-full rounded-[10px] border border-[var(--line)] bg-[rgba(14,10,7,0.9)] px-3 py-2 text-sm text-[var(--text-main)] outline-none transition focus:border-[var(--line-strong)]"
+        className="w-full rounded-[10px] border border-[var(--line)] bg-[rgba(14,10,7,0.9)] px-3 py-2 text-[0.95rem] text-[var(--text-main)] outline-none transition focus:border-[var(--line-strong)]"
       />
 
       {trimmedQuery.length < 2 ? (
@@ -156,17 +158,17 @@ export default function GlobalSearch({ locale, onNavigate }) {
       ) : null}
 
       {isLoading ? (
-        <p className="m-0 mt-3 text-sm text-[var(--text-soft)]">
+        <p className="m-0 mt-3 text-[0.95rem] text-[var(--text-soft)]">
           {intl.formatMessage({ id: "search.loading" })}
         </p>
       ) : null}
 
       {!isLoading && error ? (
-        <p className="m-0 mt-3 text-sm text-[var(--text-soft)]">{error}</p>
+        <p className="m-0 mt-3 text-[0.95rem] text-[var(--text-soft)]">{error}</p>
       ) : null}
 
       {!isLoading && hasRequested && !error && results.length === 0 ? (
-        <p className="m-0 mt-3 text-sm text-[var(--text-soft)]">
+        <p className="m-0 mt-3 text-[0.95rem] text-[var(--text-soft)]">
           {intl.formatMessage({ id: "search.noResults" })}
         </p>
       ) : null}
@@ -186,7 +188,7 @@ export default function GlobalSearch({ locale, onNavigate }) {
                       onClick={onNavigate}
                       className="block rounded-[10px] border border-transparent px-2 py-1.5 no-underline transition hover:border-[var(--line)] hover:bg-[rgba(34,27,20,0.7)]"
                     >
-                      <span className="text-sm text-[var(--text-main)]">{result.title}</span>
+                      <span className="text-[0.95rem] text-[var(--text-main)]">{result.title}</span>
                       <p className="m-0 mt-0.5 text-xs leading-5 text-[var(--text-muted)]">
                         {truncateSnippet(result.body)}
                       </p>

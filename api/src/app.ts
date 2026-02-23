@@ -2,6 +2,7 @@ import cors from "cors";
 import express, { type RequestHandler, type Express } from "express";
 import { createHealthRouter } from "./routes/healthRoutes";
 import { createMasterScreenRouter } from "./master-screen/routes/masterScreenRoutes";
+import { createMagicItemRouter } from "./magic-items/routes/magicItemRoutes";
 import { createSearchRouter } from "./search/routes/searchRoutes";
 
 interface CreateAppOptions {
@@ -11,6 +12,9 @@ interface CreateAppOptions {
   masterScreenTransportController: RequestHandler;
   masterScreenPropertiesController: RequestHandler;
   masterScreenLifestyleController: RequestHandler;
+  magicItemListController: RequestHandler;
+  magicItemDetailController: RequestHandler;
+  magicItemRandomStockController: RequestHandler;
   searchController: RequestHandler;
 }
 
@@ -21,6 +25,9 @@ export function createApp({
   masterScreenTransportController,
   masterScreenPropertiesController,
   masterScreenLifestyleController,
+  magicItemListController,
+  magicItemDetailController,
+  magicItemRandomStockController,
   searchController,
 }: CreateAppOptions): Express {
   const app = express();
@@ -39,6 +46,14 @@ export function createApp({
       masterScreenTransportController,
       masterScreenPropertiesController,
       masterScreenLifestyleController,
+    }),
+  );
+  app.use(
+    "/api",
+    createMagicItemRouter({
+      magicItemListController,
+      magicItemDetailController,
+      magicItemRandomStockController,
     }),
   );
   app.use("/api", createSearchRouter({ searchController }));

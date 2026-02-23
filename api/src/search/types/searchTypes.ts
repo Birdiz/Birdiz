@@ -1,12 +1,17 @@
 import type { SupportedLocale } from "../../master-screen/utils/locale";
 
-export const SEARCH_MODULES = ["master-screen", "navigation"] as const;
+export const SEARCH_MODULES = [
+  "master-screen",
+  "navigation",
+  "magic-items",
+] as const;
 export type SearchModule = (typeof SEARCH_MODULES)[number];
 
 export const SEARCH_SECTIONS = [
   "home",
   "master-screen",
   "next-steps",
+  "magic-trading-post",
   "damages",
   "transport",
   "properties",
@@ -24,6 +29,7 @@ export const SEARCH_ENTITY_TYPES = [
   "maintenance",
   "lifestyle",
   "service",
+  "magic-item",
 ] as const;
 export type SearchEntityType = (typeof SEARCH_ENTITY_TYPES)[number];
 

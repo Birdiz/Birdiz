@@ -39,7 +39,7 @@ export default async function LocalizedNextStepsPage({ params }) {
                 <h4 className="m-0 text-[var(--text-main)]">{milestone.name}</h4>
                 <span className="tag-chip">{milestone.status}</span>
               </div>
-              <p className="m-0 text-sm leading-6 text-[var(--text-soft)]">{milestone.detail}</p>
+              <p className="m-0 text-[0.95rem] leading-6 text-[var(--text-soft)]">{milestone.detail}</p>
             </li>
           ))}
         </ol>

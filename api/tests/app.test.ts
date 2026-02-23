@@ -5,6 +5,9 @@ const routeFactoryMocks = vi.hoisted(() => ({
   createMasterScreenRouter: vi.fn(
     () => (_req: unknown, _res: unknown, next: () => void) => next(),
   ),
+  createMagicItemRouter: vi.fn(
+    () => (_req: unknown, _res: unknown, next: () => void) => next(),
+  ),
   createSearchRouter: vi.fn(() => (_req: unknown, _res: unknown, next: () => void) => next()),
 }));
 
@@ -13,6 +16,9 @@ vi.mock("../src/routes/healthRoutes", () => ({
 }));
 vi.mock("../src/master-screen/routes/masterScreenRoutes", () => ({
   createMasterScreenRouter: routeFactoryMocks.createMasterScreenRouter,
+}));
+vi.mock("../src/magic-items/routes/magicItemRoutes", () => ({
+  createMagicItemRouter: routeFactoryMocks.createMagicItemRouter,
 }));
 vi.mock("../src/search/routes/searchRoutes", () => ({
   createSearchRouter: routeFactoryMocks.createSearchRouter,
@@ -27,6 +33,9 @@ describe("createApp", () => {
     const masterScreenTransportController = vi.fn();
     const masterScreenPropertiesController = vi.fn();
     const masterScreenLifestyleController = vi.fn();
+    const magicItemListController = vi.fn();
+    const magicItemDetailController = vi.fn();
+    const magicItemRandomStockController = vi.fn();
     const searchController = vi.fn();
 
     const app = createApp({
@@ -36,6 +45,9 @@ describe("createApp", () => {
       masterScreenTransportController,
       masterScreenPropertiesController,
       masterScreenLifestyleController,
+      magicItemListController,
+      magicItemDetailController,
+      magicItemRandomStockController,
       searchController,
     });
 
@@ -48,6 +60,11 @@ describe("createApp", () => {
       masterScreenTransportController,
       masterScreenPropertiesController,
       masterScreenLifestyleController,
+    });
+    expect(routeFactoryMocks.createMagicItemRouter).toHaveBeenCalledWith({
+      magicItemListController,
+      magicItemDetailController,
+      magicItemRandomStockController,
     });
     expect(routeFactoryMocks.createSearchRouter).toHaveBeenCalledWith({
       searchController,

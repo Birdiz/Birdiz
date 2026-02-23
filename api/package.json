@@ -7,6 +7,7 @@
     "build": "tsc --project tsconfig.json",
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
+    "import:magic-items": "tsx src/magic-items/import/importMagicItems.ts",
     "lint": "eslint \"{src,tests}/**/*.ts\"",
     "typecheck": "tsc --project tsconfig.json --noEmit && tsc --project tsconfig.test.json --noEmit",
     "test": "vitest run",
